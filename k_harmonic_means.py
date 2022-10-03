@@ -8,8 +8,9 @@ This algorithm is based on the formulae given in the
 
 class KHarmonicMeans:
 
-    def __init__(self, n_clusters=3):
+    def __init__(self, n_clusters=3, max_iter=300):
         self.k = n_clusters
+        self.max_iter = max_iter
         self.p = 3
         self.epsilon = np.finfo(np.float32).eps
 
@@ -19,10 +20,10 @@ class KHarmonicMeans:
         p = 3
         sum1 = 0
 
-        for i in range(len(X)):
+        for i in range(np.size(X[:,0])):
             sum2 = 0
             for j in range(len(C)):
-                sum2 += (1 / np.power(np.linalg.norm(X[i] - X[j]), p))
+                sum2 += (1 / np.power(np.max([np.linalg.norm(X[i] - X[j]), self.epsilon]), p))
             sum1 += (len(C) / sum2)
 
         return sum1
@@ -56,7 +57,7 @@ class KHarmonicMeans:
         sum2 = 0
 
         # For each data point xi, compute its membership m(cj jxi) in each center cj and its weight w(xi)
-        for i in range(len(X)):
+        for i in range(np.size(X[:,0])):
             sum1 += self.membership(C, cj, X[i]) * self.weight(C, X[i]) * X[i]
             sum2 += self.membership(C, cj, X[i]) * self.weight(C, X[i])
 
@@ -65,23 +66,23 @@ class KHarmonicMeans:
     def guess_centers(self, X, k):
 
         centers = []
-        indices = np.random.choice(len(X), k, replace=False)
+        indices = np.random.choice(np.size(X[:,0]), k, replace=False)
 
         for i in range(k):
             centers.append(X[indices[i]])
 
         return centers
 
-    def khm(self, data, k=3):
+    def khm(self, data):
 
         X = data.copy()
 
         # 1. Initialize the algorithm with guessed centers C
-        C = self.guess_centers(X, k)
-
+        C = self.guess_centers(X, self.k)
+        iter = 0
         # 4. Repeat steps 2 and 3 till convergence
-        while True:
-
+        while True and iter < self.max_iter:
+            iter += 1
             C_aux = C
 
             # 3. For each center cj , recompute its location from all data points xi,
