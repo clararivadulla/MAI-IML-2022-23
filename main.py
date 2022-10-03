@@ -23,9 +23,16 @@ if __name__=='__main__':
 
     min_max_scale_columns(dataframe, numeric)
 
-    print(dataframe.head(10))
-    print(dataframe.describe())
+    train_data = dataframe.iloc[:0.9*dataframe.shapep[0],:].copy()
+    test_data = dataframe.iloc[0.9 * dataframe.shapep[0]:, :].copy()
+
+    #print(dataframe.head(10))
+    #print(dataframe.describe())
 
     clustering = AgglomerativeClustering().fit(dataframe)
 
-    print(clustering.labels_)
+    kmeans = Kmeans(k = 4, max_iter = 100, seed = None).train(train_data)
+    classify = kmeans.classify(test_data)
+    print (classify[0], classify[1])
+
+    #print(clustering.labels_)
