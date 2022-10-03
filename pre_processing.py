@@ -2,24 +2,6 @@ import read_arff_files
 from sklearn import preprocessing
 import pandas as pd
 
-def pre_processing(dataframes):
-    for df in dataframes:
-        df = different_ranges(df)
-        df = different_types(df)
-        df = missing_values(df)
-
-def different_ranges(dataframe):
-    ''' TO DO '''
-    return dataframe
-
-def different_types(dataframe):
-    ''' TO DO '''
-    return dataframe
-
-def missing_values(dataframe):
-    ''' TO DO '''
-    return dataframe
-
 def byte_strings_to_strings(df):
     s_df = df.select_dtypes([object])
     s_df = s_df.stack().str.decode('utf-8').unstack()
@@ -68,6 +50,9 @@ def substitute_missing_values_by_most_common(df, cols):
 def drop_rows_with_missing_values(df):
     df.dropna(axis = 0, inplace=True)
 
-def main():
-    dataframes = read_arff_files.main()
-    return pre_processing(dataframes)
+def drop_class_column(df):
+  if 'class' in df.columns:
+    df = df.drop('class', axis=1)
+  if 'Class' in df.columns:
+    df = df.drop('Class', axis=1)
+  return df
