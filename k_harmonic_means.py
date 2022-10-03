@@ -1,80 +1,93 @@
 import numpy as np
 
-p = 3
-epsilon = np.finfo(np.float32).eps
+''' 
+This algorithm is based on the formulae given in the 
+"k-Harmonic Means Clustering Algorithm" paper by Henrico Dolfing
+'''
 
-# Performance function
-def performance(X, C):
-    
-    p = 3
-    sum1 = 0
 
-    for i in range(len(X)):
+class KHarmonicMeans:
+
+    def __init__(self, n_clusters=3):
+        self.k = n_clusters
+        self.p = 3
+        self.epsilon = np.finfo(np.float32).eps
+
+    # Performance function
+    def performance(self, X, C):
+
+        p = 3
+        sum1 = 0
+
+        for i in range(len(X)):
+            sum2 = 0
+            for j in range(len(C)):
+                sum2 += (1 / np.power(np.linalg.norm(X[i] - X[j]), p))
+            sum1 += (len(C) / sum2)
+
+        return sum1
+
+    # Membership function
+    def membership(self, C, cj, xi):
+
+        sum = 0
+
+        for j in range(len(C)):
+            # The implementation of KHM needs to deal with the case where xi = cj
+            sum += np.power(np.max([np.linalg.norm(xi - C[j]), self.epsilon]), -self.p - 2)
+
+        return np.power(np.max([np.linalg.norm(xi - cj), self.epsilon]), -self.p - 2) / sum
+
+    # Weight function
+    def weight(self, C, xi):
+
+        sum1 = 0
         sum2 = 0
+
         for j in range(len(C)):
-            if np.array_equal(X[i], C[j]):
-                distance = np.power(epsilon, p)
-            else:
-                distance = np.power(np.linalg(X[i], X[j]), p)
-            sum2 += (1 / distance)
-        sum1 += (len(C) / sum2)
+            sum1 += np.power(np.max([np.linalg.norm(xi - C[j]), self.epsilon]), -self.p - 2)
+            sum2 += np.power(np.max([np.linalg.norm(xi - C[j]), self.epsilon]), -self.p)
 
-    return sum1
+        return sum1 / np.power(sum2, 2)
 
-# Membership function
-def membership(C, cj, xi):
+    def cj(self, X, C, cj):
 
-    distance = np.power(np.linalg(xi - cj), -p-2)
-    sum = 0
+        sum1 = 0
+        sum2 = 0
 
-    for j in range(len(C)):
-        sum += np.power(np.linalg(xi - C[j]), -p-2)
+        # For each data point xi, compute its membership m(cj jxi) in each center cj and its weight w(xi)
+        for i in range(len(X)):
+            sum1 += self.membership(C, cj, X[i]) * self.weight(C, X[i]) * X[i]
+            sum2 += self.membership(C, cj, X[i]) * self.weight(C, X[i])
 
-    return distance / sum
+        return sum1 / sum2
 
-# Weight function
-def weight(C, xi):
+    def guess_centers(self, X, k):
 
-    sum1 = 0
-    sum2 = 0
+        centers = []
+        indices = np.random.choice(len(X), k, replace=False)
 
-    for j in range(len(C)):
-        sum1 += np.power(np.linalg(xi - C[j]), -p-2)
-        sum2 += np.power(np.linalg(xi - C[j]), -p)
+        for i in range(k):
+            centers.append(X[indices[i]])
 
-    return sum1 / np.power(sum2, 2)
+        return centers
 
-def cj(X, C, cj):
+    def khm(self, data, k=3):
 
-    sum1 = 0
-    sum2 = 0
+        X = data.copy()
 
-    for i in range(len(X)):
-        sum1 += membership(C, cj, X[i]) * weight(C, X[i]) * X[i]
-        sum2 += membership(C, cj, X[i]) * weight(C, X[i])
+        # 1. Initialize the algorithm with guessed centers C
+        C = self.guess_centers(X, k)
 
-    return sum1 / sum2
+        # 4. Repeat steps 2 and 3 till convergence
+        while True:
 
-def guess_centers(X, k):
+            C_aux = C
 
-    centers = []
-    indexes = np.choice(len(X), k, replace=False)
+            # 3. For each center cj , recompute its location from all data points xi,
+            # according to their membership and weights
+            for j in range(len(C)):
+                C[j] = self.cj(X, C, C[j])
 
-    for i in range(k):
-        centers.append(indexes[i])
-
-    return centers
-
-def khm(data, k=3):
-
-    X = data.copy()
-    C = guess_centers(X, k)
-
-    while(True):
-        C_aux = C
-        for j in range(len(C)):
-            C[j] = cj(X, C, C[j])
-        if np.array_equal(C_aux, C):
-            return C
-
-
+            if np.array_equal(C_aux, C):
+                return C
