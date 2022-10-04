@@ -22,9 +22,9 @@ class KHarmonicMeans:
 
         for i in range(np.size(X[:,0])):
             sum2 = 0
-            for j in range(len(C)):
+            for j in range(self.k):
                 sum2 += (1 / np.power(np.max([np.linalg.norm(X[i] - X[j]), self.epsilon]), p))
-            sum1 += (len(C) / sum2)
+            sum1 += (self.k / sum2)
 
         return sum1
 
@@ -33,7 +33,7 @@ class KHarmonicMeans:
 
         sum = 0
 
-        for j in range(len(C)):
+        for j in range(self.k):
             # The implementation of KHM needs to deal with the case where xi = cj
             sum += np.power(np.max([np.linalg.norm(xi - C[j]), self.epsilon]), -self.p - 2)
 
@@ -45,7 +45,7 @@ class KHarmonicMeans:
         sum1 = 0
         sum2 = 0
 
-        for j in range(len(C)):
+        for j in range(self.k):
             sum1 += np.power(np.max([np.linalg.norm(xi - C[j]), self.epsilon]), -self.p - 2)
             sum2 += np.power(np.max([np.linalg.norm(xi - C[j]), self.epsilon]), -self.p)
 
@@ -82,13 +82,14 @@ class KHarmonicMeans:
         iter = 0
         # 4. Repeat steps 2 and 3 till convergence
         while True and iter < self.max_iter:
+            print(C)
+            C_aux = C.copy()
             iter += 1
-            C_aux = C
-
-            # 3. For each center cj , recompute its location from all data points xi,
+            # 3. For each center cj, recompute its location from all data points xi,
             # according to their membership and weights
-            for j in range(len(C)):
+            for j in range(self.k):
                 C[j] = self.cj(X, C, C[j])
-
+                print(C)
             if np.array_equal(C_aux, C):
-                return C
+                print("C_aux: " + str(C_aux) + "C: " + str(C))
+        return C
