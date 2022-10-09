@@ -12,6 +12,6 @@ def main(df, meta):
     (nominal_cols, numeric_cols) = pre_processing_functions.get_columns_by_type(meta)
     pre_processing_functions.fill_na_values_with_mean(df, numeric_cols)
 
-    df = pre_processing_functions.one_hot_encode_columns(df, ['A1', 'A4', 'A5', 'A6', 'A7', 'A9', 'A10', 'A12', 'A13'])
-    pre_processing_functions.min_max_scale_columns(df, ['A2', 'A3', 'A8', 'A11', 'A14', 'A15'])
+    df = pre_processing_functions.one_hot_encode_columns(df, nominal_cols)
+    pre_processing_functions.min_max_scale_columns(df, numeric_cols)
     return df

@@ -8,12 +8,12 @@ if __name__=='__main__':
     print(df)
 
     # credit-a dataset reading and pre-processing
-    df2, meta = read_arff_files.main('credit-a.arff')
-    df2 = credit_a_pre_processing.main(df2, meta)
+    df2, meta2 = read_arff_files.main('credit-a.arff')
+    df2 = credit_a_pre_processing.main(df2, meta2)
     print(df2)
 
     # pima-diabetes dataset reading and pre-processing
-    df3, meta = read_arff_files.main('pima_diabetes.arff')
+    df3, meta3 = read_arff_files.main('pima_diabetes.arff')
     df3 = pima_diabetes_pre_processing.main(df3)
     print(df3)
 
