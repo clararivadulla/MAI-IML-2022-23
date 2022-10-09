@@ -1,8 +1,17 @@
 from sklearn.cluster import AgglomerativeClustering, MeanShift, estimate_bandwidth
+
+import cmc_pre_processing
 from read_arff_files import read_arff_file
 from pre_processing import *
 
 if __name__=='__main__':
+
+    # cmc reading and pre-processing
+    df, meta = read_arff_files.main('cmc.arff')
+    df = cmc_pre_processing.main(df)
+    print(df)
+
+    """
     #read_arff_files.main()
     dataframe, meta = read_arff_file('datasets/credit-a.arff')
 
@@ -36,3 +45,4 @@ if __name__=='__main__':
     print (classify[0], classify[1])
 
     #print(clustering.labels_)
+    """
