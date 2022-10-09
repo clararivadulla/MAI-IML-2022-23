@@ -1,7 +1,5 @@
-import read_arff_files
 from sklearn import preprocessing
 import pandas as pd
-
 
 def byte_strings_to_strings(df):
     s_df = df.select_dtypes([object])
@@ -43,18 +41,25 @@ def get_columns_by_type(meta):
 
 def substitute_missing_values_by_mean(df, cols):
     for col in cols:
-        df[col] = df[col].fillna(df[col].mean())
+        df[col] = df[col].replace('?', df[col].mean())
 
 
 def substitute_missing_values_by_median(df, cols):
     for col in cols:
-        df[col] = df[col].fillna(df[col].median())
+        df[col] = df[col].replace('?', df[col].median())
 
 
 def substitute_missing_values_by_most_common(df, cols):
     for col in cols:
-        df[col] = df[col].fillna(df[col].mode().iloc[0])
+        df[col] = df[col].replace('?', df[col].mode().iloc[0])
 
+def find_cols_with_missing_values(df):
+    mv = df.isin(['?']).any()
+    cols = []
+    for i in range(0, 15):
+        if mv[i]:
+            cols.append(df.columns[i])
+    return cols
 
 def drop_rows_with_missing_values(df):
     df.dropna(axis=0, inplace=True)

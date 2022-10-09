@@ -1,15 +1,21 @@
-from sklearn.cluster import AgglomerativeClustering, MeanShift, estimate_bandwidth
-
-import cmc_pre_processing
-from read_arff_files import read_arff_file
-from pre_processing import *
+from pre_processing import credit_a_pre_processing, cmc_pre_processing, read_arff_files, pima_diabetes_pre_processing
 
 if __name__=='__main__':
 
-    # cmc reading and pre-processing
+    # cmc dataset reading and pre-processing
     df, meta = read_arff_files.main('cmc.arff')
     df = cmc_pre_processing.main(df)
     print(df)
+
+    # credit-a dataset reading and pre-processing
+    df2, meta = read_arff_files.main('credit-a.arff')
+    df2 = credit_a_pre_processing.main(df2)
+    print(df2)
+
+    # pima-diabetes dataset reading and pre-processing
+    df3, meta = read_arff_files.main('pima_diabetes.arff')
+    df3 = pima_diabetes_pre_processing.main(df3)
+    print(df3)
 
     """
     #read_arff_files.main()
