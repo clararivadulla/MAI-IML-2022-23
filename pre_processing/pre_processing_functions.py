@@ -61,9 +61,16 @@ def find_cols_with_missing_values(df):
             cols.append(df.columns[i])
     return cols
 
-def drop_rows_with_missing_values(df):
+def drop_rows_with_na_values(df):
     df.dropna(axis=0, inplace=True)
 
+def fill_na_values_with_mean(df, cols):
+    for col in cols:
+        df[col] = df[col].fillna(df[col].mean())
+
+def fill_na_values_with_median(df, cols):
+  for col in cols:
+    df[col] = df[col].fillna(df[col].median())
 
 def drop_class_column(df):
     if 'class' in df.columns:
