@@ -1,5 +1,8 @@
-class Kmeans:
-    def __init__(self, k = 3, max_iter = 100, seed = None):
+import numpy as np
+
+
+class KMeans:
+    def __init__(self, k=3, max_iter=100, seed=None):
         self.k = k
         self.max_iter = max_iter
         self.seed = seed
@@ -27,10 +30,10 @@ class Kmeans:
                     self.centroids[i, j] = np.sum(data[r[:, i], j]) / np.sum(r[:, j])
             n_iter += 1
 
-    def classify (self, data):
+    def classify(self, data):
+        x = data.shape[0]
         d = np.full((x, self.k), fill_value=np.inf)
         for i in range(self.k):
             d.iloc[:, i] = np.sum((data - self.centroids) ** 2, axis=1)
         centroids_idx = np.argmin(d, axis=1)
         return centroids_idx, self.centroids[centroids_idx]
-

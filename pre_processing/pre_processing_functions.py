@@ -1,6 +1,7 @@
 from sklearn import preprocessing
 import pandas as pd
 
+
 def byte_strings_to_strings(df):
     s_df = df.select_dtypes([object])
     s_df = s_df.stack().str.decode('utf-8').unstack()
@@ -53,6 +54,7 @@ def substitute_missing_values_by_most_common(df, cols):
     for col in cols:
         df[col] = df[col].replace('?', df[col].mode().iloc[0])
 
+
 def find_cols_with_missing_values(df):
     mv = df.isin(['?']).any()
     cols = []
@@ -61,16 +63,20 @@ def find_cols_with_missing_values(df):
             cols.append(df.columns[i])
     return cols
 
+
 def drop_rows_with_na_values(df):
     df.dropna(axis=0, inplace=True)
+
 
 def fill_na_values_with_mean(df, cols):
     for col in cols:
         df[col] = df[col].fillna(df[col].mean())
 
+
 def fill_na_values_with_median(df, cols):
-  for col in cols:
-    df[col] = df[col].fillna(df[col].median())
+    for col in cols:
+        df[col] = df[col].fillna(df[col].median())
+
 
 def drop_class_column(df):
     if 'class' in df.columns:
@@ -78,3 +84,9 @@ def drop_class_column(df):
     if 'Class' in df.columns:
         df = df.drop('Class', axis=1)
     return df
+
+
+def df_to_numeric_array(df):
+    df[df.columns] = df[df.columns].astype(float)
+    data = df.to_numpy()
+    return data
