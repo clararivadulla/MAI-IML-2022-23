@@ -2,7 +2,7 @@ from pre_processing import pre_processing_functions
 
 
 def main(df, meta):
-    class_labels = pre_processing_functions.remove_and_return_class_column(df)
+    class_labels = pre_processing_functions.remove_and_return_class_column(df).to_numpy()
 
     pre_processing_functions.byte_strings_to_strings(df)
 

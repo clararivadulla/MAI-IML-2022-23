@@ -3,6 +3,7 @@ from k_means.bisecting_KMeans import BKM
 from k_means.k_harmonic_means import KHarmonicMeans
 from k_means.k_means import KMeans
 from pre_processing import credit_a_pre_processing, cmc_pre_processing, read_arff_files, pima_diabetes_pre_processing, iris_pre_processing
+from sklearn import metrics
 
 if __name__=='__main__':
 
@@ -24,15 +25,40 @@ if __name__=='__main__':
     # K-Harmonic Means
     print('**************************************************\nK-Harmonic Means\n**************************************************')
     k_harmonic_means = KHarmonicMeans(n_clusters=3, max_iter=100)
-    k_harmonic_means.khm(data_cmc)
-    k_harmonic_means_labels = k_harmonic_means.cluster_matching(data_cmc)
+    k_harmonic_means.khm(data_iris)
+    k_harmonic_means_labels = k_harmonic_means.cluster_matching(data_iris)
     print('Centroids: \n' + str(k_harmonic_means.centroids))
-    print('Labels: ' + str(k_harmonic_means_labels))
+    print('Actual Labels: ' + str(labels_iris))
+    print('Predicted Labels: ' + str(k_harmonic_means_labels))
+
+    silhouette_score = metrics.silhouette_score(data_iris, k_harmonic_means_labels)
+    davies_bouldin_score = metrics.davies_bouldin_score(data_iris, k_harmonic_means_labels)
+    calinski_harabasz_score = metrics.calinski_harabasz_score(data_iris, k_harmonic_means_labels)
+    adjusted_mutual_info_score = metrics.adjusted_mutual_info_score(labels_iris, k_harmonic_means_labels)
+
+    print('\nMetrics:')
+    print(f'Silhouette Score: {silhouette_score}')
+    print(f'Davies Bouldin Score: {davies_bouldin_score}')
+    print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
+    print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
+    print()
 
     # Bisecting K Means
     print('**************************************************\nBisecting K-Means\n**************************************************')
-    bisecting_k_means_labels = BKM(data_cmc, k=3)
-    print('Labels: ' + str(bisecting_k_means_labels))
+    bisecting_k_means_labels = BKM(data_iris, k=3)
+    print('Actual Labels: ' + str(labels_iris))
+    print('Predicted Labels: ' + str(bisecting_k_means_labels))
+
+    silhouette_score = metrics.silhouette_score(data_iris, bisecting_k_means_labels)
+    davies_bouldin_score = metrics.davies_bouldin_score(data_iris, bisecting_k_means_labels)
+    calinski_harabasz_score = metrics.calinski_harabasz_score(data_iris, bisecting_k_means_labels)
+    adjusted_mutual_info_score = metrics.adjusted_mutual_info_score(labels_iris, bisecting_k_means_labels)
+
+    print('\nMetrics:')
+    print(f'Silhouette Score: {silhouette_score}')
+    print(f'Davies Bouldin Score: {davies_bouldin_score}')
+    print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
+    print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
 
     """
     #read_arff_files.main()
