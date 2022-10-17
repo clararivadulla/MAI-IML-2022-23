@@ -2,7 +2,7 @@ from pre_processing import pre_processing_functions
 
 
 def main(df, meta):
-    df = pre_processing_functions.drop_class_column(df)
+    class_labels = pre_processing_functions.remove_and_return_class_column(df)
 
     pre_processing_functions.byte_strings_to_strings(df)
 
@@ -19,4 +19,4 @@ def main(df, meta):
 
     data = pre_processing_functions.df_to_numeric_array(df)
 
-    return data
+    return data, class_labels

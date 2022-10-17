@@ -86,6 +86,16 @@ def drop_class_column(df):
     return df
 
 
+def remove_and_return_class_column(df):
+    if 'class' in df.columns:
+        label_encode_columns(df, ['class'])
+        class_col = df.pop('class')
+    if 'Class' in df.columns:
+        label_encode_columns(df, ['Class'])
+        class_col = df.pop('Class')
+    return class_col
+
+
 def df_to_numeric_array(df):
     df[df.columns] = df[df.columns].astype(float)
     data = df.to_numpy()
