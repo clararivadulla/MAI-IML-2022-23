@@ -94,15 +94,8 @@ class KHarmonicMeans:
         C = self.guess_centers(X, self.k)
         iter = 0
 
-        print('Iterations: ', end=' ')
-
         # 4. Repeat steps 2 and 3 till convergence
         while iter < self.max_iter:
-
-            if iter + 1 < self.max_iter:
-                print(iter + 1, end=' ')
-            else:
-                print(iter + 1)
 
             C_aux = C.copy()
             iter += 1

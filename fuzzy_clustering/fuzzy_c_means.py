@@ -54,13 +54,8 @@ class FuzzyCMeans:
         self.update_memberships(data, self.V)
 
         iter = 0
-        print('Iterations: ', end=' ')
-        while iter < self.max_iter:
 
-            if iter + 1 < self.max_iter:
-                print(iter + 1, end=' ')
-            else:
-                print(iter + 1)
+        while iter < self.max_iter:
 
             iter += 1
 
