@@ -18,9 +18,9 @@ class KHarmonicMeans:
 
     def cluster_matching(self, X):
         matches = np.zeros(np.size(X[:, 0]))
-        norm = 9999999
         for i in range(np.size(X[:, 0])):
-            for j in range(self.k):
+            norm = np.linalg.norm(X[i] - self.centroids[0])
+            for j in range(1, self.k):
                 aux_norm = np.linalg.norm(X[i] - self.centroids[j])
                 if aux_norm < norm:
                     norm = aux_norm

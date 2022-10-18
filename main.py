@@ -1,4 +1,4 @@
-
+from fuzzy_clustering.fuzzy_c_means import FuzzyCMeans
 from k_means.bisecting_KMeans import BKM
 from k_means.k_harmonic_means import KHarmonicMeans
 from k_means.k_means import KMeans
@@ -21,6 +21,28 @@ if __name__=='__main__':
 
     df4, meta4 = read_arff_files.main('iris.arff')
     data_iris, labels_iris = iris_pre_processing.main(df4)
+
+    # Fuzzy C-Means
+    print(
+        '**************************************************\nFuzzy C-Means\n**************************************************')
+    fuzzy_c_means = FuzzyCMeans()
+    fuzzy_c_means.fcm(data_iris)
+    fuzzy_c_means_labels = fuzzy_c_means.cluster_matching(data_iris)
+    print('Centroids: \n' + str(fuzzy_c_means.V))
+    print('Actual Labels: ' + str(labels_iris))
+    print('Predicted Labels: ' + str(fuzzy_c_means_labels))
+
+    silhouette_score = metrics.silhouette_score(data_iris, fuzzy_c_means_labels)
+    davies_bouldin_score = metrics.davies_bouldin_score(data_iris, fuzzy_c_means_labels)
+    calinski_harabasz_score = metrics.calinski_harabasz_score(data_iris, fuzzy_c_means_labels)
+    adjusted_mutual_info_score = metrics.adjusted_mutual_info_score(labels_iris, fuzzy_c_means_labels)
+
+    print('\nMetrics:')
+    print(f'Silhouette Score: {silhouette_score}')
+    print(f'Davies Bouldin Score: {davies_bouldin_score}')
+    print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
+    print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
+    print()
 
     # K-Harmonic Means
     print('**************************************************\nK-Harmonic Means\n**************************************************')
