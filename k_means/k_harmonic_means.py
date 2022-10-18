@@ -8,7 +8,7 @@ This algorithm is based on the formulae given in the
 
 class KHarmonicMeans:
 
-    def __init__(self, n_clusters=3, max_iter=300):
+    def __init__(self, n_clusters=3, max_iter=100):
         self.k = n_clusters
         self.max_iter = max_iter
         self.p = 3
@@ -97,7 +97,7 @@ class KHarmonicMeans:
         print('Iterations: ', end=' ')
 
         # 4. Repeat steps 2 and 3 till convergence
-        while True and iter < self.max_iter:
+        while iter < self.max_iter:
 
             if iter + 1 < self.max_iter:
                 print(iter + 1, end=' ')
