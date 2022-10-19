@@ -1,5 +1,5 @@
 from fuzzy_clustering.fuzzy_c_means import FuzzyCMeans
-from k_means.bisecting_KMeans import BKM
+from k_means.bisecting_k_means import BisectingKMeans
 from k_means.k_harmonic_means import KHarmonicMeans
 from pre_processing import read_arff_files, cmc_pre_processing, pima_diabetes_pre_processing
 from sklearn import metrics
@@ -58,7 +58,7 @@ def main():
     # Bisecting K Means
     print(
         '**************************************************\nBisecting K-Means\n**************************************************')
-    bisecting_k_means_labels = BKM(data, k=3)
+    bisecting_k_means_labels = BisectingKMeans(data, k=3)
     print('Actual Labels: ' + str(labels))
     print('Predicted Labels: ' + str(bisecting_k_means_labels))
 

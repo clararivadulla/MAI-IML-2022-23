@@ -2,7 +2,7 @@ from sklearn.cluster import KMeans
 #from k_means.k_means import KMeans
 import numpy as np
 
-def BKM(data, k=3, num_trials=5):
+def BisectingKMeans(data, k=3, num_trials=5):
     """
     Bisecting KMeans Algorithm
     :param data: data for clustering
