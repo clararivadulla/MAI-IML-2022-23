@@ -21,7 +21,7 @@ def main():
     # K-Means
     print(
         '**************************************************\nK-Means\n**************************************************')
-    k_means = KMeans(k=10)
+    k_means = KMeans(k=3)
     k_means.train(data)
     k_means_labels = k_means.cluster_matching(data)
     print('Centroids: \n' + str(k_means.centroids))
@@ -39,7 +39,7 @@ def main():
     print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
     print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
 
-    scatterplot(k_means_labels, data, indices=(0, 1))
+    scatterplot(k_means_labels, data, (0, 1), title='K-Means with 3 clusters', x_label='x', y_label='y')
 
     # Fuzzy C-Means
     print(
