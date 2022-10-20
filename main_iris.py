@@ -1,3 +1,7 @@
+import numpy as np
+from matplotlib import pyplot as plt
+
+from figures.plots import scatterplot
 from fuzzy_clustering.fuzzy_c_means import FuzzyCMeans
 from k_means.bisecting_k_means import BisectingKMeans
 from k_means.k_harmonic_means import KHarmonicMeans
@@ -35,6 +39,8 @@ def main():
     print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
     print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
 
+    scatterplot(k_means_labels, data, indices=(0, 1))
+
     # Fuzzy C-Means
     print(
         '**************************************************\nFuzzy C-Means\n**************************************************')
@@ -55,6 +61,8 @@ def main():
     print(f'Davies Bouldin Score: {davies_bouldin_score}')
     print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
     print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
+
+    scatterplot(fuzzy_c_means_labels, data, indices=(0, 1))
 
     # K-Harmonic Means
     print(
