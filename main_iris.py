@@ -21,7 +21,7 @@ def main():
     # K-Means
     print(
         '**************************************************\nK-Means\n**************************************************')
-    k_means = KMeans()
+    k_means = KMeans(k=10)
     k_means.train(data)
     k_means_labels = k_means.cluster_matching(data)
     print('Centroids: \n' + str(k_means.centroids))
@@ -44,7 +44,7 @@ def main():
     # Fuzzy C-Means
     print(
         '**************************************************\nFuzzy C-Means\n**************************************************')
-    fuzzy_c_means = FuzzyCMeans()
+    fuzzy_c_means = FuzzyCMeans(n_clusters=10)
     fuzzy_c_means.fcm(data)
     fuzzy_c_means_labels = fuzzy_c_means.cluster_matching(data)
     print('Centroids: \n' + str(fuzzy_c_means.V))

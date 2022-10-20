@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-colors = ["pink", "firebrick", "orange", "lightblue", "yellowgreen"]
+colors = ["darkgray", "firebrick", "orange", "gold", "darkkhaki", "olive", "lightblue", "midnightblue", "thistle", "blue"]
 
 def scatterplot(labels, data, indices):
     num_clusters = len(np.unique(labels))
