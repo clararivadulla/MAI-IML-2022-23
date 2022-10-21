@@ -4,8 +4,9 @@ from k_means.bisecting_k_means import BisectingKMeans
 from k_means.k_harmonic_means import KHarmonicMeans
 from k_means.k_means import KMeans
 from pre_processing import read_arff_files, cmc_pre_processing, pima_diabetes_pre_processing
-from sklearn import metrics
 import pandas as pd
+from metrics.metrics import calculate_metrics
+
 
 
 def main():
@@ -26,18 +27,12 @@ def main():
     print('Actual Labels: ' + str(labels))
     print('Predicted Labels: ' + str(k_means_labels))
 
-    silhouette_score = metrics.silhouette_score(data, k_means_labels)
-    davies_bouldin_score = metrics.davies_bouldin_score(data, k_means_labels)
-    calinski_harabasz_score = metrics.calinski_harabasz_score(data, k_means_labels)
-    adjusted_mutual_info_score = metrics.adjusted_mutual_info_score(labels, k_means_labels)
-
-    print('\nMetrics:')
-    print(f'Silhouette Score: {silhouette_score}')
-    print(f'Davies Bouldin Score: {davies_bouldin_score}')
-    print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
-    print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
-    scores.append(
-        ['K-Means', silhouette_score, davies_bouldin_score, calinski_harabasz_score, adjusted_mutual_info_score])
+    k_means_metrics = calculate_metrics(data=data,
+                                        predicted_labels=k_means_labels,
+                                        actual_labels=labels,
+                                        algorithm_name='K-Means',
+                                        verbose=True)
+    scores.append(k_means_metrics)
 
     scatter_plot(k_means_labels, data, (0, 1), title='Pima Diabetes dataset\nK-Means with 3 clusters', x_label='x', y_label='y')
 
@@ -48,19 +43,12 @@ def main():
     print('Actual Labels: ' + str(labels))
     print('Predicted Labels: ' + str(bisecting_k_means_labels))
 
-    silhouette_score = metrics.silhouette_score(data, bisecting_k_means_labels)
-    davies_bouldin_score = metrics.davies_bouldin_score(data, bisecting_k_means_labels)
-    calinski_harabasz_score = metrics.calinski_harabasz_score(data, bisecting_k_means_labels)
-    adjusted_mutual_info_score = metrics.adjusted_mutual_info_score(labels, bisecting_k_means_labels)
-
-    print('\nMetrics:')
-    print(f'Silhouette Score: {silhouette_score}')
-    print(f'Davies Bouldin Score: {davies_bouldin_score}')
-    print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
-    print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
-    scores.append(
-        ['Bisecting K-Means', silhouette_score, davies_bouldin_score, calinski_harabasz_score,
-         adjusted_mutual_info_score])
+    bisecting_k_means_metrics = calculate_metrics(data=data,
+                                                  predicted_labels=bisecting_k_means_labels,
+                                                  actual_labels=labels,
+                                                  algorithm_name='Bisecting K-Means',
+                                                  verbose=True)
+    scores.append(bisecting_k_means_metrics)
 
     scatter_plot(bisecting_k_means_labels, data, (0, 1), title='Pima Diabetes dataset\nBisecting K-Means with 3 clusters', x_label='x',
                  y_label='y')
@@ -75,19 +63,12 @@ def main():
     print('Actual Labels: ' + str(labels))
     print('Predicted Labels: ' + str(k_harmonic_means_labels))
 
-    silhouette_score = metrics.silhouette_score(data, k_harmonic_means_labels)
-    davies_bouldin_score = metrics.davies_bouldin_score(data, k_harmonic_means_labels)
-    calinski_harabasz_score = metrics.calinski_harabasz_score(data, k_harmonic_means_labels)
-    adjusted_mutual_info_score = metrics.adjusted_mutual_info_score(labels, k_harmonic_means_labels)
-
-    print('\nMetrics:')
-    print(f'Silhouette Score: {silhouette_score}')
-    print(f'Davies Bouldin Score: {davies_bouldin_score}')
-    print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
-    print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
-    scores.append(
-        ['K-Harmonic Means', silhouette_score, davies_bouldin_score, calinski_harabasz_score,
-         adjusted_mutual_info_score])
+    k_harmonic_means_metrics = calculate_metrics(data=data,
+                                                 predicted_labels=k_harmonic_means_labels,
+                                                 actual_labels=labels,
+                                                 algorithm_name='K-Harmonic Means',
+                                                 verbose=True)
+    scores.append(k_harmonic_means_metrics)
 
     scatter_plot(k_harmonic_means_labels, data, (0, 1), title='Pima Diabetes dataset\nK-Harmonic Means with 3 clusters', x_label='x',
                  y_label='y')
@@ -102,19 +83,12 @@ def main():
     print('Actual Labels: ' + str(labels))
     print('Predicted Labels: ' + str(fuzzy_c_means_labels))
 
-    silhouette_score = metrics.silhouette_score(data, fuzzy_c_means_labels)
-    davies_bouldin_score = metrics.davies_bouldin_score(data, fuzzy_c_means_labels)
-    calinski_harabasz_score = metrics.calinski_harabasz_score(data, fuzzy_c_means_labels)
-    adjusted_mutual_info_score = metrics.adjusted_mutual_info_score(labels, fuzzy_c_means_labels)
-
-    print('\nMetrics:')
-    print(f'Silhouette Score: {silhouette_score}')
-    print(f'Davies Bouldin Score: {davies_bouldin_score}')
-    print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
-    print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
-    scores.append(
-        ['Fuzzy C-Means', silhouette_score, davies_bouldin_score, calinski_harabasz_score,
-         adjusted_mutual_info_score])
+    fuzzy_c_means_metrics = calculate_metrics(data=data,
+                                              predicted_labels=fuzzy_c_means_labels,
+                                              actual_labels=labels,
+                                              algorithm_name='Fuzzy C-Means',
+                                              verbose=True)
+    scores.append(fuzzy_c_means_metrics)
 
     scatter_plot(fuzzy_c_means_labels, data, (0, 1), title='Pima Diabetes dataset\nFuzzy C-Means with 3 clusters', x_label='x',
                  y_label='y')
@@ -123,3 +97,6 @@ def main():
     scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score',
                                               'Calinski Harabasz Score', 'Adjusted Mutual Info Score'])
     print(scores_df)
+
+if __name__ == '__main__':
+    main()
