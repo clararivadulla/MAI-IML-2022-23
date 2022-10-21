@@ -4,6 +4,7 @@ from k_means.k_harmonic_means import KHarmonicMeans
 from k_means.k_means import KMeans
 from pre_processing import read_arff_files, iris_pre_processing, cmc_pre_processing, pima_diabetes_pre_processing
 from metrics.metrics import calculate_metrics
+import matplotlib.pyplot as plt
 
 
 def test_performance(dataset_name):
@@ -19,7 +20,7 @@ def test_performance(dataset_name):
     else:
         raise NameError(f'Wrong dataset name: {dataset_name}')
 
-    all_metrics = {}
+    all_metrics = []
 
     k_values = [2, 3, 4, 5, 6, 7, 8, 9, 10]
     for k in k_values:
@@ -28,9 +29,25 @@ def test_performance(dataset_name):
                                                       predicted_labels=bisecting_k_means_labels,
                                                       actual_labels=labels)
 
-        all_metrics[k] = bisecting_k_means_metrics
+        all_metrics.append(bisecting_k_means_metrics)
 
-    print(all_metrics)
+    fig, axes = plt.subplots(2, 2, figsize=(10, 7))
+    ax = axes.ravel()
+
+    ax[0].plot(k_values, [metric[0] for metric in all_metrics])
+    ax[0].set(xticks=k_values, title='Silhouette Scores', xlabel='k', ylabel='score')
+
+    ax[1].plot(k_values, [metric[1] for metric in all_metrics])
+    ax[1].set(xticks=k_values, title='Davies Bouldin Scores', xlabel='k', ylabel='score')
+
+    ax[2].plot(k_values, [metric[2] for metric in all_metrics])
+    ax[2].set(xticks=k_values, title='Calinski Harabasz Scores', xlabel='k', ylabel='score')
+
+    ax[3].plot(k_values, [metric[3] for metric in all_metrics])
+    ax[3].set(xticks=k_values, title='Adjusted Mutual Info Scores', xlabel='k', ylabel='score')
+
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == '__main__':
