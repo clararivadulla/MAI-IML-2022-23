@@ -5,6 +5,6 @@ import matplotlib.pyplot as plt
 
 if __name__=='__main__':
 
-    # main_cmc.main()
+    main_cmc.main()
     main_iris.main()
-    # main_pima_diabetes.main()
+    main_pima_diabetes.main()
