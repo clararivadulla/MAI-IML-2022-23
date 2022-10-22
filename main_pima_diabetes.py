@@ -22,7 +22,7 @@ def main():
         '**************************************************\nK-Means\n**************************************************')
     k_means = KMeans(k=3)
     k_means.train(data)
-    k_means_labels = k_means.cluster_matching(data)
+    k_means_labels = k_means.classify(data)[0]
     print('Centroids: \n' + str(k_means.centroids))
     print('Actual Labels: ' + str(labels))
     print('Predicted Labels: ' + str(k_means_labels))
