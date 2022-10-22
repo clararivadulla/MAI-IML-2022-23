@@ -2,8 +2,7 @@ from fuzzy_clustering.fuzzy_c_means import FuzzyCMeans
 from k_means.bisecting_k_means import BisectingKMeans
 from k_means.k_harmonic_means import KHarmonicMeans
 from k_means.k_means import KMeans
-from pre_processing import read_arff_files, iris_pre_processing, cmc_pre_processing, pima_diabetes_pre_processing#, \
-#credit_a_pre_processing, satimage_pre_processing, vehicle_pre_processing, segment_pre_processing, vowel_pre_processing
+from pre_processing import read_arff_files, iris_pre_processing, cmc_pre_processing, pima_diabetes_pre_processing
 from metrics.metrics import calculate_metrics
 
 import matplotlib.pyplot as plt
@@ -20,22 +19,11 @@ def test_performance(dataset_name):
     elif dataset_name == 'cmc':
         df, meta = read_arff_files.read_arff_file('./../datasets/cmc.arff')
         data, labels = cmc_pre_processing.main(df)
-    # elif dataset_name == 'satimage':
-    #     df, meta = read_arff_files.read_arff_file('./../datasets/satimage.arff')
-    #     data, labels = satimage_pre_processing.main(df)
-    # elif dataset_name == 'vehicle':
-    #     df, meta = read_arff_files.read_arff_file('./../datasets/vehicle.arff')
-    #     data, labels = vehicle_pre_processing.main(df)
-    # elif dataset_name == 'segment':
-    #     df, meta = read_arff_files.read_arff_file('./../datasets/segment.arff')
-    #     data, labels = segment_pre_processing.main(df)
-    # elif dataset_name == 'vowel':
-    #     df, meta = read_arff_files.read_arff_file('./../datasets/vowel.arff')
-    #     data, labels = vowel_pre_processing.main(df, meta)
     else:
         raise NameError(f'Wrong dataset name: {dataset_name}')
 
     all_metrics = {
+        'KMeans': [],
         'BisectingKMeans': [],
         'AgglomerativeClustering': [],
         'FuzzyCMeans': [],
@@ -45,6 +33,14 @@ def test_performance(dataset_name):
     k_values = [2, 3, 4, 5, 6, 7]
     for k in k_values:
         print(k)
+        k_means = KMeans(k=k)
+        k_means.train(data)
+        k_means_labels, _ = k_means.classify(data)
+
+        k_means_metrics = calculate_metrics(data=data,
+                                            predicted_labels=k_means_labels,
+                                            actual_labels=labels)
+        all_metrics['KMeans'].append(k_means_metrics)
 
         bisecting_k_means_labels = BisectingKMeans(data, k=k)
         bisecting_k_means_metrics = calculate_metrics(data=data,

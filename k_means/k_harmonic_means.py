@@ -1,11 +1,5 @@
 import numpy as np
 
-''' 
-This algorithm is based on the formulae given in the 
-"k-Harmonic Means Clustering Algorithm" paper by Henrico Dolfing
-'''
-
-
 class KHarmonicMeans:
 
     def __init__(self, n_clusters=3, max_iter=100):
