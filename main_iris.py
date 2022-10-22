@@ -5,7 +5,7 @@ from k_means.k_harmonic_means import KHarmonicMeans
 from k_means.k_means import KMeans
 from pre_processing import read_arff_files, iris_pre_processing
 from metrics.metrics import calculate_metrics
-
+from sklearn.cluster import AgglomerativeClustering, MeanShift
 import pandas as pd
 
 def main():
@@ -15,6 +15,42 @@ def main():
     df, meta = read_arff_files.main('iris.arff')
     data, labels = iris_pre_processing.main(df)
     scores = []
+
+    # Agglomerative clustering
+    print(
+        '**************************************************\nAgglomerative\n**************************************************')
+
+    agglomerative_clustering = AgglomerativeClustering(n_clusters=3).fit(data)
+    agglomerative_clustering_labels = agglomerative_clustering.labels_
+    print('Actual Labels: ' + str(labels))
+    print('Predicted Labels: ' + str(agglomerative_clustering_labels))
+
+    agglomerative_clustering_metrics = calculate_metrics(data=data,
+                                                         predicted_labels=agglomerative_clustering_labels,
+                                                         actual_labels=labels,
+                                                         algorithm_name='Agglomerative Clustering',
+                                                         verbose=True)
+    scores.append(agglomerative_clustering_metrics)
+
+    scatter_plot(agglomerative_clustering_labels, data, (0, 1), title='Iris dataset\nAgglomerative Clustering with 3 clusters', x_label='x', y_label='y')
+
+    # Mean Shift clustering
+    print(
+        '**************************************************\nMean Shift\n**************************************************')
+
+    meanshift_clustering = MeanShift().fit(data)
+    mean_shift_clustering_labels = meanshift_clustering.labels_
+    print('Actual Labels: ' + str(labels))
+    print('Predicted Labels: ' + str(mean_shift_clustering_labels))
+
+    mean_shift_clustering_metrics = calculate_metrics(data=data,
+                                                      predicted_labels=mean_shift_clustering_labels,
+                                                      actual_labels=labels,
+                                                      algorithm_name='Mean Shift Clustering',
+                                                      verbose=True)
+    scores.append(mean_shift_clustering_metrics)
+
+    scatter_plot(mean_shift_clustering_labels, data, (0, 1), title='Iris dataset\nMean Shift Clustering', x_label='x', y_label='y')
 
     # K-Means
     print(
