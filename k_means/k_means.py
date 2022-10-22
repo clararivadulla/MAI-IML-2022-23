@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 class KMeans:
-    def __init__(self, k=3, max_iter=100, n_repeat=10, seed=None):
+    def __init__(self, k=3, max_iter=100, n_repeat=10, seed=1234):
         self.k = k
         self.max_iter = max_iter
         self.seed = seed
@@ -40,7 +40,11 @@ class KMeans:
                 for i in range(self.k):
                     for j in range(y):
                         mask = r[:, i] == 1
-                        centroids.iloc[i, j] = np.sum(data.iloc[mask, j]) / np.sum(r[:, i])
+                        if np.sum(r[:, i])==0:
+                            w=0.001
+                        else:
+                            w=np.sum(r[:, i])
+                        centroids.iloc[i, j] = np.sum(data.iloc[mask, j]) / w
                 n_iter += 1
             data_mean = np.average(data, axis=0)
             performance_index = 0
@@ -49,7 +53,6 @@ class KMeans:
                 performance_index += (np.sum(np.sum((data.iloc[mask, :]-centroids.iloc[i,:])** 2)) - np.sum((centroids.iloc[i,:]-data_mean)**2))
             centroids_list.append(centroids)
             performance_list.append(performance_index)
-        print(performance_list)
         self.centroids = centroids_list[np.argmin(performance_list)]
 
 
