@@ -4,8 +4,8 @@ from k_means.k_harmonic_means import KHarmonicMeans
 from k_means.k_means import KMeans
 from pre_processing import read_arff_files, iris_pre_processing, cmc_pre_processing, pima_diabetes_pre_processing
 from metrics.metrics import calculate_metrics
+from figures.plots import plot_metrics
 
-import matplotlib.pyplot as plt
 from sklearn.cluster import AgglomerativeClustering
 
 
@@ -72,34 +72,7 @@ def test_performance(dataset_name):
                                                      actual_labels=labels)
         all_metrics['KHarmonicMeans'].append(k_harmonic_means_metrics)
 
-    fig, axes = plt.subplots(2, 2, figsize=(10, 7))
-    fig.suptitle(f'Test Performance on {dataset_name} dataset', fontsize=16)
-
-    ax = axes.ravel()
-
-    for key in all_metrics.keys():
-        ax[0].plot(k_values, [metric[0] for metric in all_metrics[key]], label=key)
-        ax[0].set(xticks=k_values, title='Silhouette Scores', xlabel='k', ylabel='score [-1, 1] (higher = better)')
-        ax[0].legend(fontsize='xx-small')
-
-        ax[1].plot(k_values, [metric[1] for metric in all_metrics[key]], label=key)
-        ax[1].set(xticks=k_values, title='Davies Bouldin Scores', xlabel='k',
-                  ylabel='score (lower = better, 0 is best)')
-        ax[1].legend(fontsize='xx-small')
-
-        ax[2].plot(k_values, [metric[2] for metric in all_metrics[key]], label=key)
-        ax[2].set(xticks=k_values, title='Calinski Harabasz Scores', xlabel='k', ylabel='score (higher = better)')
-        ax[2].legend(fontsize='xx-small')
-
-        ax[3].plot(k_values, [metric[3] for metric in all_metrics[key]], label=key)
-        ax[3].set(xticks=k_values, title='Adjusted Mutual Info Scores (uses actual labels)', xlabel='k',
-                  ylabel='score [0, 1] (higher = better)')
-        ax[3].legend(fontsize='xx-small')
-
-    plt.tight_layout()
-    plt.savefig('test_performance.png')
-    plt.show()
-
+    plot_metrics(metrics=all_metrics, k_values=k_values, dataset_name=dataset_name)
 
 if __name__ == '__main__':
     test_performance(dataset_name='iris')
