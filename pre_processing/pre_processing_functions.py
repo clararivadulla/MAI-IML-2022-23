@@ -93,6 +93,9 @@ def remove_and_return_class_column(df):
     if 'Class' in df.columns:
         label_encode_columns(df, ['Class'])
         class_col = df.pop('Class')
+    if 'clase' in df.columns:
+        label_encode_columns(df, ['clase'])
+        class_col = df.pop('clase')
     return class_col
 
 

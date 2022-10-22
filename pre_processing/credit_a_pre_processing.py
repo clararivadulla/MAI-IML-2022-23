@@ -17,6 +17,8 @@ def main(df, meta):
     df = pre_processing_functions.one_hot_encode_columns(df, nominal_cols)
     pre_processing_functions.min_max_scale_columns(df, numeric_cols)
 
+    df = df[numeric_cols]
+
     data = pre_processing_functions.df_to_numeric_array(df)
 
     return data, class_labels
