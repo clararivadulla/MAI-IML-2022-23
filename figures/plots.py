@@ -67,16 +67,16 @@ def plot_agglomerative(dataset_name, testAgg_results, k_values):
         ax[1].plot(k_values, [metric[1] for metric in testAgg_results[key]], marker='o', label=key)
         ax[1].set(xticks=k_values, title='Davies Bouldin Scores', xlabel='k',
                   ylabel='score (lower = better, 0 is best)')
-                  ax[1].legend(fontsize='xx-small')
+        ax[1].legend(fontsize='xx-small')
                   
-                  ax[2].plot(k_values, [metric[2] for metric in testAgg_results[key]], marker='o', label=key)
-                  ax[2].set(xticks=k_values, title='Calinski Harabasz Scores', xlabel='k', ylabel='score (higher = better)')
-                  ax[2].legend(fontsize='xx-small')
+        ax[2].plot(k_values, [metric[2] for metric in testAgg_results[key]], marker='o', label=key)
+        ax[2].set(xticks=k_values, title='Calinski Harabasz Scores', xlabel='k', ylabel='score (higher = better)')
+        ax[2].legend(fontsize='xx-small')
                   
-                  ax[3].plot(k_values, [metric[3] for metric in testAgg_results[key]], marker='o', label=key)
-                  ax[3].set(xticks=k_values, title='Adjusted Mutual Info Scores (uses actual labels)', xlabel='k',
+        ax[3].plot(k_values, [metric[3] for metric in testAgg_results[key]], marker='o', label=key)
+        ax[3].set(xticks=k_values, title='Adjusted Mutual Info Scores (uses actual labels)', xlabel='k',
                             ylabel='score [0, 1] (higher = better)')
-                  ax[3].legend(fontsize='xx-small')
+        ax[3].legend(fontsize='xx-small')
 
     plt.tight_layout()
     plt.savefig(f'test_agglomerative_{dataset_name}.pdf', dpi=300)
