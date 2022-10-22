@@ -8,6 +8,10 @@ def byte_strings_to_strings(df):
     for column in s_df:
         df[column] = s_df[column]
 
+def standardize_columns(df, cols):
+    scaler = preprocessing.StandardScaler()
+    scaler.fit(df[cols])
+    df[cols] = scaler.transform(df[cols])
 
 def min_max_scale_columns(df, cols):
     min_max_scaler = preprocessing.MinMaxScaler()
