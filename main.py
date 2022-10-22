@@ -1,7 +1,6 @@
 import main_cmc
 import main_iris
 import main_pima_diabetes
-import matplotlib.pyplot as plt
 
 if __name__=='__main__':
 

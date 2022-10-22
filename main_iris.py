@@ -131,7 +131,15 @@ def main():
     # Save the scores in a dataframe for future graphs
     scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score',
                                               'Calinski Harabasz Score', 'Adjusted Mutual Info Score'])
-    print(scores_df)
+
+
+    print("\nAll metrics:")
+    with pd.option_context('display.max_rows', None,
+                           'display.max_columns', None,
+                           'display.precision', 3,
+                           'expand_frame_repr', False
+                           ):
+        print(scores_df)
 
 
 if __name__ == '__main__':
