@@ -1,8 +1,7 @@
-from sklearn.cluster import KMeans
-#from k_means.k_means import KMeans
+from k_means.k_means import KMeans
 import numpy as np
 
-def BisectingKMeans(data, k=3, num_trials=5):
+def BisectingKMeans(data, k=3, num_trials=10):
     """
     Bisecting KMeans Algorithm
     :param data: data for clustering
@@ -19,15 +18,16 @@ def BisectingKMeans(data, k=3, num_trials=5):
     while num_clusters < k:
         trials = []
         for t in range(0, num_trials):
-            trials.append(KMeans(n_clusters=2, init='random').fit(X))
+            k_means = KMeans(k=2, n_repeat=1, seed=None)
+            k_means.train(X)
+            k_means_labels, k_means_centroids = k_means.classify(X)
+            trials.append((k_means_labels, k_means_centroids.to_numpy()))
 
         best_sse = float("inf")
-        kmeans_bisect = None
 
         # perform k-means trials to get the best overall SSE
         for t in trials:
-            trial_cluster_centers = t.cluster_centers_
-            trial_labels = t.labels_
+            (trial_labels, trial_cluster_centers) = t
 
             cur_sse = 0
             for i in range(0, trial_cluster_centers.shape[0]):
@@ -39,18 +39,14 @@ def BisectingKMeans(data, k=3, num_trials=5):
 
             if(cur_sse < best_sse):
                 best_sse = cur_sse
-                kmeans_bisect = t
-
-        #kmeans = KMeans()
-        #kmeans.train(X)
-        #a = kmeans.classify(X)
+                kmeans_bisect_labels = trial_labels
 
         if num_clusters == 1:
-            labels = kmeans_bisect.labels_
+            labels = kmeans_bisect_labels
         else:
             # update the labels after split
             labels[indices_to_split] = [cluster_to_split if label == 0 else num_clusters for label in
-                                        kmeans_bisect.labels_]
+                                        kmeans_bisect_labels]
 
         # pick the largest cluster to split
         cluster_to_split = np.argmax(np.bincount(labels))

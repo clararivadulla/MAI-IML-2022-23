@@ -32,7 +32,7 @@ def test_performance(dataset_name):
 
     k_values = [2, 3, 4, 5, 6, 7]
     for k in k_values:
-        print(k)
+        print(f'Running algorithms with k={k}')
         k_means = KMeans(k=k)
         k_means.train(data)
         k_means_labels, _ = k_means.classify(data)
