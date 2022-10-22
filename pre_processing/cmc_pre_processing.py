@@ -7,7 +7,7 @@ def main(df, numerical_only=False):
     pre_processing_functions.byte_strings_to_strings(df)
     df = pre_processing_functions.one_hot_encode_columns(df,
                                                          ['weducation', 'heducation', 'hoccupation', 'living_index'])
-    pre_processing_functions.min_max_scale_columns(df, ['wage', 'children'])
+    pre_processing_functions.standardize_columns(df, ['wage', 'children'])
 
     if numerical_only:
         df = df[['wage', 'children']]
