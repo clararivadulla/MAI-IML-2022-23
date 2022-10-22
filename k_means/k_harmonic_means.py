@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class KHarmonicMeans:
 
     def __init__(self, n_clusters=3, max_iter=100):
@@ -8,7 +9,6 @@ class KHarmonicMeans:
         self.p = 3
         self.epsilon = np.finfo(np.float32).eps
         self.centroids = None
-
 
     def cluster_matching(self, X):
         matches = np.zeros(np.size(X[:, 0]))
@@ -85,21 +85,19 @@ class KHarmonicMeans:
         X = data.copy()
 
         # 1. Initialize the algorithm with guessed centers C
-        C = self.guess_centers(X, self.k)
+        self.centroids = self.guess_centers(X, self.k)
         iter = 0
 
         # 4. Repeat steps 2 and 3 till convergence
         while iter < self.max_iter:
 
-            C_aux = C.copy()
+            C_aux =  self.centroids.copy()
             iter += 1
 
             # 3. For each center cj, recompute its location from all data points xi,
             # according to their membership and weights
             for j in range(self.k):
-                C[j] = self.cj(X, C, C[j])
+                self.centroids[j] = self.cj(X,  self.centroids,  self.centroids[j])
 
-            if np.array_equal(C_aux, C):
-                self.centroids = C
-
-        self.centroids = C
+            if np.array_equal(C_aux, self.centroids):
+                return self.centroids
