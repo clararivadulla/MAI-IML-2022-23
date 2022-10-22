@@ -25,7 +25,7 @@ def label_encode_columns(df, cols):
 
 
 def one_hot_encode_columns(df, cols):
-    return pd.get_dummies(data=df, columns=cols)
+    return pd.get_dummies(data=df, columns=cols, drop_first=True)
 
 
 def get_columns_by_type(meta):
