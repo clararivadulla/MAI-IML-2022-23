@@ -17,6 +17,8 @@ def BisectingKMeans(data, k=3, num_trials=10):
 
     while num_clusters < k:
         trials = []
+
+        # perform k-means trials to get the best overall SSE
         for t in range(0, num_trials):
             k_means = KMeans(k=2, n_repeat=1, seed=None)
             k_means.train(X)
@@ -25,7 +27,6 @@ def BisectingKMeans(data, k=3, num_trials=10):
 
         best_sse = float("inf")
 
-        # perform k-means trials to get the best overall SSE
         for t in trials:
             (trial_labels, trial_cluster_centers) = t
 

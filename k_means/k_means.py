@@ -53,6 +53,7 @@ class KMeans:
                 performance_index += (np.sum(np.sum((data.iloc[mask, :]-centroids.iloc[i,:])** 2)) - np.sum((centroids.iloc[i,:]-data_mean)**2))
             centroids_list.append(centroids)
             performance_list.append(performance_index)
+        print(performance_list)
         self.centroids = centroids_list[np.argmin(performance_list)]
 
 
