@@ -75,7 +75,7 @@ def main():
     # K-Harmonic Means
     print(
         '\n**************************************************\nK-Harmonic Means\n**************************************************')
-    k_harmonic_means = KHarmonicMeans(n_clusters=3, max_iter=100)
+    k_harmonic_means = KHarmonicMeans(n_clusters=3, max_iter=100, p=2)
     k_harmonic_means.khm(data)
     k_harmonic_means_labels = k_harmonic_means.cluster_matching(data)
     k_harmonic_means_metrics = calculate_metrics(data=data,
