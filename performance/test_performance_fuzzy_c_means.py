@@ -1,5 +1,7 @@
 import sys
 
+from fuzzy_clustering.fuzzy_c_means import FuzzyCMeans
+
 sys.path.append('../')
 from k_means.k_harmonic_means import KHarmonicMeans
 from pre_processing import read_arff_files, iris_pre_processing, cmc_pre_processing, pima_diabetes_pre_processing
@@ -20,23 +22,21 @@ def test_performance(dataset_name):
     else:
         raise NameError(f'Wrong dataset name: {dataset_name}')
 
-    all_metrics = {'2': [], '3': [], '4': [], '5': [], '6': [], '7': [], }
-    p_values = [2, 2.5, 3, 3.5, 4, 4.5]
+    all_metrics = {'2': [], '3': [], '4': [], '5': [], '6': [], '7': []}
+    m_values = [1.5, 2, 2.5, 3, 3.5, 4, 4.5]
     for k in all_metrics.keys():
-        for p in p_values:
-            print(f'Running K-Harmonic Means with k={k} and p={p}')
-            k_harmonic_means = KHarmonicMeans(n_clusters=int(k), p=p)
-            k_harmonic_means.khm(data)
-            k_harmonic_means_labels = k_harmonic_means.cluster_matching(data)
+        for m in m_values:
+            print(f'Running Fuzzy C-Means with k={k} and m={m}')
+            fuzzy_c_means = FuzzyCMeans(n_clusters=int(k), m=m)
+            fuzzy_c_means.fcm(data)
+            fuzzy_c_means_labels = fuzzy_c_means.cluster_matching(data)
+            print(fuzzy_c_means_labels)
+            fuzzy_c_means_metrics = calculate_metrics(data=data,
+                                                      predicted_labels=fuzzy_c_means_labels,
+                                                      actual_labels=labels)
+            all_metrics[k].append(fuzzy_c_means_metrics)
 
-            k_harmonic_means_metrics = calculate_metrics(data=data,
-                                                         predicted_labels=k_harmonic_means_labels,
-                                                         actual_labels=labels,
-                                                         verbose=True)
-            all_metrics[k].append(k_harmonic_means_metrics)
-
-    plot_metrics_p_or_m('K-Harmonic Means', all_metrics, p_values, dataset_name, p=True)
-
+    plot_metrics_p_or_m('Fuzzy C-Means', all_metrics, m_values, dataset_name, p=False)
 
 if __name__ == '__main__':
     test_performance(dataset_name='cmc')
