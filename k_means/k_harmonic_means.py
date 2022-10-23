@@ -3,10 +3,10 @@ import numpy as np
 
 class KHarmonicMeans:
 
-    def __init__(self, n_clusters=3, max_iter=100):
+    def __init__(self, n_clusters=3, max_iter=100, p=3):
         self.k = n_clusters
         self.max_iter = max_iter
-        self.p = 3
+        self.p = p
         self.epsilon = np.finfo(np.float32).eps
         self.centroids = None
 
@@ -75,7 +75,7 @@ class KHarmonicMeans:
     def guess_centers(self, X, k):
 
         centers = []
-        indices = np.random.choice(np.size(X[:, 0]), k, replace=False)
+        indices = np.random.choice(len(X), k, replace=False)
 
         for i in range(k):
             centers.append(X[indices[i]])
