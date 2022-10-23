@@ -90,7 +90,7 @@ def main():
                                                  algorithm_name='K-Harmonic Means',
                                                  verbose=True)
     scores.append(k_harmonic_means_metrics)
-    scatter_plot(k_harmonic_means_labels, data, (0, 1), title='CMC dataset\nK-Harmonic Means with 3 clusters')
+    scatter_plot(k_harmonic_means_labels, data, (0, 1), title='CMC dataset\nK-Harmonic Means with 2 clusters')
 
     # Fuzzy C-Means
     print(
@@ -104,7 +104,7 @@ def main():
                                               algorithm_name='Fuzzy C-Means',
                                               verbose=True)
     scores.append(fuzzy_c_means_metrics)
-    scatter_plot(fuzzy_c_means_labels, data, (0, 1), title='CMC dataset\nFuzzy C-Means with 3 clusters')
+    scatter_plot(fuzzy_c_means_labels, data, (0, 1), title='CMC dataset\nFuzzy C-Means with 7 clusters')
 
     # Save the scores in a dataframe for future graphs
     scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score',

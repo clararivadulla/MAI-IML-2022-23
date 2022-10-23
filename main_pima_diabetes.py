@@ -36,7 +36,7 @@ def main():
         '\n**************************************************\nMean Shift\n**************************************************')
 
     bandwidth_value = estimate_bandwidth(data, quantile=0.75)
-    meanshift_clustering = MeanShift(bandwidth=bandwidth_value, seeds=None, bin_seeding=True, cluster_all=True).fit(data)
+    meanshift_clustering = MeanShift(bandwidth=bandwidth_value).fit(data)
     mean_shift_clustering_labels = meanshift_clustering.labels_
     mean_shift_clustering_metrics = calculate_metrics(data=data,
                                                       predicted_labels=mean_shift_clustering_labels,
@@ -58,7 +58,7 @@ def main():
                                         algorithm_name='K-Means',
                                         verbose=True)
     scores.append(k_means_metrics)
-    scatter_plot(k_means_labels, data, (2, 5), title='Pima Diabetes dataset\nK-Means with 3 clusters')
+    scatter_plot(k_means_labels, data, (2, 5), title='Pima Diabetes dataset\nK-Means with 4 clusters')
 
     # Bisecting K Means
     print(
