@@ -4,6 +4,25 @@ from matplotlib import pyplot as plt
 colors = ["gray", "firebrick", "orange", "gold", "darkkhaki", "olive", "lightblue", "midnightblue", "thistle",
           "blue"]
 
+def confusion_matrix_plot(data, dataset_name):
+    k_test = len(data)
+    if k_test%2 == 0:
+        rows = k_test//2
+    else:
+        rows = k_test//2+1
+
+    fig, axes = plt.subplots(rows, 2, figsize=(10, 7))
+    fig.suptitle(f'Confusion matrix of {dataset_name} dataset', fontsize=16)
+    ax = axes.ravel()
+
+    for k in range(k_test):
+        ax[k].table(np.array(data[k]), loc='center', rowLabels=data[k].index, colLabels=data[k].columns)
+        ax[k].axis('off')
+        ax[k].set(xlabel=f'k = {data[k].shape[1]}')
+
+    plt.tight_layout()
+    plt.savefig('test_performance.png', dpi=300)
+    plt.show()
 
 def scatter_plot(labels, data, indices=(0, 1), title=None):
 

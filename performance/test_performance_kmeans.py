@@ -2,8 +2,8 @@ import sys
 sys.path.append('../')
 from k_means.k_means import KMeans
 from pre_processing import read_arff_files, iris_pre_processing, cmc_pre_processing, pima_diabetes_pre_processing
-from validation_metrics.metrics import calculate_metrics
-from figures.plots import plot_metrics
+from validation_metrics.metrics import calculate_metrics, confusion_matrix
+from figures.plots import plot_metrics, confusion_matrix_plot
 
 
 from sklearn.cluster import AgglomerativeClustering
@@ -22,10 +22,11 @@ def test_performance(dataset_name):
         raise NameError(f'Wrong dataset name: {dataset_name}')
 
     all_metrics = {'KMeans': []}
-    k_values = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    all_conf_matrix = {'KMeans': []}
+    k_values = [3, 4, 5, 6, 7, 8, 9, 10]
     for k in k_values:
         print(f'Running algorithms with k={k}')
-        k_means = KMeans(k=k, max_iter=500, n_repeat=10, seed=None)
+        k_means = KMeans(k=k, max_iter=300, n_repeat=15, seed=None)
         k_means.train(data)
         k_means_labels, _ = k_means.classify(data)
 
@@ -34,8 +35,12 @@ def test_performance(dataset_name):
                                             actual_labels=labels,
                                             verbose = True)
         all_metrics['KMeans'].append(k_means_metrics)
+        m = confusion_matrix(labels, k_means_labels)
+        all_conf_matrix['KMeans'].append(m)
 
     plot_metrics(metrics=all_metrics, k_values=k_values, dataset_name=dataset_name)
+    print(all_conf_matrix['KMeans'])
+    confusion_matrix_plot(all_conf_matrix['KMeans'], dataset_name=dataset_name)
 
 if __name__ == '__main__':
     test_performance(dataset_name='cmc')
