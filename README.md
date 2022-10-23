@@ -34,15 +34,15 @@ pip install -r requirements.txt
 python main.py
 ```
 ### How to run algorithms on particular dataset - each dataset has its own main file that runs above mentioned 6 algorithms with optimized parameters - here you can change parameters of each algorithm per dataset
-### Run iris main file
+#### Run iris main file
 ```bash
 python main_iris.py
 ```
-### Run cmc main file
+#### Run cmc main file
 ```bash
 python main_cmc.py
 ```
-### Run pima diabetes main file
+#### Run pima diabetes main file
 ```bash
 python main_pima_diabetes.py
 ```
