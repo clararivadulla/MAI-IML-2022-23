@@ -13,6 +13,10 @@ def standardize_columns(df, cols):
     scaler.fit(df[cols])
     df[cols] = scaler.transform(df[cols])
 
+def  normalize_columns(df, cols):
+    scaler = preprocessing.normalize(df[cols], axis=0)
+    df[cols] = scaler
+
 def min_max_scale_columns(df, cols):
     min_max_scaler = preprocessing.MinMaxScaler()
     df[cols] = min_max_scaler.fit_transform(df[cols])
