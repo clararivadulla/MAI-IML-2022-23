@@ -6,7 +6,7 @@ from k_means.k_means import KMeans
 from pre_processing import read_arff_files, pima_diabetes_pre_processing
 import pandas as pd
 from validation_metrics.metrics import calculate_metrics
-from sklearn.cluster import AgglomerativeClustering, MeanShift
+from sklearn.cluster import AgglomerativeClustering, MeanShift, estimate_bandwidth
 
 
 def main():
@@ -36,7 +36,7 @@ def main():
         '\n**************************************************\nMean Shift\n**************************************************')
 
     bandwidth_value = estimate_bandwidth(data, quantile=0.75)
-    meanshift_clustering = MeanShift(bandwidth=, seed_dim=None, binSeed=False, allCluster=True).fit(data)
+    meanshift_clustering = MeanShift(bandwidth=bandwidth_value, seed_dim=None, binSeed=False, allCluster=True).fit(data)
     mean_shift_clustering_labels = meanshift_clustering.labels_
     mean_shift_clustering_metrics = calculate_metrics(data=data,
                                                       predicted_labels=mean_shift_clustering_labels,
@@ -49,7 +49,7 @@ def main():
     # K-Means
     print(
         '\n**************************************************\nK-Means\n**************************************************')
-    k_means = KMeans(k=3)
+    k_means = KMeans(k=4, max_iter=500, n_repeat=20, seed=12345)
     k_means.train(data)
     k_means_labels = k_means.classify(data)[0]
     k_means_metrics = calculate_metrics(data=data,

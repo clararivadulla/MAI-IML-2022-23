@@ -55,7 +55,7 @@ def main():
     # K-Means
     print(
         '\n**************************************************\nK-Means\n**************************************************')
-    k_means = KMeans(k=3)
+    k_means = KMeans(k=3, max_iter=500, n_repeat=15, seed=12345)
     k_means.train(data)
     k_means_labels = k_means.classify(data)[0]
     k_means_metrics = calculate_metrics(data=data,

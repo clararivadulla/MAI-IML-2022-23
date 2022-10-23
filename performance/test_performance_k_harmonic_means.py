@@ -20,7 +20,7 @@ def test_performance(dataset_name):
     else:
         raise NameError(f'Wrong dataset name: {dataset_name}')
 
-    all_metrics = {'2': [], '3': [], '4': [], '5': [], '6': [], '7': [], }
+    all_metrics = {'2': [], '3': [], '4': [], '5': [], '6': [], '7': []}
     p_values = [2, 2.5, 3, 3.5, 4, 4.5]
     for k in all_metrics.keys():
         for p in p_values:
