@@ -1,8 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-colors = ["gray", "firebrick", "orange", "gold", "darkkhaki", "olive", "lightblue", "midnightblue", "thistle",
-          "blue"]
+
+colors = ["gray", "firebrick", "orange", "gold", "darkkhaki", "olive", "lightblue", "midnightblue", "thistle", "blue"]
+
 
 def confusion_matrix_plot(data, dataset_name):
     k_test = len(data)
@@ -23,6 +24,7 @@ def confusion_matrix_plot(data, dataset_name):
     plt.tight_layout()
     plt.savefig('confusion_matrix.png', dpi=300)
     plt.show()
+
 
 def scatter_plot(labels, data, indices=(0, 1), title=None):
 
@@ -67,6 +69,7 @@ def plot_metrics(metrics, k_values, dataset_name, x_label='k'):
     plt.savefig('test_performance.png', dpi=300)
     plt.show()
 
+
 def plot_metrics_p_or_m(algorithm, metrics, pm_values, dataset_name, p=True):
 
     fig, axes = plt.subplots(2, 2, figsize=(10, 7))
@@ -106,6 +109,7 @@ def plot_metrics_p_or_m(algorithm, metrics, pm_values, dataset_name, p=True):
     plt.savefig(f'{alg}_{dataset_name}.png', dpi=300)
     plt.show()
 
+
 def plot_agglomerative(dataset_name, testAgg_results, k_values):
     
     fig, axes = plt.subplots(2, 2, figsize=(15, 12))
@@ -134,6 +138,36 @@ def plot_agglomerative(dataset_name, testAgg_results, k_values):
 
     plt.tight_layout()
     plt.savefig(f'test_agglomerative_{dataset_name}.pdf', dpi=300)
+    plt.show()
+
+
+def plot_meanShift(dataset_name, testMean_results, quantile_values):
+    
+    fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+    fig.suptitle(f'Mean Shift clustering parameters with {dataset_name} dataset', fontsize=16)
+    
+    ax = axes.ravel()
+    
+    for key in testMean_results.keys():
+        
+        ax[0].plot(quantile_values, [metric[0] for metric in testMean_results[key]], marker='o', label=key)
+        ax[0].set(xticks=quantile_values, title='Silhouette Scores', xlabel='quantile', ylabel='score [-1, 1] (higher = better)')
+        ax[0].legend(fontsize='small')
+        
+        ax[1].plot(quantile_values, [metric[1] for metric in testMean_results[key]], marker='o', label=key)
+        ax[1].set(xticks=quantile_values, title='Davies Bouldin Scores', xlabel='quantile', ylabel='score (lower = better, 0 is best)')
+        ax[1].legend(fontsize='small')
+        
+        ax[2].plot(quantile_values, [metric[2] for metric in testMean_results[key]], marker='o', label=key)
+        ax[2].set(xticks=quantile_values, title='Calinski Harabasz Scores', xlabel='quantile', ylabel='score (higher = better)')
+        ax[2].legend(fontsize='small')
+        
+        ax[3].plot(quantile_values, [metric[3] for metric in testMean_results[key] ], marker='o', label=key)
+        ax[3].set(xticks=quantile_values, title='Adjusted Mutual Info Scores (uses actual labels)', xlabel='quantile', ylabel='score [0, 1] (higher = better)')
+        ax[3].legend(fontsize='small')
+    
+    plt.tight_layout()
+    plt.savefig(f'test_meanShift_{dataset_name}.pdf', dpi=300)
     plt.show()
 
 
