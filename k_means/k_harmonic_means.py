@@ -11,6 +11,7 @@ class KHarmonicMeans:
         self.centroids = None
 
     def cluster_matching(self, X):
+
         matches = np.zeros(np.size(X[:, 0]))
         for i in range(np.size(X[:, 0])):
             norm = np.linalg.norm(X[i] - self.centroids[0])
@@ -19,6 +20,7 @@ class KHarmonicMeans:
                 if aux_norm < norm:
                     norm = aux_norm
                     matches[i] = j
+
         return matches
 
     # Performance function
@@ -77,7 +79,6 @@ class KHarmonicMeans:
 
         for i in range(k):
             centers.append(X[indices[i]])
-
         return centers
 
     def khm(self, data):
@@ -101,3 +102,5 @@ class KHarmonicMeans:
 
             if np.array_equal(C_aux, self.centroids):
                 return self.centroids
+
+        return self.centroids

@@ -8,33 +8,72 @@ class FuzzyCMeans:
     def __init__(self, n_clusters=3, max_iter=100):
         self.c = n_clusters
         self.max_iter = max_iter
-        self.epsilon = np.finfo(np.float32).eps # Termination threshold
-        self.m = 2 # m = 1: crisp; m = 2: typical
-        self.U = None
+        self.epsilon = np.finfo(np.float32).eps  # Termination threshold
+        self.m = 2  # m = 1: crisp; m = 2: typical
         self.V = None
 
     def guess_initial_centers(self, X):
         indices = np.random.choice(np.size(X[:, 0]), self.c, replace=False)
-        self.V = [X[indices[i]] for i in range(self.c)]
+        return np.array([X[indices[i]] for i in range(self.c)])
 
-    def update_memberships(self, X, V):
-        for k in range(np.size(X[:, 0])):
-            for i in range(self.c):
-                sum = 0
-                for j in range(self.c):
-                    sum += np.power(np.linalg.norm(X[k] - V[i]) / max(np.linalg.norm(X[k] - V[j]), self.epsilon), 2 / (self.m - 1))
-                self.U[i][k] = np.power(max(sum, self.epsilon), -1)
-
-    def calculate_centers(self, X):
-        V = []
+    def calculate_centers(self, X, U, V):
         for i in range(self.c):
-            num = 0
-            den = 0
-            for k in range(np.size(X[:, 0])):
-                num += math.pow(self.U[i][k], self.m) * X[k]
-                den += math.pow(self.U[i][k], self.m)
-            V.append(num/max(den, self.epsilon))
+            for dim in range(len(X[0])):
+                num = 0
+                den = 0
+                for k in range(len(X)):
+                    num += X[k][dim] * math.pow(U[i][k], self.m)
+                    den += math.pow(U[i][k], self.m)
+                V[i][dim] = num / den
         return V
+
+    def update_memberships(self, X, V, U):
+        for k in range(len(X)):
+            for i in range(self.c):
+                sum = self.compute_sum(X[k], V, i)
+                if sum == 0:
+                    if np.array_equal(V[i], X[k]):
+                        U[i][k] = 1
+                    else:
+                        U[i][k] = 0
+                else:
+                    U[i][k] = math.pow(sum, -1)
+        return U
+
+    def compute_sum(self, xk, V, i):
+        sum = 0
+        for j in range(self.c):
+            num = np.linalg.norm(xk - V[i])
+            den = np.linalg.norm(xk - V[j])
+            if den == 0:
+                return 0
+            sum += math.pow(num / den, 2 / (self.m - 1))
+        return sum
+
+
+
+    def fcm(self, data):
+
+        U = np.zeros((self.c, len(data)))
+        V = self.guess_initial_centers(data)
+
+        iter = 0
+
+        while iter < self.max_iter:
+
+            V_aux = np.copy(V)
+            iter += 1
+            U = self.update_memberships(data, V, U)
+            V = self.calculate_centers(data, U, V)
+            """
+            print(f'V {iter}: ' + str(V))
+            print(f'V_aux {iter}: ' +str(V_aux))"""
+
+            if np.linalg.norm(V - V_aux) <= self.epsilon:
+                self.V = V
+                return V
+
+        self.V = V
 
     def cluster_matching(self, X):
         matches = np.zeros(np.size(X[:, 0]))
@@ -46,23 +85,3 @@ class FuzzyCMeans:
                     norm = aux_norm
                     matches[i] = j
         return matches
-
-    def fcm(self, data):
-
-        self.guess_initial_centers(data)
-        self.U = np.zeros((self.c, np.size(data[:, 0])))
-        self.update_memberships(data, self.V)
-
-        iter = 0
-
-        while iter < self.max_iter:
-
-            iter += 1
-
-            V_t = self.calculate_centers(data)
-            self.update_memberships(data, V_t)
-
-            if np.linalg.norm(np.array(self.V) - np.array(V_t)) <= self.epsilon:
-                self.V = V_t
-
-        return self.V
