@@ -2,7 +2,7 @@ import sys
 sys.path.append('../')
 from k_means.k_means import KMeans
 from pre_processing import read_arff_files, iris_pre_processing, cmc_pre_processing, pima_diabetes_pre_processing
-from metrics.metrics import calculate_metrics
+from validation_metrics.metrics import calculate_metrics
 from figures.plots import plot_metrics
 
 
