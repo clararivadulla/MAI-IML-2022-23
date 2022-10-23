@@ -39,6 +39,6 @@ def test_performance(dataset_name):
     plot_metrics_p_or_m('Fuzzy C-Means', all_metrics, m_values, dataset_name, p=False)
 
 if __name__ == '__main__':
-    test_performance(dataset_name='cmc')
+    #test_performance(dataset_name='cmc')
     test_performance(dataset_name='iris')
-    test_performance(dataset_name='pima-diabetes')
+    #test_performance(dataset_name='pima_diabetes')
