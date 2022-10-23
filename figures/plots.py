@@ -74,11 +74,11 @@ def plot_metrics_p_or_m(algorithm, metrics, pm_values, dataset_name, p=True):
 
     if p:
         xlabel = 'p'
-        folder = 'k_harmonic_means'
+        alg = 'k_harmonic_means'
 
     else:
         xlabel = 'm'
-        folder = 'fuzzy_c_means'
+        alg = 'fuzzy_c_means'
 
     ax = axes.ravel()
     print(metrics)
@@ -103,7 +103,7 @@ def plot_metrics_p_or_m(algorithm, metrics, pm_values, dataset_name, p=True):
         ax[3].legend(fontsize='xx-small')
 
     plt.tight_layout()
-    plt.savefig(f'{folder}.png', dpi=300)
+    plt.savefig(f'{alg}_{dataset_name}.png', dpi=300)
     plt.show()
 
 def plot_agglomerative(dataset_name, testAgg_results, k_values):

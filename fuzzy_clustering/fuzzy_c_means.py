@@ -66,18 +66,16 @@ class FuzzyCMeans:
             V = self.calculate_centers(data, U, V)
 
             if np.linalg.norm(V - V_aux) <= self.epsilon:
+                self.U = U
                 self.V = V
                 return V
 
+        self.U = U
         self.V = V
 
     def cluster_matching(self, X):
         matches = np.zeros(len(X))
         for i in range(len(X)):
-            norm = np.linalg.norm(X[i] - self.V[0])
-            for j in range(1, self.c):
-                aux_norm = np.linalg.norm(X[i] - self.V[j])
-                if aux_norm < norm:
-                    norm = aux_norm
-                    matches[i] = j
+            print(self.U[:, i])
+            matches[i] = np.argmax(self.U[:, i])
         return matches
