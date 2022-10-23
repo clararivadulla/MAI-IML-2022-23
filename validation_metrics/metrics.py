@@ -56,7 +56,7 @@ def calculate_metrics(data, predicted_labels, actual_labels, algorithm_name=None
         print(f'Davies Bouldin Score: {davies_bouldin_score}')
         print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
         print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
-        print(f'Accuracy: {accuracy_score}')
+        #print(f'Accuracy: {accuracy_score}')
         print(f'Confusion matrix: {c_matrix}')
 
     if algorithm_name is not None:
