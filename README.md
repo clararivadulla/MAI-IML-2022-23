@@ -13,3 +13,4 @@ Shawn Azimov, Jana Dabovic, Clara Rivadulla, and Yara Yousef
 ### Runnning script for the first time
 
 
+pip install -r requirements.txt
