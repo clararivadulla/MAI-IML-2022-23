@@ -17,15 +17,15 @@ def test_performance(dataset_name):
         data, labels = pima_diabetes_pre_processing.main(df)
     elif dataset_name == 'cmc':
         df, meta = read_arff_files.read_arff_file('./../datasets/cmc.arff')
-        data, labels = cmc_pre_processing.main(df)
+        data, labels = cmc_pre_processing.main(df, numerical_only=True)
     else:
         raise NameError(f'Wrong dataset name: {dataset_name}')
 
     all_metrics = {'KMeans': []}
-    k_values = [2, 3, 4, 5, 6, 7]
+    k_values = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     for k in k_values:
         print(f'Running algorithms with k={k}')
-        k_means = KMeans(k=k)
+        k_means = KMeans(k=k, max_iter=500, n_repeat=10, seed=None)
         k_means.train(data)
         k_means_labels, _ = k_means.classify(data)
 
@@ -38,4 +38,4 @@ def test_performance(dataset_name):
     plot_metrics(metrics=all_metrics, k_values=k_values, dataset_name=dataset_name)
 
 if __name__ == '__main__':
-    test_performance(dataset_name='iris')
+    test_performance(dataset_name='cmc')
