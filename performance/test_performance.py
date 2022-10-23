@@ -33,16 +33,7 @@ def test_performance(dataset_name):
         'KHarmonicMeans': []
     }
 
-    all_labels = {
-        'True labels': [],
-        'KMeans': [],
-        'BisectingKMeans': [],
-        'AgglomerativeClustering': [],
-        'FuzzyCMeans': [],
-        'KHarmonicMeans': []
-    }
-
-    k_values = [2, 3, 4, 5, 6, 7]
+    k_values = [2, 3, 4, 5, 6, 7, 8, 9, 10]
     for k in k_values:
 
         print(f'Running algorithms with k={k}')
@@ -54,14 +45,12 @@ def test_performance(dataset_name):
                                             predicted_labels=k_means_labels,
                                             actual_labels=labels)
         all_metrics['KMeans'].append(k_means_metrics)
-        all_labels['KMeans'].append(k_means_labels)
 
         bisecting_k_means_labels = BisectingKMeans(data, k=k)
         bisecting_k_means_metrics = calculate_metrics(data=data,
                                                       predicted_labels=bisecting_k_means_labels,
                                                       actual_labels=labels)
         all_metrics['BisectingKMeans'].append(bisecting_k_means_metrics)
-        all_labels['BisectingKMeans'].append(bisecting_k_means_labels)
 
         agglomerative_clustering = AgglomerativeClustering(n_clusters=k).fit(data)
         agglomerative_clustering_labels = agglomerative_clustering.labels_
@@ -69,7 +58,6 @@ def test_performance(dataset_name):
                                                              predicted_labels=agglomerative_clustering_labels,
                                                              actual_labels=labels)
         all_metrics['AgglomerativeClustering'].append(agglomerative_clustering_metrics)
-        all_labels['AgglomerativeClustering'].append(agglomerative_clustering_labels)
 
         fuzzy_c_means = FuzzyCMeans(n_clusters=k)
         fuzzy_c_means.fcm(data)
@@ -78,7 +66,6 @@ def test_performance(dataset_name):
                                                   predicted_labels=fuzzy_c_means_labels,
                                                   actual_labels=labels)
         all_metrics['FuzzyCMeans'].append(fuzzy_c_means_metrics)
-        all_labels['FuzzyCMeans'].append(fuzzy_c_means_labels)
 
         k_harmonic_means = KHarmonicMeans(n_clusters=k, max_iter=100)
         k_harmonic_means.khm(data)
@@ -88,9 +75,7 @@ def test_performance(dataset_name):
                                                      predicted_labels=k_harmonic_means_labels,
                                                      actual_labels=labels)
         all_metrics['KHarmonicMeans'].append(k_harmonic_means_metrics)
-        all_labels['KHarmonicMeans'].append(k_harmonic_means_labels)
 
-    plot_clusters(k_values, all_labels, data, dataset_name)
     plot_metrics(metrics=all_metrics, k_values=k_values, dataset_name=dataset_name)
 
 if __name__ == '__main__':
