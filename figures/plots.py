@@ -21,7 +21,7 @@ def confusion_matrix_plot(data, dataset_name):
         ax[k].set(xlabel=f'k = {data[k].shape[1]}')
 
     plt.tight_layout()
-    plt.savefig('test_performance.png', dpi=300)
+    plt.savefig('confusion_matrix.png', dpi=300)
     plt.show()
 
 def scatter_plot(labels, data, indices=(0, 1), title=None):
