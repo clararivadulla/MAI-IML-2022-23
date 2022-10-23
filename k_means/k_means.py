@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 class KMeans:
-    def __init__(self, k=3, max_iter=100, n_repeat=10, seed=1234):
+    def __init__(self, k=3, max_iter=100, n_repeat=20, seed=1234):
         self.k = k
         self.max_iter = max_iter
         self.seed = seed
