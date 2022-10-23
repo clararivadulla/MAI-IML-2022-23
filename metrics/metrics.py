@@ -2,6 +2,11 @@ from sklearn import metrics
 import pandas as pd
 import numpy as np
 
+def accuracy(y_true, y_pred):
+    c_matrix = confusion_matrix(y_true, y_pred)
+    return np.sum(np.max(c_matrix, axis=0))/len(y_true)
+
+
 def confusion_matrix(y_true, y_pred, class_true=None):
     if y_true.shape != y_pred.shape:
         raise Exception ("Shapes do not match")
@@ -18,7 +23,9 @@ def confusion_matrix(y_true, y_pred, class_true=None):
             conf_matrix.index=class_true
     for i in range(n_cat_true):
         for j in range(n_cat_pred):
-            conf_matrix.iloc[i,j] = df[df['true']==cat_true[i]][df['predicted']==cat_pred[j]].shape[0]
+            df1 = df[df['true'] == cat_true[i]].copy()
+            df2 = df1[df1['predicted']==cat_pred[j]].copy()
+            conf_matrix.iloc[i,j] = df2.shape[0]
     return conf_matrix
 
 def calculate_metrics(data, predicted_labels, actual_labels, algorithm_name=None, verbose=False):
@@ -35,6 +42,8 @@ def calculate_metrics(data, predicted_labels, actual_labels, algorithm_name=None
     # https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_mutual_info_score.html
     adjusted_mutual_info_score = metrics.adjusted_mutual_info_score(actual_labels, predicted_labels)
 
+    accuracy_score = accuracy(actual_labels, predicted_labels)
+
     c_matrix = confusion_matrix(actual_labels, predicted_labels)
 
     if verbose:
@@ -47,6 +56,7 @@ def calculate_metrics(data, predicted_labels, actual_labels, algorithm_name=None
         print(f'Davies Bouldin Score: {davies_bouldin_score}')
         print(f'Calinski Harabasz Score: {calinski_harabasz_score}')
         print(f'Adjusted Mutual Info Score: {adjusted_mutual_info_score}')
+        print(f'Accuracy: {accuracy_score}')
         print(f'Confusion matrix: {c_matrix}')
 
     if algorithm_name is not None:
