@@ -18,7 +18,7 @@ def get_agg_metrics(data, n_clusters, labels, affinity, linkage):
     return aggMetrics
 
 
-def test_agglomerative(dataset_name, k_values, numerical_only=True, linkage=True, affinityMan=True, affinityCos=True):
+def test_agglomerative(dataset_name, k_values, linkage=True, affinityMan=True, affinityCos=True):
     if dataset_name == 'iris':
         df, meta = read_arff_files.read_arff_file('./../datasets/iris.arff')
         data, labels = iris_pre_processing.main(df)
@@ -27,7 +27,7 @@ def test_agglomerative(dataset_name, k_values, numerical_only=True, linkage=True
         data, labels = pima_diabetes_pre_processing.main(df)
     elif dataset_name == 'cmc':
         df, meta = read_arff_files.read_arff_file('./../datasets/cmc.arff')
-        data, labels = cmc_pre_processing.main(df, numerical_only)
+        data, labels = cmc_pre_processing.main(df)
     else:
         raise NameError(f'Wrong dataset name: {dataset_name}')
 
@@ -110,7 +110,7 @@ def test_agglomerative(dataset_name, k_values, numerical_only=True, linkage=True
 
 if __name__ == '__main__':
     k_values = [2, 3, 4, 5, 6, 7, 8, 9, 10]
-    testAgg_results_cmc = test_agglomerative(dataset_name='cmc', k_values=k_values, numerical_only=True)
+    testAgg_results_cmc = test_agglomerative(dataset_name='cmc', k_values=k_values)
     testAgg_results_diabetes = test_agglomerative(dataset_name='pima_diabetes', k_values=k_values)
     testAgg_results_iris = test_agglomerative(dataset_name='iris', k_values=k_values)
 
