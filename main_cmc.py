@@ -21,7 +21,7 @@ def main():
     print(
         '**************************************************\nAgglomerative\n**************************************************')
 
-    agglomerative_clustering = AgglomerativeClustering(n_clusters=3).fit(data)
+    agglomerative_clustering = AgglomerativeClustering(n_clusters=3, affinity='manhattan', linkage='complete').fit(data)
     agglomerative_clustering_labels = agglomerative_clustering.labels_
     agglomerative_clustering_metrics = calculate_metrics(data=data,
                                                          predicted_labels=agglomerative_clustering_labels,
@@ -31,6 +31,9 @@ def main():
     scores.append(agglomerative_clustering_metrics)
     scatter_plot(agglomerative_clustering_labels, data, (0, 1), title='CMC dataset\nAgglomerative Clustering with 3 clusters')
 
+    
+    '''We remove MeanShift algorithm for cmc, because it typically only converges to one cluster,
+        and the metrics outputted are inconsistent.'''
     # Mean Shift clustering
     # print(
     #     '**************************************************\nMean Shift\n**************************************************')

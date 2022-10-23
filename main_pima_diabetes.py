@@ -21,7 +21,7 @@ def main():
     print(
         '\n**************************************************\nAgglomerative\n**************************************************')
 
-    agglomerative_clustering = AgglomerativeClustering(n_clusters=2).fit(data)
+    agglomerative_clustering = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='complete').fit(data)
     agglomerative_clustering_labels = agglomerative_clustering.labels_
     agglomerative_clustering_metrics = calculate_metrics(data=data,
                                                          predicted_labels=agglomerative_clustering_labels,
@@ -35,7 +35,8 @@ def main():
     print(
         '\n**************************************************\nMean Shift\n**************************************************')
 
-    meanshift_clustering = MeanShift().fit(data)
+    bandwidth_value = estimate_bandwidth(data, quantile=0.75)
+    meanshift_clustering = MeanShift(bandwidth=, seed_dim=None, binSeed=False, allCluster=True).fit(data)
     mean_shift_clustering_labels = meanshift_clustering.labels_
     mean_shift_clustering_metrics = calculate_metrics(data=data,
                                                       predicted_labels=mean_shift_clustering_labels,
