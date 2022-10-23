@@ -85,20 +85,20 @@ def plot_metrics_p_or_m(algorithm, metrics, pm_values, dataset_name, p=True):
 
     for key in metrics.keys():
         ax[0].plot(pm_values, [metric[0] for metric in metrics[key]], label='k = '+ key)
-        ax[0].set(xticks=pm_values, title='Silhouette Scores', xlabel='k', ylabel='score [-1, 1] (higher = better)')
+        ax[0].set(xticks=pm_values, title='Silhouette Scores', xlabel=xlabel, ylabel='score [-1, 1] (higher = better)')
         ax[0].legend(fontsize='xx-small')
 
         ax[1].plot(pm_values, [metric[1] for metric in metrics[key]], label='k = '+ key)
-        ax[1].set(xticks=pm_values, title='Davies Bouldin Scores', xlabel='k',
+        ax[1].set(xticks=pm_values, title='Davies Bouldin Scores', xlabel=xlabel,
                   ylabel='score (lower = better, 0 is best)')
         ax[1].legend(fontsize='xx-small')
 
         ax[2].plot(pm_values, [metric[2] for metric in metrics[key]], label='k = '+ key)
-        ax[2].set(xticks=pm_values, title='Calinski Harabasz Scores', xlabel='k', ylabel='score (higher = better)')
+        ax[2].set(xticks=pm_values, title='Calinski Harabasz Scores', xlabel=xlabel, ylabel='score (higher = better)')
         ax[2].legend(fontsize='xx-small')
 
         ax[3].plot(pm_values, [metric[3] for metric in metrics[key]], label='k = '+ key)
-        ax[3].set(xticks=pm_values, title='Adjusted Mutual Info Scores (uses actual labels)', xlabel='k',
+        ax[3].set(xticks=pm_values, title='Adjusted Mutual Info Scores (uses actual labels)', xlabel=xlabel,
                   ylabel='score [0, 1] (higher = better)')
         ax[3].legend(fontsize='xx-small')
 
