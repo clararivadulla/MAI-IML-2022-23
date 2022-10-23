@@ -39,6 +39,6 @@ def test_performance(dataset_name):
 
 
 if __name__ == '__main__':
-    test_performance(dataset_name='cmc')
-    test_performance(dataset_name='iris')
-    test_performance(dataset_name='pima-diabetes')
+    # test_performance(dataset_name='cmc')
+    # test_performance(dataset_name='iris')
+    test_performance(dataset_name='pima_diabetes')
