@@ -31,13 +31,14 @@ class FuzzyCMeans:
         for k in range(len(X)):
             for i in range(self.c):
                 sum = self.compute_sum(X[k], V, i)
-                if sum == 0:
+                if sum != 0:
+                    U[i][k] = math.pow(sum, -1)
+                else:
                     if np.array_equal(V[i], X[k]):
                         U[i][k] = 1
                     else:
                         U[i][k] = 0
-                else:
-                    U[i][k] = math.pow(sum, -1)
+
         return U
 
     def compute_sum(self, xk, V, i):
@@ -49,8 +50,6 @@ class FuzzyCMeans:
                 return 0
             sum += math.pow(num / den, 2 / (self.m - 1))
         return sum
-
-
 
     def fcm(self, data):
 
@@ -65,9 +64,6 @@ class FuzzyCMeans:
             iter += 1
             U = self.update_memberships(data, V, U)
             V = self.calculate_centers(data, U, V)
-            """
-            print(f'V {iter}: ' + str(V))
-            print(f'V_aux {iter}: ' +str(V_aux))"""
 
             if np.linalg.norm(V - V_aux) <= self.epsilon:
                 self.V = V
