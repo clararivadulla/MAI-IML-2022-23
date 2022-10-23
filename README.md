@@ -17,8 +17,10 @@ Commandline:
 pip install -r requirements.txt
 
 to run the main file:
+
 python main.py
 
 to run the performance scripts:
+
 cd performance
 python test_performance.py
