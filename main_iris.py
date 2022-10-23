@@ -32,7 +32,7 @@ def main():
                                                          verbose=True)
     scores.append(agglomerative_clustering_metrics)
 
-    scatter_plot(agglomerative_clustering_labels, data, (0, 1), title='Iris dataset\nAgglomerative Clustering with 3 clusters', x_label='x', y_label='y')
+    scatter_plot(agglomerative_clustering_labels, data, (0, 1), title='Iris dataset\nAgglomerative Clustering with 3 clusters')
 
     # Mean Shift clustering
     print(
@@ -50,7 +50,7 @@ def main():
                                                       verbose=True)
     scores.append(mean_shift_clustering_metrics)
 
-    scatter_plot(mean_shift_clustering_labels, data, (0, 1), title='Iris dataset\nMean Shift Clustering', x_label='x', y_label='y')
+    scatter_plot(mean_shift_clustering_labels, data, (0, 1), title='Iris dataset\nMean Shift Clustering')
 
     # K-Means
     print(
@@ -69,7 +69,7 @@ def main():
                                         verbose=True)
     scores.append(k_means_metrics)
 
-    scatter_plot(k_means_labels, data, (0, 1), title='Iris dataset\nK-Means with 3 clusters', x_label='x', y_label='y')
+    scatter_plot(k_means_labels, data, (0, 1), title='Iris dataset\nK-Means with 3 clusters')
 
     # Bisecting K Means
     print(
@@ -85,8 +85,7 @@ def main():
                                                   verbose=True)
     scores.append(bisecting_k_means_metrics)
 
-    scatter_plot(bisecting_k_means_labels, data, (0, 1), title='Iris dataset\nBisecting K-Means with 3 clusters',
-                 x_label='x', y_label='y')
+    scatter_plot(bisecting_k_means_labels, data, (0, 1), title='Iris dataset\nBisecting K-Means with 3 clusters')
 
     # K-Harmonic Means
     print(
@@ -105,8 +104,7 @@ def main():
                                                  verbose=True)
     scores.append(k_harmonic_means_metrics)
 
-    scatter_plot(k_harmonic_means_labels, data, (0, 1), title='Iris dataset\nK-Harmonic Means with 3 clusters',
-                 x_label='x', y_label='y')
+    scatter_plot(k_harmonic_means_labels, data, (0, 1), title='Iris dataset\nK-Harmonic Means with 3 clusters')
 
     # Fuzzy C-Means
     print(
@@ -125,8 +123,7 @@ def main():
                                               verbose=True)
     scores.append(fuzzy_c_means_metrics)
 
-    scatter_plot(fuzzy_c_means_labels, data, (0, 1), title='Iris dataset\nFuzzy C-Means with 3 clusters', x_label='x',
-                 y_label='y')
+    scatter_plot(fuzzy_c_means_labels, data, (0, 1), title='Iris dataset\nFuzzy C-Means with 3 clusters')
 
     # Save the scores in a dataframe for future graphs
     scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score',

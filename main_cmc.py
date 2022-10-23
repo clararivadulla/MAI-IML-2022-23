@@ -33,7 +33,7 @@ def main():
                                                          verbose=True)
     scores.append(agglomerative_clustering_metrics)
 
-    scatter_plot(agglomerative_clustering_labels, data, (0, 1), title='CMC dataset\nAgglomerative Clustering with 3 clusters', x_label='x', y_label='y')
+    scatter_plot(agglomerative_clustering_labels, data, (0, 1), title='CMC dataset\nAgglomerative Clustering with 3 clusters')
 
     # Mean Shift clustering
     # print(
@@ -70,7 +70,7 @@ def main():
                                         verbose=True)
     scores.append(k_means_metrics)
 
-    scatter_plot(k_means_labels, data, (0, 1), title='CMC dataset\nK-Means with 3 clusters', x_label='x', y_label='y')
+    scatter_plot(k_means_labels, data, (0, 1), title='CMC dataset\nK-Means with 3 clusters')
 
     # Bisecting K Means
     print(
@@ -86,8 +86,7 @@ def main():
                                                   verbose=True)
     scores.append(bisecting_k_means_metrics)
 
-    scatter_plot(bisecting_k_means_labels, data, (0, 1), title='CMC dataset\nBisecting K-Means with 3 clusters',
-                 x_label='x', y_label='y')
+    scatter_plot(bisecting_k_means_labels, data, (0, 1), title='CMC dataset\nBisecting K-Means with 3 clusters')
 
     # K-Harmonic Means
     print(
@@ -106,8 +105,7 @@ def main():
                                                  verbose=True)
     scores.append(k_harmonic_means_metrics)
 
-    scatter_plot(k_harmonic_means_labels, data, (0, 1), title='CMC dataset\nK-Harmonic Means with 3 clusters',
-                 x_label='x', y_label='y')
+    scatter_plot(k_harmonic_means_labels, data, (0, 1), title='CMC dataset\nK-Harmonic Means with 3 clusters')
 
     # Fuzzy C-Means
     print(
@@ -126,13 +124,18 @@ def main():
                                               verbose=True)
     scores.append(fuzzy_c_means_metrics)
 
-    scatter_plot(fuzzy_c_means_labels, data, (0, 1), title='CMC dataset\nFuzzy C-Means with 3 clusters', x_label='x',
-                 y_label='y')
+    scatter_plot(fuzzy_c_means_labels, data, (0, 1), title='CMC dataset\nFuzzy C-Means with 3 clusters')
 
     # Save the scores in a dataframe for future graphs
     scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score',
                                               'Calinski Harabasz Score', 'Adjusted Mutual Info Score'])
-    print(scores_df)
+    print("\nAll metrics:")
+    with pd.option_context('display.max_rows', None,
+                           'display.max_columns', None,
+                           'display.precision', 3,
+                           'expand_frame_repr', False
+                           ):
+        print(scores_df)
 
 if __name__ == '__main__':
     main()

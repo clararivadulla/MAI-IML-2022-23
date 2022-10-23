@@ -26,18 +26,20 @@ def test_performance(dataset_name):
         raise NameError(f'Wrong dataset name: {dataset_name}')
 
     all_metrics = {
-        'KMeans': [],
-        'BisectingKMeans': [],
+#        'KMeans': [],
+        'BisectingKMeans': []
 #        'AgglomerativeClustering': [],
 #        'FuzzyCMeans': [],
 #        'KHarmonicMeans': []
     }
 
     num_trials_values = [1, 5, 10, 15, 20, 25]
-    for n in num_trials_values:
+    num_k_values = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-        print(f'Running algorithms with num_trials_values={n}')
-        # k_means = KMeans(k=k)
+    for n in num_k_values:
+
+        print(f'Running algorithms with num_k_values={n}')
+        # k_means = KMeans(k=n, n_repeat=1)
         # k_means.train(data)
         # k_means_labels, _ = k_means.classify(data)
         #
@@ -46,13 +48,13 @@ def test_performance(dataset_name):
         #                                     actual_labels=labels)
         # all_metrics['KMeans'].append(k_means_metrics)
 
-        bisecting_k_means_labels = BisectingKMeans(data, k=10, num_trials=n)
+        bisecting_k_means_labels = BisectingKMeans(data, k=n)
         bisecting_k_means_metrics = calculate_metrics(data=data,
                                                       predicted_labels=bisecting_k_means_labels,
                                                       actual_labels=labels)
         all_metrics['BisectingKMeans'].append(bisecting_k_means_metrics)
 
-    plot_metrics(metrics=all_metrics, k_values=num_trials_values, dataset_name=dataset_name, x_label='num_trials')
+    plot_metrics(metrics=all_metrics, k_values=num_k_values, dataset_name=dataset_name, x_label='k')
 
 if __name__ == '__main__':
-    test_performance(dataset_name='iris')
+    test_performance(dataset_name='cmc')
