@@ -37,6 +37,11 @@ def scatter_plot(labels, data, indices=(0, 1), title=None, show_plot=False):
     plt.title(title)
     plt.savefig(f'scatterplots/{title}.png', dpi=300)
 
+    if show_plot:
+        plt.show()
+    else:
+        plt.clf()
+
 
 def plot_metrics(metrics, k_values, dataset_name, x_label='k'):
     fig, axes = plt.subplots(2, 2, figsize=(10, 7))
