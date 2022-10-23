@@ -76,6 +76,5 @@ class FuzzyCMeans:
     def cluster_matching(self, X):
         matches = np.zeros(len(X))
         for i in range(len(X)):
-            print(self.U[:, i])
             matches[i] = np.argmax(self.U[:, i])
         return matches

@@ -22,11 +22,11 @@ def confusion_matrix_plot(data, dataset_name):
         ax[k].set(xlabel=f'k = {data[k].shape[1]}')
 
     plt.tight_layout()
-    plt.savefig('confusion_matrix.png', dpi=300)
+    plt.savefig('plots/confusion_matrix.png', dpi=300)
     plt.show()
 
 
-def scatter_plot(labels, data, indices=(0, 1), title=None):
+def scatter_plot(labels, data, indices=(0, 1), title=None, show_plot=False):
 
     num_clusters = len(np.unique(labels))
 
@@ -37,7 +37,8 @@ def scatter_plot(labels, data, indices=(0, 1), title=None):
     plt.title(title)
 
     plt.savefig(f'scatterplots/{title}.png', dpi=300)
-    plt.show()
+    if show_plot:
+        plt.show()
 
 
 def plot_metrics(metrics, k_values, dataset_name, x_label='k'):
@@ -66,7 +67,7 @@ def plot_metrics(metrics, k_values, dataset_name, x_label='k'):
         ax[3].legend(fontsize='xx-small')
 
     plt.tight_layout()
-    plt.savefig('test_performance.png', dpi=300)
+    plt.savefig('plots/test_performance.png', dpi=300)
     plt.show()
 
 
@@ -106,7 +107,7 @@ def plot_metrics_p_or_m(algorithm, metrics, pm_values, dataset_name, p=True):
         ax[3].legend(fontsize='xx-small')
 
     plt.tight_layout()
-    plt.savefig(f'{alg}_{dataset_name}.png', dpi=300)
+    plt.savefig(f'plots/{alg}_{dataset_name}.png', dpi=300)
     plt.show()
 
 
@@ -137,7 +138,7 @@ def plot_agglomerative(dataset_name, testAgg_results, k_values):
         ax[3].legend(fontsize='xx-small')
 
     plt.tight_layout()
-    plt.savefig(f'test_agglomerative_{dataset_name}.pdf', dpi=300)
+    plt.savefig(f'plots/test_agglomerative_{dataset_name}.pdf', dpi=300)
     plt.show()
 
 
@@ -167,7 +168,7 @@ def plot_meanShift(dataset_name, testMean_results, quantile_values):
         ax[3].legend(fontsize='small')
     
     plt.tight_layout()
-    plt.savefig(f'test_meanShift_{dataset_name}.pdf', dpi=300)
+    plt.savefig(f'plots/test_meanShift_{dataset_name}.pdf', dpi=300)
     plt.show()
 
 
