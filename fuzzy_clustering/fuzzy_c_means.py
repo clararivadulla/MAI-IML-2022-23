@@ -5,15 +5,15 @@ import numpy as np
 
 class FuzzyCMeans:
 
-    def __init__(self, n_clusters=3, max_iter=100):
+    def __init__(self, n_clusters=3, max_iter=100, m=2):
         self.c = n_clusters
         self.max_iter = max_iter
         self.epsilon = np.finfo(np.float32).eps  # Termination threshold
-        self.m = 2  # m = 1: crisp; m = 2: typical
+        self.m = m  # m = 1: crisp; m = 2: typical
         self.V = None
 
     def guess_initial_centers(self, X):
-        indices = np.random.choice(np.size(X[:, 0]), self.c, replace=False)
+        indices = np.random.choice(len(X), self.c, replace=False)
         return np.array([X[indices[i]] for i in range(self.c)])
 
     def calculate_centers(self, X, U, V):
@@ -72,8 +72,8 @@ class FuzzyCMeans:
         self.V = V
 
     def cluster_matching(self, X):
-        matches = np.zeros(np.size(X[:, 0]))
-        for i in range(np.size(X[:, 0])):
+        matches = np.zeros(len(X))
+        for i in range(len(X)):
             norm = np.linalg.norm(X[i] - self.V[0])
             for j in range(1, self.c):
                 aux_norm = np.linalg.norm(X[i] - self.V[j])
