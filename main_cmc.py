@@ -95,7 +95,7 @@ def main():
     # Fuzzy C-Means
     print(
         '\n**************************************************\nFuzzy C-Means\n**************************************************')
-    fuzzy_c_means = FuzzyCMeans(n_clusters=3)
+    fuzzy_c_means = FuzzyCMeans(n_clusters=7, m=1.5)
     fuzzy_c_means.fcm(data)
     fuzzy_c_means_labels = fuzzy_c_means.cluster_matching(data)
     fuzzy_c_means_metrics = calculate_metrics(data=data,

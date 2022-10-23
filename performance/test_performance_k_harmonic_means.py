@@ -20,8 +20,8 @@ def test_performance(dataset_name):
     else:
         raise NameError(f'Wrong dataset name: {dataset_name}')
 
-    all_metrics = {'2': [], '3': [], '4': [], '5': [], '6': [], '7': []}
-    p_values = [2, 2.5, 3, 3.5, 4, 4.5]
+    all_metrics = {'2': [], '3': [], '4': []}
+    p_values = [2, 2.5, 3]
     for k in all_metrics.keys():
         for p in p_values:
             print(f'Running K-Harmonic Means with k={k} and p={p}')
@@ -40,5 +40,5 @@ def test_performance(dataset_name):
 
 if __name__ == '__main__':
     test_performance(dataset_name='cmc')
-    #test_performance(dataset_name='iris')
-    #test_performance(dataset_name='pima-diabetes')
+    test_performance(dataset_name='iris')
+    test_performance(dataset_name='pima-diabetes')
