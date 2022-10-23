@@ -20,6 +20,7 @@ to run the main file:
 
 python main.py
 
+
 to run the performance scripts:
 
 cd performance
