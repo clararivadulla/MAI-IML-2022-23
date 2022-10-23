@@ -42,7 +42,7 @@ def calculate_metrics(data, predicted_labels, actual_labels, algorithm_name=None
     # https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_mutual_info_score.html
     adjusted_mutual_info_score = metrics.adjusted_mutual_info_score(actual_labels, predicted_labels)
 
-    accuracy_score = accuracy(actual_labels, predicted_labels)
+    #accuracy_score = accuracy(actual_labels, predicted_labels)
 
     c_matrix = confusion_matrix(actual_labels, predicted_labels)
 
