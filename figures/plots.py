@@ -138,7 +138,7 @@ def plot_agglomerative(dataset_name, testAgg_results, k_values):
         ax[3].legend(fontsize='xx-small')
 
     plt.tight_layout()
-    plt.savefig(f'plots/test_agglomerative_{dataset_name}.pdf', dpi=300)
+    plt.savefig(f'plots/test_agglomerative_{dataset_name}.png', dpi=300)
     plt.show()
 
 
@@ -168,7 +168,7 @@ def plot_meanShift(dataset_name, testMean_results, quantile_values):
         ax[3].legend(fontsize='small')
     
     plt.tight_layout()
-    plt.savefig(f'plots/test_meanShift_{dataset_name}.pdf', dpi=300)
+    plt.savefig(f'plots/test_meanShift_{dataset_name}.png', dpi=300)
     plt.show()
 
 
