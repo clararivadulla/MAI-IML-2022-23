@@ -5,20 +5,17 @@ colors = ["gray", "firebrick", "orange", "gold", "darkkhaki", "olive", "lightblu
           "blue"]
 
 
-def scatter_plot(labels, data, indices=(0, 1), title=None, x_label=None, y_label=None):
+def scatter_plot(labels, data, indices=(0, 1), title=None):
 
     num_clusters = len(np.unique(labels))
-    
-    fig = plt.figure()
 
     for k in range(num_clusters):
         plt.scatter(data[np.argwhere(labels == k)][:, :, indices[0]], data[np.argwhere(labels == k)][:, :, indices[1]],
                     color=colors[k])
 
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
     plt.title(title)
-    plt.savefig(f'{title}.pdf', dpi=300)
+
+    plt.savefig(f'scatterplots/{title}.png', dpi=300)
     plt.show()
 
 
@@ -81,3 +78,11 @@ def plot_agglomerative(dataset_name, testAgg_results, k_values):
     plt.tight_layout()
     plt.savefig(f'test_agglomerative_{dataset_name}.pdf', dpi=300)
     plt.show()
+
+
+def plot_clusters(k_values, all_labels, data, dataset_name, indices=(0, 1)):
+    for key in all_labels.keys():
+        i = 0
+        for labels in all_labels[key]:
+            scatter_plot(labels, data, indices, f'Clustering of {dataset_name} with {key} using {k_values[i]} clusters')
+            i += 1
