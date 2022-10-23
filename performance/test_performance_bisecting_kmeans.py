@@ -26,7 +26,7 @@ def test_performance(dataset_name):
     num_trials_values = [1, 5, 10, 15, 20, 25]
     num_k_values = [2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-    for n in num_trials_values:
+    for n in num_k_values:
 
         print(f'Running algorithms with num_k_values={n}')
         # k_means = KMeans(k=n, n_repeat=1)
