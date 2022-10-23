@@ -69,7 +69,7 @@ def main():
     # Bisecting K Means
     print(
         '\n**************************************************\nBisecting K-Means\n**************************************************')
-    bisecting_k_means_labels = BisectingKMeans(data, k=3)
+    bisecting_k_means_labels = BisectingKMeans(data, k=3, num_trials=10)
     bisecting_k_means_metrics = calculate_metrics(data=data,
                                                   predicted_labels=bisecting_k_means_labels,
                                                   actual_labels=labels,
