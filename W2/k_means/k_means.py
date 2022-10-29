@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 
+
 class KMeans:
     def __init__(self, k=3, max_iter=100, n_repeat=20, seed=None):
         self.k = k
