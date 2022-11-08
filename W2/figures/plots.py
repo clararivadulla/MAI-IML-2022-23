@@ -26,6 +26,24 @@ def confusion_matrix_plot(data, dataset_name):
     plt.show()
 
 
+def scatter_plot_3D(labels, data, indices=(0, 1, 2), title=None, show_plot=False):
+    num_clusters = len(np.unique(labels))
+
+    ax = plt.axes(projection='3d')
+
+    for k in range(num_clusters):
+        ax.scatter3D(data[np.argwhere(labels == k)][:, :, indices[0]], data[np.argwhere(labels == k)][:, :, indices[1]],
+                     data[np.argwhere(labels == k)][:, :, indices[2]], color=colors[k]);
+
+    plt.title(title)
+    file_name = title.replace(' ', '_').replace('\n', ' ')
+    plt.savefig(f"figures/scatter-plots/{file_name}_3D.png", dpi=300)
+
+    if show_plot:
+        plt.show()
+    else:
+        plt.clf()
+
 def scatter_plot(labels, data, indices=(0, 1), title=None, show_plot=False):
 
     num_clusters = len(np.unique(labels))
@@ -35,7 +53,8 @@ def scatter_plot(labels, data, indices=(0, 1), title=None, show_plot=False):
                     color=colors[k])
 
     plt.title(title)
-    plt.savefig(f'figures/scatter-plots/{title}.png', dpi=300)
+    file_name = title.replace(' ', '_').replace('\n', ' ')
+    plt.savefig(f'figures/scatter-plots/{file_name}.png', dpi=300)
 
     if show_plot:
         plt.show()
