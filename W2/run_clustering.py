@@ -32,7 +32,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
     scores.append(k_means_metrics)
 
     scatter_plot(k_means_labels, data, (0, 1),
-                 title=f'{dataset_name} dataset\nK-Means with 3 clusters\nwithout any dimensionality reduction')
+                 title=f'{dataset_name} dataset\nK-Means with {k} clusters\nwithout any dimensionality reduction')
 
     # Agglomerative Clustering
     agglomerative_clustering = AgglomerativeClustering(n_clusters=k, affinity='manhattan',
@@ -47,7 +47,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
     scores.append(agglomerative_clustering_metrics)
 
     scatter_plot(agglomerative_clustering_labels, data,
-                 title=f'{dataset_name} dataset\nAgglomerative Clustering with 3 clusters\nwithout any dimensionality reduction')
+                 title=f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nwithout any dimensionality reduction')
 
     """
     Using our own PCA
@@ -68,7 +68,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                             verbose=True)
     scores.append(k_means_pca_metrics)
     scatter_plot(k_means_pca_labels, subspace, (0, 1),
-                 title=f'{dataset_name} dataset\nK-Means with 3 clusters\nusing our own PCA implementation')
+                 title=f'{dataset_name} dataset\nK-Means with {k} clusters\nusing our own PCA implementation')
 
     # Agglomerative Clustering
     agglomerative_clustering_pca = AgglomerativeClustering(n_clusters=k, affinity='manhattan',
@@ -82,7 +82,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                                                     verbose=True)
     scores.append(agglomerative_clustering_pca_labels_metrics)
     scatter_plot(agglomerative_clustering_pca_labels, subspace,
-                 title=f'{dataset_name} dataset\nAgglomerative Clustering with 3 clusters\nusing our own PCA implementation')
+                 title=f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing our own PCA implementation')
 
 
     """
@@ -105,7 +105,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                                     algorithm_name='K-Means (with sklearn\'s PCA)',
                                                     verbose=True)
     scores.append(k_means_sklearn_pca_metrics)
-    scatter_plot(k_means_sklearn_pca_labels, principal_components_sklearn_pca, (0, 1), title=f'{dataset_name} dataset\nK-Means with 3 clusters\nusing PCA from sklearn')
+    scatter_plot(k_means_sklearn_pca_labels, principal_components_sklearn_pca, (0, 1), title=f'{dataset_name} dataset\nK-Means with {k} clusters\nusing PCA from sklearn')
 
     # Agglomerative Clustering
     agglomerative_clustering_sklearn_pca = AgglomerativeClustering(n_clusters=k, affinity='manhattan', linkage='average').fit(principal_components_sklearn_pca)
@@ -116,7 +116,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                                                      algorithm_name='Agglomerative Clustering (with sklearn\'s PCA)',
                                                                      verbose=True)
     scores.append(agglomerative_clustering_sklearn_pca_metrics)
-    scatter_plot(agglomerative_clustering_sklearn_pca_labels, principal_components_sklearn_pca, title=f'{dataset_name} dataset\nAgglomerative Clustering with 3 clusters\nusing PCA from sklearn')
+    scatter_plot(agglomerative_clustering_sklearn_pca_labels, principal_components_sklearn_pca, title=f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing PCA from sklearn')
 
     """
     Using sklearn's Incremental PCA
@@ -138,7 +138,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                                         algorithm_name='K-Means (with Incremental PCA)',
                                                         verbose=True)
     scores.append(k_means_incremental_pca_metrics)
-    scatter_plot(k_means_incremental_pca_labels, principal_components_incremental_pca, (0, 1), title=f'{dataset_name} dataset\nK-Means with 3 clusters\nusing Incremental PCA from sklearn')
+    scatter_plot(k_means_incremental_pca_labels, principal_components_incremental_pca, (0, 1), title=f'{dataset_name} dataset\nK-Means with {k} clusters\nusing Incremental PCA from sklearn')
 
     # Agglomerative Clustering
     agglomerative_clustering_incremental_pca = AgglomerativeClustering(n_clusters=k, affinity='manhattan',linkage='average').fit(principal_components_sklearn_pca)
@@ -150,7 +150,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                                                          verbose=True)
     scores.append(agglomerative_clustering_incremental_pca_metrics)
     scatter_plot(agglomerative_clustering_incremental_pca_labels, principal_components_incremental_pca,
-                 title=f'{dataset_name} dataset\nAgglomerative Clustering with 3 clusters\nusing Incremental PCA from sklearn')
+                 title=f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing Incremental PCA from sklearn')
 
     """
     Using sklearn's Feature Agglomeration
@@ -174,7 +174,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                                 verbose=True)
     scores.append(k_means_f_agglo_metrics)
     scatter_plot(k_means_f_agglo_labels, data_reduced, (0, 1),
-                 title=f'{dataset_name} dataset\nK-Means with 3 clusters\nusing Feature Agglomeration from sklearn')
+                 title=f'{dataset_name} dataset\nK-Means with {k} clusters\nusing Feature Agglomeration from sklearn')
 
     # Agglomerative Clustering
     agglomerative_clustering_f_agglo = AgglomerativeClustering(n_clusters=k, affinity='manhattan',
@@ -188,7 +188,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                                                  verbose=True)
     scores.append(agglomerative_clustering_f_agglo_metrics)
     scatter_plot(agglomerative_clustering_f_agglo_labels, data_reduced,
-                 title=f'{dataset_name} dataset\nAgglomerative Clustering with 3 clusters\nusing Feature Agglomeration from sklearn')
+                 title=f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing Feature Agglomeration from sklearn')
 
     """
     Using sklearn's t-SNE
@@ -210,7 +210,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                               verbose=True)
     scores.append(k_means_t_sne_metrics)
     scatter_plot(k_means_t_sne_labels, data_embedded, (0, 1),
-                 title=f'{dataset_name} dataset\nK-Means with 3 clusters\nusing t-SNE from sklearn')
+                 title=f'{dataset_name} dataset\nK-Means with {k} clusters\nusing t-SNE from sklearn')
 
     # Agglomerative Clustering
     agglomerative_clustering_t_sne = AgglomerativeClustering(n_clusters=k, affinity='manhattan',
@@ -224,7 +224,7 @@ def run(data, labels, dataset_name, k=3, num_features=2):
                                                                verbose=True)
     scores.append(agglomerative_clustering_t_sne_metrics)
     scatter_plot(agglomerative_clustering_t_sne_labels, data_embedded,
-                 title=f'{dataset_name} dataset\nAgglomerative Clustering with 3 clusters\nusing t-SNE from sklearn')
+                 title=f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing t-SNE from sklearn')
 
 
     scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score',
