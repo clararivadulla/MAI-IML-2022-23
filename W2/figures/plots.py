@@ -36,8 +36,8 @@ def scatter_plot_3D(labels, data, indices=(0, 1, 2), title=None, show_plot=False
                      data[np.argwhere(labels == k)][:, :, indices[2]], color=colors[k]);
 
     plt.title(title)
-    file_name = title.replace(' ', '_').replace('\n', ' ')
-    plt.savefig(f"figures/scatter-plots/{file_name}_3D.png", dpi=300)
+    file_name = title.replace(' ', '_').replace('\n', '_')
+    plt.savefig(f"figures/scatter-plots/{file_name.lower()}_3D.png", dpi=300)
 
     if show_plot:
         plt.show()
@@ -53,8 +53,8 @@ def scatter_plot(labels, data, indices=(0, 1), title=None, show_plot=False):
                     color=colors[k])
 
     plt.title(title)
-    file_name = title.replace(' ', '_').replace('\n', ' ')
-    plt.savefig(f'figures/scatter-plots/{file_name}.png', dpi=300)
+    file_name = title.replace(' ', '_').replace('\n', '_')
+    plt.savefig(f'figures/scatter-plots/{file_name.lower()}.png', dpi=300)
 
     if show_plot:
         plt.show()
