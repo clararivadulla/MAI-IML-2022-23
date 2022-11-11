@@ -4,13 +4,20 @@ import numpy as np
 def pca(X, k):
 
     # Compute the d-dimensional mean vector
-    X_mean = X - np.mean(X, axis=0)
+    means = np.mean(X, axis=0)
+    X_mean = X - means
 
     # Compute the covariance matrix of the whole data set
     covariance_matrix = np.cov(X_mean, rowvar = False)
 
     # Calculate eigenvectors (e1, e2, …, ed) and their corresponding eigenvalues of the covariance matrix
     eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
+
+    print('Eigenvectors:')
+    print(eigenvectors)
+
+    print('\nEigenvalues:')
+    print(eigenvalues)
 
     # Sort the eigenvectors by decreasing eigenvalues
     idx = eigenvalues.argsort()[::-1]
@@ -20,10 +27,12 @@ def pca(X, k):
     k_eigenvectors = sorted_eigenvectors[:, 0:k]
 
     # Derive the new data set. Use this d x k eigenvector matrix to transform the samples onto the new subspace
-    subspace = k_eigenvectors.T.dot(X_mean.T).T
+    subspace = X_mean.dot(k_eigenvectors)
 
     # Plot the new subspace
     print('PCA subspace:')
     print(subspace)
 
-    return subspace
+    reconstructed_data = subspace.dot(k_eigenvectors.T) + means
+
+    return subspace, reconstructed_data

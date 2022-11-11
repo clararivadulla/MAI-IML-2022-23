@@ -60,7 +60,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
     print(
         '\n**************************************************\nUsing our PCA\n**************************************************')
 
-    subspace = pca(data, num_features)
+    subspace, reconstructed_data = pca(data, num_features)
 
     # K-Means
     k_means_pca = KMeans(k=k, max_iter=100, n_repeat=20, seed=12345)
