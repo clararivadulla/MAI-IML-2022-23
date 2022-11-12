@@ -13,14 +13,15 @@ def pca(X, k):
     # Calculate eigenvectors (e1, e2, …, ed) and their corresponding eigenvalues of the covariance matrix
     eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
 
-    print('Eigenvectors:')
-    print(eigenvectors)
+    #print('Eigenvectors:')
+    #print(eigenvectors)
 
-    print('\nEigenvalues:')
-    print(eigenvalues)
+    #print('\nEigenvalues:')
+    #print(eigenvalues)
 
     # Sort the eigenvectors by decreasing eigenvalues
     idx = eigenvalues.argsort()[::-1]
+    eigenvalues = np.sort(eigenvalues)[::-1]
     sorted_eigenvectors = eigenvectors[:, idx]
 
     # Choose k eigenvectors with the largest eigenvalues to form a new d x k dimensional matrix
@@ -30,8 +31,12 @@ def pca(X, k):
     subspace = X_mean.dot(k_eigenvectors)
 
     # Plot the new subspace
-    print('PCA subspace:')
-    print(subspace)
+    #print('PCA subspace:')
+    #print(subspace)
+
+    total_var = sum(eigenvalues)
+    explained_variance = [(i / total_var) for i in eigenvalues]
+    print(f'Total explained variance with {k} components: ', sum(explained_variance[0:k]))
 
     reconstructed_data = subspace.dot(k_eigenvectors.T) + means
 
