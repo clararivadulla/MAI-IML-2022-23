@@ -1,12 +1,11 @@
-from pca.pca import pca
-from sklearn.cluster import AgglomerativeClustering, FeatureAgglomeration
-from sklearn.manifold import TSNE
-from k_means.k_means import KMeans
-from figures.plots import scatter_plot, scatter_plot_3D
-from validation_metrics.metrics import calculate_metrics
-from sklearn.decomposition import PCA, IncrementalPCA
+from IML.W2.pca.pca import pca
+from sklearn.cluster import AgglomerativeClustering
+from IML.W2.k_means.k_means import KMeans
+from IML.W2.figures.plots import scatter_plot, scatter_plot_3D
+from IML.W2.validation_metrics.metrics import calculate_metrics
+from sklearn.decomposition import PCA
 import time
-
+from IML.W2.pre_processing import read_arff_files, vowel_pre_processing, iris_pre_processing, pima_diabetes_pre_processing
 import pandas as pd
 
 
@@ -169,3 +168,16 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                            'expand_frame_repr', False
                            ):
         print(scores_df)
+
+if __name__ == '__main__':
+    df, meta = read_arff_files.main('vowel.arff')
+    data, labels = vowel_pre_processing.main(df, meta, norm_type='min_max')
+    run_clustering.run(data, labels, dataset_name="Vowel", k=11, num_features=[12], plot_3D=False)
+
+    df, meta = read_arff_files.main('iris.arff')
+    data, labels = iris_pre_processing.main(df)
+    run_clustering.run(data, labels, dataset_name="Iris", k=3, num_features=[2], plot_3D=False)
+
+    df, meta = read_arff_files.main('pima_diabetes.arff')
+    data, labels = pima_diabetes_pre_processing.main(df)
+    run_clustering.run(data, labels, dataset_name="Pima Diabetes", k=4, num_features=[5], plot_3D=False)
