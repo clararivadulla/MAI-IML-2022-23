@@ -77,7 +77,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_pca_labels = k_means_pca.classify(subspace)[0]
         et = time.time()
         print('Time elapsed: ', st-et)
-        k_means_pca_metrics = calculate_metrics(data=data,
+        k_means_pca_metrics = calculate_metrics(data=subspace,
                                             predicted_labels=k_means_pca_labels,
                                             actual_labels=labels,
                                             algorithm_name=f'K-Means with {k} clusters, our PCA and {f} components',
@@ -97,7 +97,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_pca_labels = agglomerative_clustering_pca.labels_
         et = time.time()
         print('Time elapsed: ', st - et)
-        agglomerative_clustering_pca_labels_metrics = calculate_metrics(data=data,
+        agglomerative_clustering_pca_labels_metrics = calculate_metrics(data=subspace,
                                                                     predicted_labels=agglomerative_clustering_pca_labels,
                                                                     actual_labels=labels,
                                                                     algorithm_name=f'Agglomerative Clustering with our PCA, {k} clusters and {f} components',
@@ -127,7 +127,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_sklearn_pca_labels = k_means_sklearn_pca.classify(principal_components_sklearn_pca)[0]
         et = time.time()
         print('Time elapsed: ', et-st)
-        k_means_sklearn_pca_metrics = calculate_metrics(data=data,
+        k_means_sklearn_pca_metrics = calculate_metrics(data=principal_components_sklearn_pca,
                                                     predicted_labels=k_means_sklearn_pca_labels,
                                                     actual_labels=labels,
                                                     algorithm_name=f'K-Means with sklearn\'s PCA, {k} clusters and {f} components',
@@ -147,7 +147,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_sklearn_pca_labels = agglomerative_clustering_sklearn_pca.labels_
         et = time.time()
         print('Time elapsed: ', et-st)
-        agglomerative_clustering_sklearn_pca_metrics = calculate_metrics(data=data,
+        agglomerative_clustering_sklearn_pca_metrics = calculate_metrics(data=principal_components_sklearn_pca,
                                                                      predicted_labels=agglomerative_clustering_sklearn_pca_labels,
                                                                      actual_labels=labels,
                                                                      algorithm_name=f'Agglomerative Clustering with sklearn\'s PCA, {k} clusters and {f} components',
@@ -177,7 +177,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_incremental_pca_labels = k_means_incremental_pca.classify(principal_components_incremental_pca)[0]
         et = time.time()
         print('Time elapsed: ', et - st)
-        k_means_incremental_pca_metrics = calculate_metrics(data=data,
+        k_means_incremental_pca_metrics = calculate_metrics(data=principal_components_incremental_pca,
                                                         predicted_labels=k_means_incremental_pca_labels,
                                                         actual_labels=labels,
                                                         algorithm_name=f'K-Means with Incremental PCA, {k} clusters and {f} components',
@@ -197,7 +197,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_incremental_pca_labels = agglomerative_clustering_incremental_pca.labels_
         et = time.time()
         print('Time elapsed: ', et - st)
-        agglomerative_clustering_incremental_pca_metrics = calculate_metrics(data=data,
+        agglomerative_clustering_incremental_pca_metrics = calculate_metrics(data=principal_components_incremental_pca,
                                                                          predicted_labels=agglomerative_clustering_incremental_pca_labels,
                                                                          actual_labels=labels,
                                                                          algorithm_name=f'Agglomerative Clustering with Incremental PCA, {k} clusters and {f} components',
@@ -228,7 +228,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_f_agglo_labels = k_means_f_agglo.classify(data_reduced)[0]
         et = time.time()
         print('Time elapsed: ', et - st)
-        k_means_f_agglo_metrics = calculate_metrics(data=data,
+        k_means_f_agglo_metrics = calculate_metrics(data=data_reduced,
                                                 predicted_labels=k_means_f_agglo_labels,
                                                 actual_labels=labels,
                                                 algorithm_name=f'K-Means with Feature Agglomeration, {k} clusters and {f} components',
@@ -248,7 +248,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_f_agglo_labels = agglomerative_clustering_f_agglo.labels_
         et = time.time()
         print('Time elapsed: ', et - st)
-        agglomerative_clustering_f_agglo_metrics = calculate_metrics(data=data,
+        agglomerative_clustering_f_agglo_metrics = calculate_metrics(data=data_reduced,
                                                                  predicted_labels=agglomerative_clustering_f_agglo_labels,
                                                                  actual_labels=labels,
                                                                  algorithm_name=f'Agglomerative Clustering with Feature Agglomeration, {k} clusters and {f} components',
@@ -278,7 +278,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_t_sne_labels = k_means_t_sne.classify(data_embedded)[0]
         et = time.time()
         print('Time elapsed: ', et - st)
-        k_means_t_sne_metrics = calculate_metrics(data=data,
+        k_means_t_sne_metrics = calculate_metrics(data=data_embedded,
                                               predicted_labels=k_means_t_sne_labels,
                                               actual_labels=labels,
                                               algorithm_name=f'K-Means with t-SNE, {k} clusters and {f} components',
@@ -297,7 +297,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_t_sne_labels = agglomerative_clustering_t_sne.labels_
         et = time.time()
         print('Time elapsed: ', et - st)
-        agglomerative_clustering_t_sne_metrics = calculate_metrics(data=data,
+        agglomerative_clustering_t_sne_metrics = calculate_metrics(data=data_embedded,
                                                                predicted_labels=agglomerative_clustering_t_sne_labels,
                                                                actual_labels=labels,
                                                                algorithm_name=f'Agglomerative Clustering with t-SNE, {k} clusters and {f} components',
