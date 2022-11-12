@@ -48,4 +48,4 @@ def pca(X, k):
 
     reconstructed_data = transformed_data.dot(k_eigenvectors.T) + means
 
-    return transformed_data, reconstructed_data
+    return transformed_data, reconstructed_data, k, sum(explained_variance_i[0:k])
