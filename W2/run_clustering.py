@@ -166,7 +166,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         '\n**************************************************\nUsing sklearn\'s Incremental PCA\n**************************************************')
 
     # Incremental PCA
-    '''for f in num_features:
+    for f in num_features:
         incremental_pca = IncrementalPCA(n_components=f)
         principal_components_incremental_pca = incremental_pca.fit_transform(data)
 
@@ -207,7 +207,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing Incremental PCA from sklearn'
         scatter_plot(agglomerative_clustering_incremental_pca_labels, principal_components_incremental_pca, (0, 1), title=plot_title)
         if plot_3D:
-            scatter_plot_3D(agglomerative_clustering_incremental_pca_labels, principal_components_incremental_pca, (0, 1, 2), title=plot_title)'''
+            scatter_plot_3D(agglomerative_clustering_incremental_pca_labels, principal_components_incremental_pca, (0, 1, 2), title=plot_title)
 
     """
     Using sklearn's Feature Agglomeration
@@ -216,7 +216,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         '\n**************************************************\nUsing sklearn\'s Feature Agglomeration\n**************************************************')
 
     # Feature Agglomeration
-    '''for f in num_features:
+    for f in num_features:
         f_agglomeration = FeatureAgglomeration(n_clusters=f)
         f_agglomeration.fit(data)
         data_reduced = f_agglomeration.transform(data)
@@ -258,7 +258,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing Feature Agglomeration from sklearn'
         scatter_plot(agglomerative_clustering_f_agglo_labels, data_reduced, (0, 1), title=plot_title)
         if plot_3D:
-            scatter_plot_3D(agglomerative_clustering_f_agglo_labels, data_reduced, (0, 1, 2), title=plot_title)'''
+            scatter_plot_3D(agglomerative_clustering_f_agglo_labels, data_reduced, (0, 1, 2), title=plot_title)
 
     """
     Using sklearn's t-SNE
@@ -267,7 +267,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         '\n**************************************************\nUsing sklearn\'s t-SNE\n**************************************************')
 
     # t-SNE
-    '''for f in [2,3]:
+    for f in [2,3]:
         data_embedded = TSNE(n_components=f, learning_rate='auto', init='random', perplexity=3).fit_transform(
         data)
 
@@ -308,7 +308,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         scatter_plot(agglomerative_clustering_t_sne_labels, data_embedded, title=plot_title)
         if plot_3D:
             scatter_plot_3D(agglomerative_clustering_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title)
-    '''
+
     scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score',
                                               'Calinski Harabasz Score', 'Adjusted Mutual Info Score'])
     print("\nAll metrics:")
