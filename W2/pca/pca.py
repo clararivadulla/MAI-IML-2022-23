@@ -28,9 +28,9 @@ def pca(X, k):
     k_eigenvectors = sorted_eigenvectors[:, 0:k]
 
     # Derive the new data set. Use this d x k eigenvector matrix to transform the samples onto the new subspace
-    subspace = X_mean.dot(k_eigenvectors)
+    transformed_data = X_mean.dot(k_eigenvectors)
 
-    # Plot the new subspace
+    # Plot the transformed data in the new subspace
     #print('PCA subspace:')
     #print(subspace)
 
@@ -38,6 +38,6 @@ def pca(X, k):
     explained_variance = [(i / total_var) for i in eigenvalues]
     print(f'Total explained variance with {k} components: ', sum(explained_variance[0:k]))
 
-    reconstructed_data = subspace.dot(k_eigenvectors.T) + means
+    reconstructed_data = transformed_data.dot(k_eigenvectors.T) + means
 
-    return subspace, reconstructed_data
+    return transformed_data, reconstructed_data

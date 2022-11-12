@@ -68,16 +68,16 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         '\n**************************************************\nUsing our PCA\n**************************************************')
 
     for f in num_features:
-        subspace, reconstructed_data = pca(data, f)
+        transformed_data, reconstructed_data = pca(data, f)
 
         # K-Means
         st = time.time()
         k_means_pca = KMeans(k=k, max_iter=100, n_repeat=10, seed=12345)
-        k_means_pca.train(subspace)
-        k_means_pca_labels = k_means_pca.classify(subspace)[0]
+        k_means_pca.train(transformed_data)
+        k_means_pca_labels = k_means_pca.classify(transformed_data)[0]
         et = time.time()
         print('Time elapsed: ', st-et)
-        k_means_pca_metrics = calculate_metrics(data=subspace,
+        k_means_pca_metrics = calculate_metrics(data=transformed_data,
                                             predicted_labels=k_means_pca_labels,
                                             actual_labels=labels,
                                             algorithm_name=f'K-Means with {k} clusters, our PCA and {f} components',
@@ -86,18 +86,18 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         scores.append(k_means_pca_metrics)
 
         plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nusing our own PCA implementation'
-        scatter_plot(k_means_pca_labels, subspace, (0, 1), title=plot_title)
+        scatter_plot(k_means_pca_labels, transformed_data, (0, 1), title=plot_title)
         if plot_3D:
-            scatter_plot_3D(k_means_pca_labels, subspace, (0, 1, 2), title=plot_title)
+            scatter_plot_3D(k_means_pca_labels, transformed_data, (0, 1, 2), title=plot_title)
 
         # Agglomerative Clustering
         st = time.time()
         agglomerative_clustering_pca = AgglomerativeClustering(n_clusters=k, affinity='manhattan',
-                                                           linkage='average').fit(subspace)
+                                                           linkage='average').fit(transformed_data)
         agglomerative_clustering_pca_labels = agglomerative_clustering_pca.labels_
         et = time.time()
         print('Time elapsed: ', st - et)
-        agglomerative_clustering_pca_labels_metrics = calculate_metrics(data=subspace,
+        agglomerative_clustering_pca_labels_metrics = calculate_metrics(data=transformed_data,
                                                                     predicted_labels=agglomerative_clustering_pca_labels,
                                                                     actual_labels=labels,
                                                                     algorithm_name=f'Agglomerative Clustering with our PCA, {k} clusters and {f} components',
@@ -105,9 +105,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         scores.append(agglomerative_clustering_pca_labels_metrics)
 
         plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing our own PCA implementation'
-        scatter_plot(agglomerative_clustering_pca_labels, subspace, (0, 1), title=plot_title)
+        scatter_plot(agglomerative_clustering_pca_labels, transformed_data, (0, 1), title=plot_title)
         if plot_3D:
-            scatter_plot_3D(agglomerative_clustering_pca_labels, subspace, (0, 1, 2), title=plot_title)
+            scatter_plot_3D(agglomerative_clustering_pca_labels, transformed_data, (0, 1, 2), title=plot_title)
 
     """
     Using sklearn's PCA
