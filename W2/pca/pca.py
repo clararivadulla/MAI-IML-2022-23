@@ -24,6 +24,18 @@ def pca(X, k):
     eigenvalues = np.sort(eigenvalues)[::-1]
     sorted_eigenvectors = eigenvectors[:, idx]
 
+    total_var = sum(eigenvalues)
+    explained_variance_i = [(i / total_var) for i in eigenvalues]
+    explained_variance_cum = np.cumsum(explained_variance_i)
+    if k>0 and k<1:
+        for e in range(len(eigenvalues)):
+            if explained_variance_cum[e] >= k:
+                k=e+1
+                break
+
+
+    print(f'Total explained variance with {k} components: ', sum(explained_variance_i[0:k]))
+
     # Choose k eigenvectors with the largest eigenvalues to form a new d x k dimensional matrix
     k_eigenvectors = sorted_eigenvectors[:, 0:k]
 
@@ -33,10 +45,6 @@ def pca(X, k):
     # Plot the transformed data in the new subspace
     #print('PCA subspace:')
     #print(subspace)
-
-    total_var = sum(eigenvalues)
-    explained_variance = [(i / total_var) for i in eigenvalues]
-    print(f'Total explained variance with {k} components: ', sum(explained_variance[0:k]))
 
     reconstructed_data = transformed_data.dot(k_eigenvectors.T) + means
 
