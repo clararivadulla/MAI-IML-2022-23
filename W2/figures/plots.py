@@ -49,8 +49,7 @@ def scatter_plot(labels, data, indices=(0, 1), title=None, show_plot=False):
     num_clusters = len(np.unique(labels))
 
     for k in range(num_clusters):
-        plt.scatter(data[np.argwhere(labels == k)][:, :, indices[0]], data[np.argwhere(labels == k)][:, :, indices[1]],
-                    color=colors[k])
+        plt.scatter(data[np.argwhere(labels == k)][:, :, indices[0]], data[np.argwhere(labels == k)][:, :, indices[1]])
 
     plt.title(title)
     file_name = title.replace(' ', '_').replace('\n', '_')
