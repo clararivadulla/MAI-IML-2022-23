@@ -27,22 +27,24 @@ def confusion_matrix_plot(data, dataset_name):
 
 
 def scatter_plot_3D(labels, data, indices=(0, 1, 2), title=None, show_plot=False):
-    num_clusters = len(np.unique(labels))
 
-    ax = plt.axes(projection='3d')
+    if data.shape[1] >= 3:
+        num_clusters = len(np.unique(labels))
 
-    for k in range(num_clusters):
-        ax.scatter3D(data[np.argwhere(labels == k)][:, :, indices[0]], data[np.argwhere(labels == k)][:, :, indices[1]],
-                     data[np.argwhere(labels == k)][:, :, indices[2]], color=colors[k]);
+        ax = plt.axes(projection='3d')
 
-    plt.title(title)
-    file_name = title.replace(' ', '_').replace('\n', '_')
-    plt.savefig(f"figures/scatter-plots/{file_name.lower()}_3D.png", dpi=300)
+        for k in range(num_clusters):
+            ax.scatter3D(data[np.argwhere(labels == k)][:, :, indices[0]], data[np.argwhere(labels == k)][:, :, indices[1]],
+                         data[np.argwhere(labels == k)][:, :, indices[2]])
 
-    if show_plot:
-        plt.show()
-    else:
-        plt.clf()
+        plt.title(title)
+        file_name = title.replace(' ', '_').replace('\n', '_')
+        plt.savefig(f"figures/scatter-plots/{file_name.lower()}_3D.png", dpi=300)
+
+        if show_plot:
+            plt.show()
+        else:
+            plt.clf()
 
 def scatter_plot(labels, data, indices=(0, 1), title=None, show_plot=False):
 
@@ -76,18 +78,18 @@ def scatter_plot_data_only(data, indices=(0, 1), title=None, show_plot=False):
 
 
 def scatter_plot_data_only_3D(data, indices=(0, 1, 2), title=None, show_plot=False):
+    if data.shape[1] >= 3:
+        ax = plt.axes(projection='3d')
+        ax.scatter3D(data[:, indices[0]], data[:, indices[1]], data[:, indices[2]]);
 
-    ax = plt.axes(projection='3d')
-    ax.scatter3D(data[:, indices[0]], data[:, indices[1]], data[:, indices[2]]);
+        plt.title(title)
+        file_name = title.replace(' ', '_').replace('\n', '_')
+        plt.savefig(f'figures/scatter-plots/{file_name.lower()}_3D.png', dpi=300)
 
-    plt.title(title)
-    file_name = title.replace(' ', '_').replace('\n', '_')
-    plt.savefig(f'figures/scatter-plots/{file_name.lower()}_3D.png', dpi=300)
-
-    if show_plot:
-        plt.show()
-    else:
-        plt.clf()
+        if show_plot:
+            plt.show()
+        else:
+            plt.clf()
 
 def plot_metrics(metrics, k_values, dataset_name, x_label='k'):
     fig, axes = plt.subplots(2, 2, figsize=(10, 7))

@@ -325,8 +325,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         if plot_3D:
             scatter_plot_3D(agglomerative_clustering_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title)
 
-    scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score',
-                                              'Calinski Harabasz Score', 'Adjusted Mutual Info Score'])
+    scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score'])
     print("\nAll metrics:")
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
