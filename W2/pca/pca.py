@@ -13,14 +13,6 @@ def pca(X, k, verbose=True):
     # Calculate eigenvectors (e1, e2, …, ed) and their corresponding eigenvalues of the covariance matrix
     eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
 
-    if verbose:
-        print('\nCovariance Matrix:')
-        print(covariance_matrix)
-        print('\nEigenvectors:')
-        print(eigenvectors)
-        print('\nEigenvalues:')
-        print(eigenvalues)
-
     # Sort the eigenvectors by decreasing eigenvalues
     idx = eigenvalues.argsort()[::-1]
     eigenvalues = np.sort(eigenvalues)[::-1]
@@ -46,6 +38,12 @@ def pca(X, k, verbose=True):
     reconstructed_data = transformed_data.dot(k_eigenvectors.T) + means
 
     if verbose:
+        print('\nCovariance Matrix:')
+        print(covariance_matrix)
+        print('\nEigenvectors:')
+        print(eigenvectors)
+        print('\nEigenvalues:')
+        print(eigenvalues)
         print(f'\nThe original shape of the dataset was: {np.shape(X)}')
         print(f'The shape of the data after transformation is: {np.shape(transformed_data)}')
         print(f'The shape of the data after reconstruction is: {np.shape(reconstructed_data)}')
