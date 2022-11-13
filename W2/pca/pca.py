@@ -35,7 +35,7 @@ def pca(X, k, verbose=True):
                 k=e+1
                 break
 
-    print(f'Total explained variance with {k} components: ', sum(explained_variance_i[0:k]))
+    print(f'\nTotal explained variance with {k} components: ', sum(explained_variance_i[0:k]))
 
     # Choose k eigenvectors with the largest eigenvalues to form a new d x k dimensional matrix
     k_eigenvectors = sorted_eigenvectors[:, 0:k]
