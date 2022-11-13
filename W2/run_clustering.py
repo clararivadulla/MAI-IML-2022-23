@@ -299,10 +299,10 @@ def run(data, labels, df, dataset_name, k=3, num_features=2, plot_3D=False):
             # plot transformed data
         if f==2:
             plot_title = f'{dataset_name} dataset\nafter t-SNE transformation (2 features)'
-            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1), title=plot_title, plot_3D=False)
+            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1, 2), title=plot_title, plot_3D=False)
         if f==3:
             plot_title = f'{dataset_name} dataset\nafter t-SNE transformation (3 features)'
-            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1), title=plot_title, plot_3D=False)
+            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1, 2), title=plot_title, plot_3D=True)
 
         # K-Means
         print('\nRunning K-Means clustering:')
@@ -320,8 +320,12 @@ def run(data, labels, df, dataset_name, k=3, num_features=2, plot_3D=False):
         scores.append(k_means_t_sne_metrics)
 
             # plot
-        plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nusing t-SNE from sklearn'
-        scatter_plot(k_means_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
+        if f == 2:
+            plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nusing t-SNE (2 features)'
+            scatter_plot(k_means_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title, plot_3D=False)
+        if f == 3:
+            plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nusing t-SNE (3 features)'
+            scatter_plot(k_means_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title, plot_3D=True)
 
         # Agglomerative Clustering
         print('\nRunning Agglomerative clustering:')
@@ -339,8 +343,12 @@ def run(data, labels, df, dataset_name, k=3, num_features=2, plot_3D=False):
         scores.append(agglomerative_clustering_t_sne_metrics)
 
             # plot
-        plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing t-SNE from sklearn'
-        scatter_plot(agglomerative_clustering_t_sne_labels, data_embedded, (0,1,2), title=plot_title, plot_3D=plot_3D)
+        if f == 2:
+            plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing t-SNE (2 features))'
+            scatter_plot(agglomerative_clustering_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title, plot_3D=False)
+        if f == 3:
+            plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing t-SNE (3 features))'
+            scatter_plot(agglomerative_clustering_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title, plot_3D=True)
 
     scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score'])
     print("\nAll metrics:")
