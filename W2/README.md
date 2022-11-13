@@ -11,7 +11,7 @@ The script will preprocess the datasets, and for each dataset it will use variou
 For each of the algorithms, it will run k-means and agglomerative clustering on transformed datasets. 
 It will also generate 2-D and 3-D (where appropriate) scatter plots of the data.
 
-1. Open folder in terminal
+1. Navigate to the folder in terminal
 ```bash
 cd <root_folder_of_project>/
 ```
