@@ -99,7 +99,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_pca_metrics = calculate_metrics(data=transformed_data,
                                             predicted_labels=k_means_pca_labels,
                                             actual_labels=labels,
-                                            algorithm_name=f'K-Means with our PCA ({k} clusters, {f} features)',
+                                            algorithm_name=f'K-Means with our PCA ({k} clusters, {f} components)',
                                             verbose=True)
 
         scores.append(k_means_pca_metrics)
@@ -120,7 +120,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_pca_labels_metrics = calculate_metrics(data=transformed_data,
                                                                     predicted_labels=agglomerative_clustering_pca_labels,
                                                                     actual_labels=labels,
-                                                                    algorithm_name=f'Agglomerative Clustering with our PCA ({k} clusters, {f} features)',
+                                                                    algorithm_name=f'Agglomerative Clustering with our PCA ({k} clusters, {f} components)',
                                                                     verbose=True)
         scores.append(agglomerative_clustering_pca_labels_metrics)
 
@@ -151,7 +151,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_sklearn_pca_metrics = calculate_metrics(data=principal_components_sklearn_pca,
                                                     predicted_labels=k_means_sklearn_pca_labels,
                                                     actual_labels=labels,
-                                                    algorithm_name=f'K-Means with sklearn\'s PCA, ({k} clusters, {f} features)',
+                                                    algorithm_name=f'K-Means with sklearn\'s PCA, ({k} clusters, {f} components)',
                                                     verbose=True)
         scores.append(k_means_sklearn_pca_metrics)
 
@@ -172,7 +172,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_sklearn_pca_metrics = calculate_metrics(data=principal_components_sklearn_pca,
                                                                      predicted_labels=agglomerative_clustering_sklearn_pca_labels,
                                                                      actual_labels=labels,
-                                                                     algorithm_name=f'Agglomerative Clustering with sklearn\'s PCA, ({k} clusters, {f} features)',
+                                                                     algorithm_name=f'Agglomerative Clustering with sklearn\'s PCA, ({k} clusters, {f} components)',
                                                                      verbose=True)
         scores.append(agglomerative_clustering_sklearn_pca_metrics)
 
@@ -203,7 +203,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_incremental_pca_metrics = calculate_metrics(data=principal_components_incremental_pca,
                                                         predicted_labels=k_means_incremental_pca_labels,
                                                         actual_labels=labels,
-                                                        algorithm_name=f'K-Means with Incremental PCA ({k} clusters, {f} features)',
+                                                        algorithm_name=f'K-Means with Incremental PCA ({k} clusters, {f} components)',
                                                         verbose=True)
         scores.append(k_means_incremental_pca_metrics)
 
@@ -224,7 +224,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_incremental_pca_metrics = calculate_metrics(data=principal_components_incremental_pca,
                                                                          predicted_labels=agglomerative_clustering_incremental_pca_labels,
                                                                          actual_labels=labels,
-                                                                         algorithm_name=f'Agglomerative Clustering with Incremental PCA ({k} clusters, {f} features)',
+                                                                         algorithm_name=f'Agglomerative Clustering with Incremental PCA ({k} clusters, {f} components)',
                                                                          verbose=True)
         scores.append(agglomerative_clustering_incremental_pca_metrics)
 
@@ -256,7 +256,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_f_agglo_metrics = calculate_metrics(data=data_reduced,
                                                 predicted_labels=k_means_f_agglo_labels,
                                                 actual_labels=labels,
-                                                algorithm_name=f'K-Means with Feature Agglomeration ({k} clusters, {f} features)',
+                                                algorithm_name=f'K-Means with Feature Agglomeration ({k} clusters, {f} components)',
                                                 verbose=True)
         scores.append(k_means_f_agglo_metrics)
 
@@ -277,7 +277,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_f_agglo_metrics = calculate_metrics(data=data_reduced,
                                                                  predicted_labels=agglomerative_clustering_f_agglo_labels,
                                                                  actual_labels=labels,
-                                                                 algorithm_name=f'Agglomerative Clustering with Feature Agglomeration ({k} clusters, {f} features)',
+                                                                 algorithm_name=f'Agglomerative Clustering with Feature Agglomeration ({k} clusters, {f} components)',
                                                                  verbose=True)
         scores.append(agglomerative_clustering_f_agglo_metrics)
 
@@ -308,7 +308,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         k_means_t_sne_metrics = calculate_metrics(data=data_embedded,
                                               predicted_labels=k_means_t_sne_labels,
                                               actual_labels=labels,
-                                              algorithm_name=f'K-Means with t-SNE ({k} clusters, {f} features)',
+                                              algorithm_name=f'K-Means with t-SNE ({k} clusters, {f} components)',
                                               verbose=True)
         scores.append(k_means_t_sne_metrics)
 
@@ -328,7 +328,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         agglomerative_clustering_t_sne_metrics = calculate_metrics(data=data_embedded,
                                                                predicted_labels=agglomerative_clustering_t_sne_labels,
                                                                actual_labels=labels,
-                                                               algorithm_name=f'Agglomerative Clustering with t-SNE ({k} clusters, {f} features)',
+                                                               algorithm_name=f'Agglomerative Clustering with t-SNE ({k} clusters, {f} components)',
                                                                verbose=True)
         scores.append(agglomerative_clustering_t_sne_metrics)
 
