@@ -84,7 +84,7 @@ def run(data, labels, df, dataset_name, k=3, num_features=2, plot_3D=False):
         scatterplot_transformed_or_reconstructed(transformed_data, indices=(0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         plot_title = f'{dataset_name} dataset\nafter PCA reconstruction'
-        scatterplot_transformed_or_reconstructed(reconstructed_data, indices=(0, 1, 2), title=plot_title, plot_3D=plot_3D)
+        scatterplot_transformed_or_reconstructed(reconstructed_data, indices, title=plot_title, plot_3D=plot_3D)
 
         # K-Means
         print('\nRunning K-Means clustering:')
