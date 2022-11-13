@@ -70,14 +70,21 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
     for f in num_features:
         transformed_data, reconstructed_data, f, variance = pca(data, f)
 
-        # plotting the dataset before and after reconstruction
+        # plotting the original dataset, transformed_dataset, and the dataset after reconstruction
         plot_title = f'{dataset_name} dataset\nwithout PCA reconstruction'
         scatter_plot_data_only(data, indices=(0, 1), title=plot_title)
-        scatter_plot_data_only_3D(data, indices=(0, 1, 2), title=plot_title)
+        if plot_3D:
+            scatter_plot_data_only_3D(data, indices=(0, 1, 2), title=plot_title)
+
+        plot_title = f'{dataset_name} dataset\nafter PCA transformation'
+        scatter_plot_data_only(transformed_data, indices=(0, 1), title=plot_title)
+        if plot_3D:
+            scatter_plot_data_only_3D(transformed_data, indices=(0, 1, 2), title=plot_title)
 
         plot_title = f'{dataset_name} dataset\nafter PCA reconstruction'
         scatter_plot_data_only(reconstructed_data, indices=(0, 1), title=plot_title)
-        scatter_plot_data_only_3D(reconstructed_data, indices=(0, 1, 2), title=plot_title)
+        if plot_3D:
+            scatter_plot_data_only_3D(reconstructed_data, indices=(0, 1, 2), title=plot_title)
 
         # K-Means
         st = time.time()

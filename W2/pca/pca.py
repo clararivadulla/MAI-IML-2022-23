@@ -1,23 +1,25 @@
 import numpy as np
 
 
-def pca(X, k):
+def pca(X, k, verbose=True):
 
     # Compute the d-dimensional mean vector
     means = np.mean(X, axis=0)
     X_mean = X - means
 
     # Compute the covariance matrix of the whole data set
-    covariance_matrix = np.cov(X_mean, rowvar = False)
+    covariance_matrix = np.cov(X_mean, rowvar=False)
 
     # Calculate eigenvectors (e1, e2, …, ed) and their corresponding eigenvalues of the covariance matrix
     eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
 
-    #print('Eigenvectors:')
-    #print(eigenvectors)
-
-    #print('\nEigenvalues:')
-    #print(eigenvalues)
+    if verbose:
+        print('\nCovariance Matrix:')
+        print(covariance_matrix)
+        print('\nEigenvectors:')
+        print(eigenvectors)
+        print('\nEigenvalues:')
+        print(eigenvalues)
 
     # Sort the eigenvectors by decreasing eigenvalues
     idx = eigenvalues.argsort()[::-1]
@@ -32,7 +34,6 @@ def pca(X, k):
             if explained_variance_cum[e] >= k:
                 k=e+1
                 break
-
 
     print(f'Total explained variance with {k} components: ', sum(explained_variance_i[0:k]))
 

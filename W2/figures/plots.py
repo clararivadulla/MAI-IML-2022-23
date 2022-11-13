@@ -75,7 +75,7 @@ def scatter_plot_data_only(data, indices=(0, 1), title=None, show_plot=False):
         plt.clf()
 
 
-def scatter_plot_data_only_3D(data, indices=(0, 1), title=None, show_plot=False):
+def scatter_plot_data_only_3D(data, indices=(0, 1, 2), title=None, show_plot=False):
 
     ax = plt.axes(projection='3d')
     ax.scatter3D(data[:, indices[0]], data[:, indices[1]], data[:, indices[2]]);
