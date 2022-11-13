@@ -9,7 +9,7 @@ Shawn Azimov, Jana Dabovic, Clara Rivadulla, and Yara Yousef
 These sections show how to create virtual environment, install dependencies and run the script.
 The script will preprocess the datasets, and for each dataset it will use various feature reduction algorithms.
 For each of the algorithms, it will run k-means and agglomerative clustering on transformed datasets. 
-It will also generate 2-D and 3-D (where appropriate) scatter plots of the data at <root_folder_of_project>/figures/scatter-plots
+It will also generate 2-D and 3-D (where appropriate) scatter plots of the data located in <root_folder_of_project>/figures/scatter-plots
 
 1. Navigate to the folder in terminal
 ```bash
