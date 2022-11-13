@@ -267,11 +267,11 @@ def run(data, labels, label_names, indices_to_plot=(0,1,2), dataset_name='datase
         '\n**************************************************\nUsing sklearn\'s t-SNE\n**************************************************')
 
     # t-SNE
-    for f in [2,3]:
+    for f in [2, 3]:
         data_embedded = TSNE(n_components=f, learning_rate='auto', init='random', perplexity=3).fit_transform(data)
 
         plot_title = f'{dataset_name} dataset\nafter t-SNE transformation ({f} features)'
-        scatter_plot_data_only(data_embedded, title=plot_title, plot_3D=plot_3D)
+        scatter_plot_data_only(data_embedded, title=plot_title, plot_3D=(f >= 3))
 
         # K-Means
         print('\nRunning K-Means clustering:')
