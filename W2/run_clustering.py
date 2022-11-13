@@ -2,7 +2,7 @@ from pca.pca import pca
 from sklearn.cluster import AgglomerativeClustering, FeatureAgglomeration
 from sklearn.manifold import TSNE
 from k_means.k_means import KMeans
-from figures.plots import scatter_plot, scatter_plot_3D, scatter_plot_data_only, scatter_plot_data_only_3D
+from figures.plots import scatter_plot, scatterplot_original, scatterplot_transformed_or_reconstructed
 from validation_metrics.metrics import calculate_metrics
 from sklearn.decomposition import PCA, IncrementalPCA
 import time
@@ -10,7 +10,7 @@ import time
 import pandas as pd
 
 
-def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
+def run(data, labels, df, dataset_name, k=3, num_features=2, plot_3D=False):
     print(
         f'\n\n··················································\n{dataset_name.upper()} DATASET\n··················································')
 
@@ -37,10 +37,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                         verbose=True)
     scores.append(k_means_metrics)
 
+        # plot
     plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nwithout any dimensionality reduction'
-    scatter_plot(k_means_labels, data, (0, 1), title=plot_title)
-    if plot_3D:
-        scatter_plot_3D(k_means_labels, data, (0, 1, 2), title=plot_title)
+    scatter_plot(k_means_labels, data, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
     # Agglomerative Clustering
     print('\nRunning Agglomerative clustering:')
@@ -58,10 +57,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                                          verbose=True)
     scores.append(agglomerative_clustering_metrics)
 
+        # plot
     plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nwithout any dimensionality reduction'
-    scatter_plot(agglomerative_clustering_labels, data, (0, 1), title=plot_title)
-    if plot_3D:
-        scatter_plot_3D(agglomerative_clustering_labels, data, (0, 1, 2), title=plot_title)
+    scatter_plot(agglomerative_clustering_labels, data, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
     """
     Using our own PCA
@@ -70,23 +68,23 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         '\n**************************************************\nUsing our PCA\n**************************************************')
 
     for f in num_features:
-        transformed_data, reconstructed_data, f, variance = pca(data, f)
+        transformed_data, reconstructed_data, f, variance = pca(data, f, verbose=True)
 
         # plotting the original dataset, transformed_dataset, and the dataset after reconstruction
-        plot_title = f'{dataset_name} dataset\nwithout PCA reconstruction'
-        scatter_plot_data_only(data, indices=(0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_data_only_3D(data, indices=(0, 1, 2), title=plot_title)
+        if dataset_name=='Vowel':
+            indices=(1,2,4)
+        if dataset_name=='Iris':
+            indices=(0,1,2)
+        if dataset_name=='Pima Diabetes':
+            indices=(2,6,4)
+        plot_title = f'{dataset_name} dataset\noriginal'
+        scatterplot_original(df, data, indices, title=plot_title, plot_3D=plot_3D)
 
         plot_title = f'{dataset_name} dataset\nafter PCA transformation'
-        scatter_plot_data_only(transformed_data, indices=(0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_data_only_3D(transformed_data, indices=(0, 1, 2), title=plot_title)
+        scatterplot_transformed_or_reconstructed(transformed_data, indices=(0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         plot_title = f'{dataset_name} dataset\nafter PCA reconstruction'
-        scatter_plot_data_only(reconstructed_data, indices=(0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_data_only_3D(reconstructed_data, indices=(0, 1, 2), title=plot_title)
+        scatterplot_transformed_or_reconstructed(reconstructed_data, indices=(0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         # K-Means
         print('\nRunning K-Means clustering:')
@@ -104,10 +102,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
 
         scores.append(k_means_pca_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nusing our own PCA implementation'
-        scatter_plot(k_means_pca_labels, transformed_data, (0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(k_means_pca_labels, transformed_data, (0, 1, 2), title=plot_title)
+        scatter_plot(k_means_pca_labels, transformed_data, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         # Agglomerative Clustering
         print('\nRunning Agglomerative clustering:')
@@ -124,10 +121,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                                                     verbose=True)
         scores.append(agglomerative_clustering_pca_labels_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing our own PCA implementation'
-        scatter_plot(agglomerative_clustering_pca_labels, transformed_data, (0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(agglomerative_clustering_pca_labels, transformed_data, (0, 1, 2), title=plot_title)
+        scatter_plot(agglomerative_clustering_pca_labels, transformed_data, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
     """
     Using sklearn's PCA
@@ -139,6 +135,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
     for f in num_features:
         sklearn_pca = PCA(n_components=f)
         principal_components_sklearn_pca = sklearn_pca.fit_transform(data)
+            # plot transformed data
+        plot_title = f'{dataset_name} dataset\nafter sklearn PCA transformation'
+        scatterplot_transformed_or_reconstructed(principal_components_sklearn_pca, indices=(0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         # K-Means
         print('\nRunning K-Means clustering:')
@@ -155,10 +154,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                                     verbose=True)
         scores.append(k_means_sklearn_pca_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nusing PCA from sklearn'
-        scatter_plot(k_means_sklearn_pca_labels, principal_components_sklearn_pca, (0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(k_means_sklearn_pca_labels, principal_components_sklearn_pca, (0, 1, 2), title=plot_title)
+        scatter_plot(k_means_sklearn_pca_labels, principal_components_sklearn_pca, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         # Agglomerative Clustering
         print('\nRunning Agglomerative clustering:')
@@ -176,10 +174,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                                                      verbose=True)
         scores.append(agglomerative_clustering_sklearn_pca_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing PCA from sklearn'
-        scatter_plot(agglomerative_clustering_sklearn_pca_labels, principal_components_sklearn_pca, (0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(agglomerative_clustering_sklearn_pca_labels, principal_components_sklearn_pca, (0, 1, 2), title=plot_title)
+        scatter_plot(agglomerative_clustering_sklearn_pca_labels, principal_components_sklearn_pca, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
     """
     Using sklearn's Incremental PCA
@@ -191,6 +188,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
     for f in num_features:
         incremental_pca = IncrementalPCA(n_components=f)
         principal_components_incremental_pca = incremental_pca.fit_transform(data)
+            # plot transformed data
+        plot_title = f'{dataset_name} dataset\nafter incremental PCA transformation'
+        scatterplot_transformed_or_reconstructed(principal_components_incremental_pca, indices=(0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         # K-Means
         print('\nRunning K-Means clustering:')
@@ -207,10 +207,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                                         verbose=True)
         scores.append(k_means_incremental_pca_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nusing Incremental PCA from sklearn'
-        scatter_plot(k_means_incremental_pca_labels, principal_components_incremental_pca, (0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(k_means_incremental_pca_labels, principal_components_incremental_pca, (0, 1, 2), title=plot_title)
+        scatter_plot(k_means_incremental_pca_labels, principal_components_incremental_pca, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         # Agglomerative Clustering
         print('\nRunning Agglomerative clustering:')
@@ -228,10 +227,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                                                          verbose=True)
         scores.append(agglomerative_clustering_incremental_pca_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing Incremental PCA from sklearn'
-        scatter_plot(agglomerative_clustering_incremental_pca_labels, principal_components_incremental_pca, (0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(agglomerative_clustering_incremental_pca_labels, principal_components_incremental_pca, (0, 1, 2), title=plot_title)
+        scatter_plot(agglomerative_clustering_incremental_pca_labels, principal_components_incremental_pca, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
     """
     Using sklearn's Feature Agglomeration
@@ -244,6 +242,10 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         f_agglomeration = FeatureAgglomeration(n_clusters=f)
         f_agglomeration.fit(data)
         data_reduced = f_agglomeration.transform(data)
+            # plot transformed data
+        plot_title = f'{dataset_name} dataset\nafter feature agglomeration transformation'
+        scatterplot_transformed_or_reconstructed(data_reduced, indices=(0, 1, 2), title=plot_title, plot_3D=plot_3D)
+
 
         # K-Means
         print('\nRunning K-Means clustering:')
@@ -260,10 +262,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                                 verbose=True)
         scores.append(k_means_f_agglo_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nusing Feature Agglomeration from sklearn'
-        scatter_plot(k_means_f_agglo_labels, data_reduced, (0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(k_means_f_agglo_labels, data_reduced, (0, 1, 2), title=plot_title)
+        scatter_plot(k_means_f_agglo_labels, data_reduced, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         # Agglomerative Clustering
         print('\nRunning Agglomerative clustering:')
@@ -281,10 +282,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                                                  verbose=True)
         scores.append(agglomerative_clustering_f_agglo_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing Feature Agglomeration from sklearn'
-        scatter_plot(agglomerative_clustering_f_agglo_labels, data_reduced, (0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(agglomerative_clustering_f_agglo_labels, data_reduced, (0, 1, 2), title=plot_title)
+        scatter_plot(agglomerative_clustering_f_agglo_labels, data_reduced, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
     """
     Using sklearn's t-SNE
@@ -296,6 +296,13 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
     for f in [2,3]:
         data_embedded = TSNE(n_components=f, learning_rate='auto', init='random', perplexity=3).fit_transform(
         data)
+            # plot transformed data
+        if f==2:
+            plot_title = f'{dataset_name} dataset\nafter t-SNE transformation (2 features)'
+            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1, 2), title=plot_title, plot_3D=False)
+        if f==3:
+            plot_title = f'{dataset_name} dataset\nafter t-SNE transformation (3 features)'
+            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1, 2), title=plot_title, plot_3D=False)
 
         # K-Means
         print('\nRunning K-Means clustering:')
@@ -312,10 +319,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                               verbose=True)
         scores.append(k_means_t_sne_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nK-Means with {k} clusters\nusing t-SNE from sklearn'
-        scatter_plot(k_means_t_sne_labels, data_embedded, (0, 1), title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(k_means_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title)
+        scatter_plot(k_means_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title, plot_3D=plot_3D)
 
         # Agglomerative Clustering
         print('\nRunning Agglomerative clustering:')
@@ -332,10 +338,9 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
                                                                verbose=True)
         scores.append(agglomerative_clustering_t_sne_metrics)
 
+            # plot
         plot_title = f'{dataset_name} dataset\nAgglomerative Clustering with {k} clusters\nusing t-SNE from sklearn'
-        scatter_plot(agglomerative_clustering_t_sne_labels, data_embedded, title=plot_title)
-        if plot_3D:
-            scatter_plot_3D(agglomerative_clustering_t_sne_labels, data_embedded, (0, 1, 2), title=plot_title)
+        scatter_plot(agglomerative_clustering_t_sne_labels, data_embedded, (0,1,2), title=plot_title, plot_3D=plot_3D)
 
     scores_df = pd.DataFrame(scores, columns=['Algorithm', 'Silhouette Score', 'Davies Bouldin Score'])
     print("\nAll metrics:")

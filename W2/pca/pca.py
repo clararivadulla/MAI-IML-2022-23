@@ -43,10 +43,11 @@ def pca(X, k, verbose=True):
     # Derive the new data set. Use this d x k eigenvector matrix to transform the samples onto the new subspace
     transformed_data = X_mean.dot(k_eigenvectors)
 
-    # Plot the transformed data in the new subspace
-    #print('PCA subspace:')
-    #print(subspace)
-
     reconstructed_data = transformed_data.dot(k_eigenvectors.T) + means
+
+    if verbose:
+        print(f'\nThe original shape of the dataset was: {np.shape(X)}')
+        print(f'The shape of the data after transformation is: {np.shape(transformed_data)}')
+        print(f'The shape of the data after reconstruction is: {np.shape(reconstructed_data)}')
 
     return transformed_data, reconstructed_data, k, sum(explained_variance_i[0:k])
