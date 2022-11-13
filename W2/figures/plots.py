@@ -61,6 +61,34 @@ def scatter_plot(labels, data, indices=(0, 1), title=None, show_plot=False):
         plt.clf()
 
 
+def scatter_plot_data_only(data, indices=(0, 1), title=None, show_plot=False):
+
+    plt.scatter(data[:, indices[0]], data[:, indices[1]])
+
+    plt.title(title)
+    file_name = title.replace(' ', '_').replace('\n', '_')
+    plt.savefig(f'figures/scatter-plots/{file_name.lower()}.png', dpi=300)
+
+    if show_plot:
+        plt.show()
+    else:
+        plt.clf()
+
+
+def scatter_plot_data_only_3D(data, indices=(0, 1), title=None, show_plot=False):
+
+    ax = plt.axes(projection='3d')
+    ax.scatter3D(data[:, indices[0]], data[:, indices[1]], data[:, indices[2]]);
+
+    plt.title(title)
+    file_name = title.replace(' ', '_').replace('\n', '_')
+    plt.savefig(f'figures/scatter-plots/{file_name.lower()}_3D.png', dpi=300)
+
+    if show_plot:
+        plt.show()
+    else:
+        plt.clf()
+
 def plot_metrics(metrics, k_values, dataset_name, x_label='k'):
     fig, axes = plt.subplots(2, 2, figsize=(10, 7))
     fig.suptitle(f'Test Performance on {dataset_name} dataset', fontsize=16)
