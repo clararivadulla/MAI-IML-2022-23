@@ -299,10 +299,10 @@ def run(data, labels, df, dataset_name, k=3, num_features=2, plot_3D=False):
             # plot transformed data
         if f==2:
             plot_title = f'{dataset_name} dataset\nafter t-SNE transformation (2 features)'
-            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1, 2), title=plot_title, plot_3D=False)
+            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1), title=plot_title, plot_3D=False)
         if f==3:
             plot_title = f'{dataset_name} dataset\nafter t-SNE transformation (3 features)'
-            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1, 2), title=plot_title, plot_3D=False)
+            scatterplot_transformed_or_reconstructed(data_embedded, indices=(0, 1), title=plot_title, plot_3D=False)
 
         # K-Means
         print('\nRunning K-Means clustering:')
