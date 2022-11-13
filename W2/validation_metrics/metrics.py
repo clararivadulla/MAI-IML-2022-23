@@ -38,9 +38,9 @@ def calculate_metrics(data, predicted_labels, actual_labels, algorithm_name=None
 
     if verbose:
         if algorithm_name is not None:
-            print(f'\nMetrics for {algorithm_name}:')
+            print(f'Metrics for {algorithm_name}:')
         else:
-            print('\nMetrics:')
+            print('Metrics:')
 
         print(f'Silhouette Score: {silhouette_score}')
         print(f'Davies Bouldin Score: {davies_bouldin_score}')

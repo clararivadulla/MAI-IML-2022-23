@@ -4,7 +4,7 @@ import run_clustering
 if __name__ == '__main__':
     df, meta = read_arff_files.main('vowel.arff')
     data, labels = vowel_pre_processing.main(df, meta, norm_type='min_max')
-    run_clustering.run(data, labels, dataset_name="Vowel", k=11, num_features=[12], plot_3D=False)
+    run_clustering.run(data, labels, dataset_name="Vowel", k=11, num_features=[12], plot_3D=True)
 
     df, meta = read_arff_files.main('iris.arff')
     data, labels = iris_pre_processing.main(df)
@@ -12,4 +12,4 @@ if __name__ == '__main__':
 
     df, meta = read_arff_files.main('pima_diabetes.arff')
     data, labels = pima_diabetes_pre_processing.main(df)
-    run_clustering.run(data, labels, dataset_name="Pima Diabetes", k=4, num_features=[5], plot_3D=False)
+    run_clustering.run(data, labels, dataset_name="Pima Diabetes", k=4, num_features=[5], plot_3D=True)
