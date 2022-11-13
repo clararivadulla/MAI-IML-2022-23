@@ -1,14 +1,16 @@
 # IML-Work2
 
-Work 2 for Intro to Machine Learning course (Masters for Artificial Intelligence)
+## Work 2 for Intro to Machine Learning course (Masters for Artificial Intelligence)
 
-### TEAM 1 
-
+### TEAM 1
 Shawn Azimov, Jana Dabovic, Clara Rivadulla, and Yara Yousef
 
 
-### Runnning script for the first time
-### These sections show how to create virtual environment for our script and how to install dependencies
+These sections show how to create virtual environment, install dependencies and run the script.
+The script will preprocess the datasets, and for each dataset it will use various feature reduction algorithms.
+For each of the algorithms, it will run k-means and agglomerative clustering on transformed datasets. 
+It will also generate 2-D and 3-D (where appropriate) scatter plots of the data.
+
 1. Open folder in terminal
 ```bash
 cd <root_folder_of_project>/
@@ -26,7 +28,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### How to run the main file 
+5. Run the main file 
 ```bash
 python main.py
 ```
