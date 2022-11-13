@@ -182,7 +182,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         # K-Means
         st = time.time()
         k_means_incremental_pca = KMeans(k=k, max_iter=100, n_repeat=10, seed=12345)
-        k_means_incremental_pca.train(principal_components_sklearn_pca)
+        k_means_incremental_pca.train(principal_components_incremental_pca)
         k_means_incremental_pca_labels = k_means_incremental_pca.classify(principal_components_incremental_pca)[0]
         et = time.time()
         print('Time elapsed: ', et - st)
@@ -202,7 +202,7 @@ def run(data, labels, dataset_name, k=3, num_features=2, plot_3D=False):
         st = time.time()
         agglomerative_clustering_incremental_pca = AgglomerativeClustering(n_clusters=k, affinity='manhattan',
                                                                        linkage='average').fit(
-        principal_components_sklearn_pca)
+        principal_components_incremental_pca)
         agglomerative_clustering_incremental_pca_labels = agglomerative_clustering_incremental_pca.labels_
         et = time.time()
         print('Time elapsed: ', et - st)
