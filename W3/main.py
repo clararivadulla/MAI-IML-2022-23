@@ -1,5 +1,5 @@
 from pre_processing import read_arff_files, vowel_pre_processing, iris_pre_processing, pima_diabetes_pre_processing
-from kNN import kNN
+from kNN import KNN
 if __name__ == '__main__':
 
     vowel_dataframes = []

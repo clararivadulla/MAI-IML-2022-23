@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class kNN:
+class KNN:
     def __init__(self, k):
         self.k = k
 
