@@ -1,10 +1,15 @@
 from pre_processing import read_arff_files, vowel_pre_processing
 from kNN.kNN import kNN
 from metrics.accuracies import accuracy
+import timeit
 
 if __name__ == '__main__':
 
+    print(
+        f'\n\n··················································\nVOWEL DATASET\n··················································')
+
     vowel = []
+    times = []
 
     for i in range(10):
 
@@ -20,10 +25,13 @@ if __name__ == '__main__':
         part_len = len(vowel[part][1][0])
         part_predictions = []
         for i in range(part_len):
+            start = timeit.default_timer()
             prediction = kNN.predict(vowel[part][0], vowel[part][1][0][i])
+            stop = timeit.default_timer()
+            times.append(stop-start)
             part_predictions.append(prediction)
         vowel_predictions.append(part_predictions)
 
     for i in range(10):
         acc = accuracy(vowel[i][1][1], vowel_predictions[i])
-        print(f'Acc{i}: ' + str(acc) + '%')
+        print(f'Acc{i}: ' + str(acc) + '% ' + 'Time: ' + str(times[i]))

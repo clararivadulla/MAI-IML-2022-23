@@ -1,5 +1,5 @@
 import numpy as np
-
+from metrics.distance_metrics import euclidean
 
 class kNN:
     def __init__(self, k=1):
@@ -8,7 +8,7 @@ class kNN:
     def get_neighbors(self, train_data, test_data_row):
         distances = []
         for row in train_data:
-            distance = np.linalg.norm(test_data_row - row[:len(row) - 1])
+            distance = euclidean(test_data_row, row[:len(row) - 1])
             distances.append((row, distance))
         distances.sort(key=lambda x: x[1])
         return [distances[i][0] for i in range(self.k)]
