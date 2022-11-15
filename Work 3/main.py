@@ -1,5 +1,7 @@
 from pre_processing import read_arff_files, vowel_pre_processing
 from kNN.kNN import kNN
+from metrics.accuracies import accuracy
+
 if __name__ == '__main__':
 
     vowel = []
@@ -12,7 +14,7 @@ if __name__ == '__main__':
         data_train = vowel_pre_processing.main(df_train, meta_train, norm_type='min_max', train=True)
         vowel.append([data_train, [data_test, labels_test]])
 
-    kNN = kNN(k=5)
+    kNN = kNN(k=1)
     vowel_predictions = []
     for part in range(len(vowel)):
         part_len = len(vowel[part][1][0])
@@ -22,4 +24,6 @@ if __name__ == '__main__':
             part_predictions.append(prediction)
         vowel_predictions.append(part_predictions)
 
-    print(vowel_predictions)
+    for i in range(10):
+        acc = accuracy(vowel[i][1][1], vowel_predictions[i])
+        print(f'Acc{i}: ' + str(acc) + '%')

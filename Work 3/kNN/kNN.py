@@ -2,7 +2,7 @@ import numpy as np
 
 
 class kNN:
-    def __init__(self, k):
+    def __init__(self, k=1):
         self.k = k
 
     def get_neighbors(self, train_data, test_data_row):
