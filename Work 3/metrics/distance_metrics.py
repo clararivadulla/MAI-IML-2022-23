@@ -6,10 +6,8 @@ def euclidean(a, b):
 
 
 def cosine(a, b):
-    # TODO
-    return None
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
 
-def minkowski(a, b):
-    # TODO
-    return None
+def minkowski(a, b, r):
+    return np.sum(np.abs(a - b) ** r) ** (1 / r)

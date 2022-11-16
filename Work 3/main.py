@@ -19,7 +19,7 @@ if __name__ == '__main__':
         data_train = vowel_pre_processing.main(df_train, meta_train, norm_type='min_max', train=True)
         vowel.append([data_train, [data_test, labels_test]])
 
-    kNN = kNN(k=1)
+    kNN = kNN(k=1, dist_metric='minkowski')
     vowel_predictions = []
     for part in range(len(vowel)):
         part_len = len(vowel[part][1][0])
