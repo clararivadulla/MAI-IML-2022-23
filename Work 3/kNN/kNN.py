@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
-from distance_metrics import minkowski, cosine
-
+from distance_metrics import minkowski, cosine, clark
+import sklearn_relief
 
 class kNN:
     def __init__(self, k=1, dist_metric='minkowski', r=2, voting='majority', weights=None):
@@ -17,6 +17,10 @@ class kNN:
             distance = minkowski(x_train, x_test, self.r)
         elif self.dist_metric == 'cosine':
             distance = cosine(x_train, x_test)
+        elif self.dist_metric == 'clark':
+            distance = clark(x_train, x_test)
+        else:
+            raise Exception("Distance matrix is not recognized")
         x_train['label'] = y_train
         x_train['distance'] = distance
         x_train.sort_values(by=['distance'])
