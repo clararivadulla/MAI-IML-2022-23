@@ -1,8 +1,9 @@
+import pandas as pd
+
 def accuracy(labels, predictions):
-    correct = 0
-    for i in range(len(labels)):
-        if labels[i] == predictions[i]:
-            correct += 1
+    df = {'true labels':labels, 'predictions':predictions}
+    df = pd.DataFrame(df)
+    correct = sum(df['true labels']==df['predictions'])
     incorrect = len(labels) - correct
-    percentage = (correct / len(labels)) * 100
-    return correct, incorrect, percentage
+    share = (correct / len(labels))
+    return correct, incorrect, share
