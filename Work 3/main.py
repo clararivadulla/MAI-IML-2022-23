@@ -1,37 +1,93 @@
-from pre_processing import read_arff_files, vowel_pre_processing
+from pre_processing import read_arff_files, vowel_pre_processing, satimage_pre_processing
 from kNN.kNN import kNN
 from metrics.accuracies import accuracy
 import timeit
 
 if __name__ == '__main__':
 
+    """
+    print(
+        f'\n\n··················································\nPEN-BASED DATASET\n··················································')
+
+    kNN_penbased = kNN(k=3)
+    penbased_times = []
+
+    for i in range(10):
+
+        print(f'pen-based/pen-based.fold.00000{i}', end=' ')
+        df_test, meta_test = read_arff_files.main(f'pen-based/pen-based.fold.00000{i}.test.arff')
+        df_train, meta_train = read_arff_files.main(f'pen-based/pen-based.fold.00000{i}.train.arff')
+        x_test, y_test = penbased_pre_processing.main(df_test, meta_test, norm_type='min_max')
+        x_train, y_train = penbased_pre_processing.main(df_train, meta_train, norm_type='min_max')
+        
+        part_len = len(x_test)
+        part_predictions = []
+        start = timeit.default_timer()
+
+        for j in range(part_len):
+            prediction = kNN_penbased.predict(x_train, y_train, x_test[j])
+            part_predictions.append(prediction)
+
+        stop = timeit.default_timer()
+        time = stop - start
+        penbased_times.append(time)
+        c, i, p = accuracy(y_test, part_predictions)
+        print(f'Correct: {c}, Incorrect: {i}, Accuracy: {p}, Time: {time}')
+"""
+    print(
+        f'\n\n··················································\nSATIMAGE DATASET\n··················································')
+
+    kNN_satimage = kNN(k=3)
+    satimage_times = []
+
+    for i in range(10):
+
+        print(f'satimage/satimage.fold.00000{i}', end=' ')
+        df_test, meta_test = read_arff_files.main(f'satimage/satimage.fold.00000{i}.test.arff')
+        df_train, meta_train = read_arff_files.main(f'satimage/satimage.fold.00000{i}.train.arff')
+        x_test, y_test = satimage_pre_processing.main(df_test, meta_test, norm_type='min_max')
+        x_train, y_train = satimage_pre_processing.main(df_train, meta_train, norm_type='min_max')
+
+        part_len = len(x_test)
+        part_predictions = []
+        start = timeit.default_timer()
+
+        for j in range(part_len):
+            prediction = kNN_satimage.predict(x_train, y_train, x_test[j])
+            part_predictions.append(prediction)
+
+        stop = timeit.default_timer()
+        time = stop - start
+        satimage_times.append(time)
+        c, i, p = accuracy(y_test, part_predictions)
+        print(f'Correct: {c}, Incorrect: {i}, Accuracy: {p}, Time: {time}')
+
     print(
         f'\n\n··················································\nVOWEL DATASET\n··················································')
 
-    vowel = []
-    times = []
+    kNN_vowel = kNN(k=5, dist_metric='cosine')
+    vowel_times = []
 
     for i in range(10):
 
+        print(f'vowel/vowel.fold.00000{i}', end = ' ')
         df_test, meta_test = read_arff_files.main(f'vowel/vowel.fold.00000{i}.test.arff')
         df_train, meta_train = read_arff_files.main(f'vowel/vowel.fold.00000{i}.train.arff')
-        data_test, labels_test = vowel_pre_processing.main(df_test, meta_test, norm_type='min_max', train=False)
-        data_train = vowel_pre_processing.main(df_train, meta_train, norm_type='min_max', train=True)
-        vowel.append([data_train, [data_test, labels_test]])
+        x_test, y_test = vowel_pre_processing.main(df_test, meta_test, norm_type='min_max')
+        x_train, y_train = vowel_pre_processing.main(df_train, meta_train, norm_type='min_max')
 
-    kNN = kNN(k=1, dist_metric='minkowski')
-    vowel_predictions = []
-    for part in range(len(vowel)):
-        part_len = len(vowel[part][1][0])
+        part_len = len(x_test)
         part_predictions = []
-        for i in range(part_len):
-            start = timeit.default_timer()
-            prediction = kNN.predict(vowel[part][0], vowel[part][1][0][i])
-            stop = timeit.default_timer()
-            times.append(stop-start)
-            part_predictions.append(prediction)
-        vowel_predictions.append(part_predictions)
+        start = timeit.default_timer()
 
-    for i in range(10):
-        acc = accuracy(vowel[i][1][1], vowel_predictions[i])
-        print(f'Acc{i}: ' + str(acc) + '% ' + 'Time: ' + str(times[i]))
+        for j in range(part_len):
+            prediction = kNN_vowel.predict(x_train, y_train, x_test[j])
+            part_predictions.append(prediction)
+
+        stop = timeit.default_timer()
+        time = stop - start
+        vowel_times.append(time)
+        c, i, p = accuracy(y_test, part_predictions)
+        print(f'Correct: {c}, Incorrect: {i}, Accuracy: {p}, Time: {time}')
+
+

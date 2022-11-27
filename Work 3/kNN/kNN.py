@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
-from distance_metrics import minkowski, cosine, clark
-import sklearn_relief
+from metrics.distance_metrics import minkowski, cosine, clark
 
 class kNN:
     def __init__(self, k=1, dist_metric='minkowski', r=2, voting='majority', weights=None):
