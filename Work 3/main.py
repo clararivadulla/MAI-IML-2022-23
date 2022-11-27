@@ -34,6 +34,7 @@ if __name__ == '__main__':
         c, i, p = accuracy(y_test, part_predictions)
         print(f'Correct: {c}, Incorrect: {i}, Accuracy: {p}, Time: {time}')
 """
+    """
     print(
         f'\n\n··················································\nSATIMAGE DATASET\n··················································')
 
@@ -61,11 +62,11 @@ if __name__ == '__main__':
         satimage_times.append(time)
         c, i, p = accuracy(y_test, part_predictions)
         print(f'Correct: {c}, Incorrect: {i}, Accuracy: {p}, Time: {time}')
-
+"""
     print(
         f'\n\n··················································\nVOWEL DATASET\n··················································')
 
-    kNN_vowel = kNN(k=5, dist_metric='cosine')
+    kNN_vowel = kNN(k=5, dist_metric='minkowski')
     vowel_times = []
 
     for i in range(10):
@@ -81,7 +82,7 @@ if __name__ == '__main__':
         start = timeit.default_timer()
 
         for j in range(part_len):
-            prediction = kNN_vowel.predict(x_train, y_train, x_test[j])
+            prediction = kNN_vowel.predict(x_train, y_train, x_test[j,:])
             part_predictions.append(prediction)
 
         stop = timeit.default_timer()
