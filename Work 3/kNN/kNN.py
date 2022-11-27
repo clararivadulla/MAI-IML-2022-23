@@ -1,9 +1,11 @@
 import numpy as np
 import pandas as pd
 from metrics.distance_metrics import minkowski, cosine, clark
+import sklearn_relief
+from sklearn.feature_selection import mutual_info_classif
 
 class kNN:
-    def __init__(self, k=1, dist_metric='minkowski', r=2, voting='majority', weights=None):
+    def __init__(self, k=1, dist_metric='minkowski', r=2, voting='majority', weights="uniform"):
         self.k = k
         self.dist_metric = dist_metric
         self.r = r
@@ -12,6 +14,19 @@ class kNN:
 
     def get_neighbors(self, x_train, y_train, x_test):
         x_train = pd.DataFrame(x_train)
+        n_cat = len(set(y_train))
+
+        if self.weights == 'relief':
+            if n_cat == 2:
+                r = sklearn_relief.Relief(n_features=x_train.shape[1])
+                x_train = r.fit_transform(x_train, y_train)
+            else:
+                r = sklearn_relief.ReliefF(n_features=x_train.shape[1])
+                x_train = r.fit_transform(x_train, y_train)
+        elif self.weights == 'mutual_info_score':
+            mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k)
+            x_train *= mic_w
+
         if self.dist_metric == 'minkowski':
             distance = minkowski(x_train, x_test, self.r)
         elif self.dist_metric == 'cosine':
@@ -22,7 +37,7 @@ class kNN:
             raise Exception("Distance matrix is not recognized")
         x_train['label'] = y_train
         x_train['distance'] = distance
-        x_train.sort_values(by=['distance'])
+        x_train.sort_values(by=['distance'], inplace=True)
         # Returns k sorted training data points with labels and their distance from the x_test
         return x_train.iloc[:self.k,:-1], x_train.iloc[:self.k,-1]
 
