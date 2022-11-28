@@ -8,6 +8,7 @@ from pre_processing.pre_process import pre_process
 
 
 def test_performance(dataset_name=''):
+
     print(f'··················································\nTESTS FOR {dataset_name.upper()}\n··················································')
     ks = [1, 3, 5, 7]
     voting_schemes = ['majority', 'inverse_distance', 'sheppard']
@@ -52,18 +53,22 @@ def test_performance(dataset_name=''):
                         c, i, p = accuracy(y_test, part_predictions)
                         print(f'Correct: {c}, Incorrect: {i}, Accuracy: {round(p * 100, 2)}%, Time: {round(time, 2)}')
                         accuracies.append(p)
+                        correct.append(c)
+                        incorrect.append(i)
 
 
                     """start = timeit.default_timer()
                     kNN_config.predict()
                     time.sleep(.01)
                     stop = timeit.default_timer()"""
-                    avg_time = sum(times) / max(len(times), 0.0001)
-                    avg_acc = sum(accuracies) / max(len(accuracies), 0.0001)
-                    avg_correct = sum(correct) / max(len(correct), 0.0001)
-                    avg_incorrect = sum(incorrect) / max(len(incorrect), 0.0001)
+
+                    avg_time = sum(times) / len(times)
+                    avg_acc = sum(accuracies) / len(accuracies)
+                    avg_correct = sum(correct) / len(correct)
+                    avg_incorrect = sum(incorrect) / len(incorrect)
                     results.append(([avg_correct, avg_incorrect, avg_acc, avg_time], [k, distance_metric, voting_scheme, weighting_scheme]))
 
     print(results)
-    with open(f'results_{dataset_name}.txt', 'w') as convert_file:
-        convert_file.write(json.dumps(results))
+    with open(f'results_{dataset_name}.txt', 'w') as f:
+        for res in results:
+            f.write(f"{res}\n")
