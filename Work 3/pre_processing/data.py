@@ -11,7 +11,7 @@ def read_arff_file(filename):
 def get_data(dataset_name):
     data = []
     for i in range(10):
-        print(f'{dataset_name}/{dataset_name}.fold.00000{i}', end=' ')
+        #print(f'{dataset_name}/{dataset_name}.fold.00000{i}', end=' ')
         df_test, meta_test = read_arff_file(f'datasets/{dataset_name}/{dataset_name}.fold.00000{i}.test.arff')
         df_train, meta_train = read_arff_file(f'datasets/{dataset_name}/{dataset_name}.fold.00000{i}.train.arff')
 

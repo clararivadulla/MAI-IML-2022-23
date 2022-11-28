@@ -3,12 +3,23 @@ from pre_processing import data
 
 if __name__ == '__main__':
 
-    print(f'··················································\nTESTS FOR VOWEL DATASET\n··················································')
-    dataset_name = 'vowel'
-    data = data.get_data(dataset_name=dataset_name)
-    results_sorted_by_accuracy = test_performance(data, dataset_name=dataset_name)
-
     # In this file, we run kNN for every dataset with the best parameters found for that dataset
+    print(f'··················································\n\nTESTS FOR VOWEL DATASET\n··················································')
+    dataset_name = 'vowel'
+    vowel_data = data.get_data(dataset_name=dataset_name)
+    vowel_results_sorted_by_accuracy = test_performance(data=vowel_data, dataset_name=dataset_name)
+
+    print(f'··················································\n\nTESTS FOR PEN-BASED DATASET\n··················································')
+    dataset_name = 'pen-based'
+    pen_based_data = data.get_data(dataset_name=dataset_name)
+    pen_based_results_sorted_by_accuracy = test_performance(data=pen_based_data, dataset_name=dataset_name)
+
+    print(f'··················································\n\nTESTS FOR SATIMAGE DATASET\n··················································')
+    dataset_name = 'satimage'
+    sat_image_data = data.get_data(dataset_name=dataset_name)
+    satimage_results_sorted_by_accuracy = test_performance(data=sat_image_data, dataset_name=dataset_name)
+
+    print()
     """
     print(
         f'··················································\nPEN-BASED DATASET\n··················································')
