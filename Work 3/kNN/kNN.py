@@ -41,6 +41,7 @@ class kNN:
     def predict(self, x_test):
         x_train = self.x_train.copy()
         y_train = self.y_train.copy()
+        x_test = x_test.copy()
         x_test *= self.w
 
         if self.dist_metric == 'minkowski':

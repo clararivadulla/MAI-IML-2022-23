@@ -9,11 +9,6 @@ def test_performance(data, dataset_name='', verbose=False):
     distance_metrics = ['minkowski', 'cosine', 'clark']
     weighting_schemes = ['uniform', 'mutual_info_score']
 
-    ks = [1, 3]
-    voting_schemes = ['majority', 'inverse_distance', 'sheppard']
-    distance_metrics = ['minkowski', 'cosine', 'clark']
-    weighting_schemes = ['uniform', 'mutual_info_score']
-
     results = []
     i = 0
     for k in ks:
@@ -41,7 +36,7 @@ def test_performance(data, dataset_name='', verbose=False):
                         stop = timeit.default_timer()
                         time = stop - start
                         times.append(time)
-                        
+
                         correct, incorrect, acc = accuracy(y_test, part_predictions)
                         if verbose:
                            print(f'Correct: {correct}, Incorrect: {incorrect}, Accuracy: {round(acc * 100, 2)}%, Time: {round(time, 2)}')
