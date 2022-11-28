@@ -1,23 +1,11 @@
 from performance.performance import test_performance
-from pre_processing import pre_process, read_arff_files, vowel_pre_processing, satimage_pre_processing, penbased_pre_processing
-from kNN.kNN import kNN
-from metrics.accuracies import accuracy
-import timeit
+from pre_processing import data
 
 if __name__ == '__main__':
 
     print(f'··················································\nTESTS FOR VOWEL DATASET\n··················································')
     dataset_name = 'vowel'
-    data = []
-    for i in range(10):
-        print(f'{dataset_name}/{dataset_name}.fold.00000{i}', end=' ')
-        df_test, meta_test = read_arff_files.main(f'{dataset_name}/{dataset_name}.fold.00000{i}.test.arff')
-        df_train, meta_train = read_arff_files.main(f'{dataset_name}/{dataset_name}.fold.00000{i}.train.arff')
-
-        x_train, y_train = pre_process.pre_process_dataset(df_train, meta_train, dataset_name=dataset_name)
-        x_test, y_test = pre_process.pre_process_dataset(df_test, meta_test, dataset_name=dataset_name)
-        data.append((x_train, y_train, x_test, y_test))
-
+    data = data.get_data(dataset_name=dataset_name)
     results_sorted_by_accuracy = test_performance(data, dataset_name=dataset_name)
 
     # In this file, we run kNN for every dataset with the best parameters found for that dataset
