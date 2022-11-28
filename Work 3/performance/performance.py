@@ -64,8 +64,8 @@ def test_performance(dataset_name=''):
 
                     avg_time = sum(times) / len(times)
                     avg_acc = sum(accuracies) / len(accuracies)
-                    avg_correct = sum(correct) / len(correct)
-                    avg_incorrect = sum(incorrect) / len(incorrect)
+                    avg_correct = sum(correct) / len(accuracies)
+                    avg_incorrect = sum(incorrect) / len(accuracies)
                     results.append(([avg_correct, avg_incorrect, avg_acc, avg_time], [k, distance_metric, voting_scheme, weighting_scheme]))
 
     print(results)
