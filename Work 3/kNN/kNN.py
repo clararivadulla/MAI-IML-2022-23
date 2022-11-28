@@ -13,6 +13,7 @@ class kNN:
         self.weights = weights
         self.x_train = None
         self.y_train = None
+        self.w = None
 
     def fit(self, x_train, y_train):
         x_train = pd.DataFrame(x_train)
@@ -22,13 +23,17 @@ class kNN:
             if n_cat == 2:
                 r = sklearn_relief.Relief(n_features=x_train.shape[1])
                 x_train = r.fit_transform(x_train, y_train)
+                self.w = r.w_
             else:
                 r = sklearn_relief.ReliefF(n_features=x_train.shape[1], k=self.k)
                 x_train = r.fit_transform(x_train, y_train)
+                self.w = r.w_
         elif self.weights == 'mutual_info_score':
             mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k)
-            # print(mic_w)
             x_train *= mic_w
+            self.w = mic_w
+        elif self.weights == 'uniform':
+            self.w = np.ones(x_train.shape[1])
 
         self.x_train = x_train
         self.y_train = y_train
@@ -36,6 +41,7 @@ class kNN:
     def predict(self, x_test):
         x_train = self.x_train.copy()
         y_train = self.y_train.copy()
+        x_test *= self.w
 
         if self.dist_metric == 'minkowski':
             distance = minkowski(x_train, x_test, self.r)
