@@ -16,7 +16,7 @@ def test_performance(data, dataset_name='', verbose=False):
             for distance_metric in distance_metrics:
                 for weighting_scheme in weighting_schemes:
                     i += 1
-                    print(f'\nTEST {i}, k={k}, dist_metric={distance_metric}, voting={voting_scheme}, weights={weighting_scheme}')
+                    print(f'\nTEST {i}: k={k}, dist_metric={distance_metric}, voting={voting_scheme}, weights={weighting_scheme}')
 
                     times = []
                     accuracies = []
@@ -39,13 +39,13 @@ def test_performance(data, dataset_name='', verbose=False):
 
                         correct, incorrect, acc = accuracy(y_test, part_predictions)
                         if verbose:
-                           print(f'Correct: {correct}, Incorrect: {incorrect}, Accuracy: {round(acc * 100, 2)}%, Time: {round(time, 2)}')
+                           print(f'Correct: {correct}, Incorrect: {incorrect}, Accuracy: {round(acc * 100, 2)}%, Time: {round(time, 2)}s')
                         accuracies.append(acc)
 
                     avg_time = sum(times) / len(times)
                     avg_acc = sum(accuracies) / len(accuracies)
-                    results.append(([avg_acc, avg_time], [k, distance_metric, voting_scheme, weighting_scheme]))
-                    print(f'Average accuracy: {round(avg_acc * 100, 2)}%, Average time: {round(avg_time, 2)}')
+                    results.append(([round(avg_acc * 100, 2), round(avg_time, 2)], [k, distance_metric, voting_scheme, weighting_scheme]))
+                    print(f'Average accuracy: {round(avg_acc * 100, 2)}%, Average time: {round(avg_time, 2)}s')
 
     print(results)
     with open(f'results_{dataset_name}.txt', 'w') as f:
