@@ -3,13 +3,9 @@ import timeit, time
 
 from kNN.kNN import kNN
 from metrics.accuracies import accuracy
-from pre_processing import read_arff_files
-from pre_processing.pre_process import pre_process
 
+def test_performance(data, dataset_name=''):
 
-def test_performance(dataset_name=''):
-
-    print(f'··················································\nTESTS FOR {dataset_name.upper()}\n··················································')
     ks = [1, 3, 5, 7]
     voting_schemes = ['majority', 'inverse_distance', 'sheppard']
     distance_metrics = ['minkowski', 'cosine', 'clark']
@@ -29,13 +25,9 @@ def test_performance(dataset_name=''):
                     correct = []
                     incorrect = []
 
-                    for i in range(10):
-                        print(f'{dataset_name}/{dataset_name}.fold.00000{i}', end=' ')
-                        df_test, meta_test = read_arff_files.main(f'{dataset_name}/{dataset_name}.fold.00000{i}.test.arff')
-                        df_train, meta_train = read_arff_files.main(f'{dataset_name}/{dataset_name}.fold.00000{i}.train.arff')
+                    for i in range(len(data)):
 
-                        x_test, y_test = pre_process(df_test, meta_test, dataset_name=dataset_name)
-                        x_train, y_train = pre_process(df_train, meta_train, dataset_name=dataset_name)
+                        x_train, y_train, x_test, y_test = data[i]
 
                         part_len = len(x_test)
                         part_predictions = []
