@@ -34,12 +34,10 @@ class kNN:
         self.y_train = y_train
 
     def predict(self, x_test):
-        x_train = self.x_train
-        y_train = self.y_train
-        print(x_train.shape)
+        x_train = self.x_train.copy()
+        y_train = self.y_train.copy()
 
         if self.dist_metric == 'minkowski':
-            print(x_train.shape, x_test.shape)
             distance = minkowski(x_train, x_test, self.r)
         elif self.dist_metric == 'cosine':
             distance = cosine(x_train, x_test)
