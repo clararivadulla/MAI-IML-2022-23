@@ -23,9 +23,10 @@ if __name__ == '__main__':
         part_len = len(x_test)
         part_predictions = []
         start = timeit.default_timer()
+        kNN_penbased.fit(x_train, y_train)
 
         for j in range(part_len):
-            prediction = kNN_penbased.predict(x_train, y_train, x_test[j])
+            prediction = kNN_penbased.predict(x_test[j,:])
             part_predictions.append(prediction)
 
         stop = timeit.default_timer()
@@ -52,9 +53,10 @@ if __name__ == '__main__':
         part_len = len(x_test)
         part_predictions = []
         start = timeit.default_timer()
+        kNN_satimage.fit(x_train, y_train)
 
         for j in range(part_len):
-            prediction = kNN_satimage.predict(x_train, y_train, x_test[j])
+            prediction = kNN_satimage.predict(x_test[j,:])
             part_predictions.append(prediction)
 
         stop = timeit.default_timer()
@@ -66,7 +68,6 @@ if __name__ == '__main__':
     print(
         f'\n\n··················································\nVOWEL DATASET\n··················································')
 
-    kNN_vowel = kNN(k=5, dist_metric='minkowski')
     vowel_times = []
 
     for i in range(10):
@@ -80,9 +81,11 @@ if __name__ == '__main__':
         part_len = len(x_test)
         part_predictions = []
         start = timeit.default_timer()
+        kNN_vowel = kNN(k=5, dist_metric='minkowski', voting='inverse_distance', weights='uniform')
+        kNN_vowel.fit(x_train, y_train)
 
         for j in range(part_len):
-            prediction = kNN_vowel.predict(x_train, y_train, x_test[j,:])
+            prediction = kNN_vowel.predict(x_test[j,:])
             part_predictions.append(prediction)
 
         stop = timeit.default_timer()
