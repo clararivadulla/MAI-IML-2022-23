@@ -13,7 +13,7 @@ def test_performance(dataset_name=''):
     ks = [1, 3, 5, 7]
     voting_schemes = ['majority', 'inverse_distance', 'sheppard']
     distance_metrics = ['minkowski', 'cosine', 'clark']
-    weighting_schemes = ['uniform', 'relief', 'mutual_info_score']
+    weighting_schemes = ['uniform', 'mutual_info_score']
 
     results = []
     z = 0
