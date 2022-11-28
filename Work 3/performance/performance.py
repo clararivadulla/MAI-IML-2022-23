@@ -2,8 +2,6 @@ import timeit
 from kNN.kNN import kNN
 from metrics.accuracies import accuracy
 
-import sklearn
-
 def test_performance(data, dataset_name='', verbose=False):
 
     ks = [1, 3, 5, 7]
@@ -43,10 +41,10 @@ def test_performance(data, dataset_name='', verbose=False):
                         stop = timeit.default_timer()
                         time = stop - start
                         times.append(time)
-                        acc = sklearn.metrics.accuracy_score(y_test, part_predictions)
-                        #correct, incorrect, acc = accuracy(y_test, part_predictions)
-                        #if verbose:
-                        #   print(f'Correct: {correct}, Incorrect: {incorrect}, Accuracy: {round(acc * 100, 2)}%, Time: {round(time, 2)}')
+                        
+                        correct, incorrect, acc = accuracy(y_test, part_predictions)
+                        if verbose:
+                           print(f'Correct: {correct}, Incorrect: {incorrect}, Accuracy: {round(acc * 100, 2)}%, Time: {round(time, 2)}')
                         accuracies.append(acc)
 
                     avg_time = sum(times) / len(times)
