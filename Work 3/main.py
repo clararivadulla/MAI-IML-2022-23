@@ -9,7 +9,6 @@ if __name__ == '__main__':
     print(
         f'\n\n··················································\nPEN-BASED DATASET\n··················································')
 
-    kNN_penbased = kNN(k=3)
     penbased_times = []
 
     for i in range(10):
@@ -23,6 +22,7 @@ if __name__ == '__main__':
         part_len = len(x_test)
         part_predictions = []
         start = timeit.default_timer()
+        kNN_penbased = kNN(k=3)
         kNN_penbased.fit(x_train, y_train)
 
         for j in range(part_len):
@@ -39,7 +39,6 @@ if __name__ == '__main__':
     print(
         f'\n\n··················································\nSATIMAGE DATASET\n··················································')
 
-    kNN_satimage = kNN(k=3)
     satimage_times = []
 
     for i in range(10):
@@ -53,6 +52,7 @@ if __name__ == '__main__':
         part_len = len(x_test)
         part_predictions = []
         start = timeit.default_timer()
+        kNN_satimage = kNN(k=3)
         kNN_satimage.fit(x_train, y_train)
 
         for j in range(part_len):
@@ -81,7 +81,7 @@ if __name__ == '__main__':
         part_len = len(x_test)
         part_predictions = []
         start = timeit.default_timer()
-        kNN_vowel = kNN(k=5, dist_metric='minkowski', voting='inverse_distance', weights='uniform')
+        kNN_vowel = kNN(k=5, dist_metric='minkowski', voting='inverse_distance', weights='mutual_info_score')
         kNN_vowel.fit(x_train, y_train)
 
         for j in range(part_len):
