@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
-from metrics.distance_metrics import minkowski, cosine, clark
 import sklearn_relief
+from metrics.distance_metrics import minkowski, cosine, clark
 from sklearn.feature_selection import mutual_info_classif
 
 class kNN:
@@ -27,7 +27,7 @@ class kNN:
                 x_train = r.fit_transform(x_train, y_train)
         elif self.weights == 'mutual_info_score':
             mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k)
-            print(mic_w)
+            # print(mic_w)
             x_train *= mic_w
 
         self.x_train = x_train

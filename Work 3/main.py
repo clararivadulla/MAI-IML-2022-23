@@ -1,13 +1,17 @@
-from pre_processing import read_arff_files, vowel_pre_processing, satimage_pre_processing
+from performance.performance import test_performance
+from pre_processing import read_arff_files, vowel_pre_processing, satimage_pre_processing, penbased_pre_processing
 from kNN.kNN import kNN
 from metrics.accuracies import accuracy
 import timeit
 
 if __name__ == '__main__':
 
+    test_performance(dataset_name='vowel')
+
+    # In this file, we run kNN for every dataset with the best parameters found for that dataset
     """
     print(
-        f'\n\n··················································\nPEN-BASED DATASET\n··················································')
+        f'··················································\nPEN-BASED DATASET\n··················································')
 
     penbased_times = []
 
@@ -33,11 +37,11 @@ if __name__ == '__main__':
         time = stop - start
         penbased_times.append(time)
         c, i, p = accuracy(y_test, part_predictions)
-        print(f'Correct: {c}, Incorrect: {i}, Accuracy: {p}, Time: {time}')
-"""
-    """
+        print(f'Correct: {c}, Incorrect: {i}, Accuracy: {round(p * 100, 2)}%, Time: {round(time, 2)}')
+
+
     print(
-        f'\n\n··················································\nSATIMAGE DATASET\n··················································')
+        f'\n··················································\nSATIMAGE DATASET\n··················································')
 
     satimage_times = []
 
@@ -63,10 +67,10 @@ if __name__ == '__main__':
         time = stop - start
         satimage_times.append(time)
         c, i, p = accuracy(y_test, part_predictions)
-        print(f'Correct: {c}, Incorrect: {i}, Accuracy: {p}, Time: {time}')
-"""
+        print(f'Correct: {c}, Incorrect: {i}, Accuracy: {round(p * 100, 2)}%, Time: {round(time, 2)}')
+
     print(
-        f'\n\n··················································\nVOWEL DATASET\n··················································')
+        f'\n··················································\nVOWEL DATASET\n··················································')
 
     vowel_times = []
 
@@ -81,7 +85,7 @@ if __name__ == '__main__':
         part_len = len(x_test)
         part_predictions = []
         start = timeit.default_timer()
-        kNN_vowel = kNN(k=5, dist_metric='minkowski', voting='inverse_distance', weights='mutual_info_score')
+        kNN_vowel = kNN(k=5)
         kNN_vowel.fit(x_train, y_train)
 
         for j in range(part_len):
@@ -92,6 +96,7 @@ if __name__ == '__main__':
         time = stop - start
         vowel_times.append(time)
         c, i, p = accuracy(y_test, part_predictions)
-        print(f'Correct: {c}, Incorrect: {i}, Accuracy: {p}, Time: {time}')
+        print(f'Correct: {c}, Incorrect: {i}, Accuracy: {round(p * 100, 2)}%, Time: {round(time, 2)}')
+    """
 
 

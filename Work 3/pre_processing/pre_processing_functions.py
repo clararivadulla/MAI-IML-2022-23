@@ -98,13 +98,19 @@ def remove_and_return_class_column(df):
     if 'class' in df.columns:
         label_encode_columns(df, ['class'])
         class_col = df.pop('class')
+        return class_col
     if 'Class' in df.columns:
         label_encode_columns(df, ['Class'])
         class_col = df.pop('Class')
+        return class_col
     if 'clase' in df.columns:
         label_encode_columns(df, ['clase'])
         class_col = df.pop('clase')
-    return class_col
+        return class_col
+    if 'a17' in df.columns:
+        label_encode_columns(df, ['a17'])
+        class_col = df.pop('a17')
+        return class_col
 
 
 def df_to_numeric_array(df):
