@@ -6,7 +6,6 @@ import timeit
 
 if __name__ == '__main__':
 
-
     print(f'··················································\nTESTS FOR VOWEL DATASET\n··················································')
     dataset_name = 'vowel'
     data = []
@@ -19,7 +18,7 @@ if __name__ == '__main__':
         x_test, y_test = pre_process.pre_process_dataset(df_test, meta_test, dataset_name=dataset_name)
         data.append((x_train, y_train, x_test, y_test))
 
-    test_performance(data, dataset_name=dataset_name)
+    results_sorted_by_accuracy = test_performance(data, dataset_name=dataset_name)
 
     # In this file, we run kNN for every dataset with the best parameters found for that dataset
     """
