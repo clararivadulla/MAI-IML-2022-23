@@ -42,10 +42,11 @@ def test_performance(data, dataset_name='', verbose=False):
                            print(f'Correct: {correct}, Incorrect: {incorrect}, Accuracy: {round(acc * 100, 2)}%, Time: {round(time, 2)}s')
                         accuracies.append(acc)
 
-                    avg_time = sum(times) / len(times)
-                    avg_acc = sum(accuracies) / len(accuracies)
-                    results.append(([round(avg_acc * 100, 2), round(avg_time, 2)], [k, distance_metric, voting_scheme, weighting_scheme]))
-                    print(f'Average accuracy: {round(avg_acc * 100, 2)}%, Average time: {round(avg_time, 2)}s')
+                    avg_acc = round(sum(accuracies) / len(accuracies) * 100, 2)
+                    avg_time = round(sum(times) / len(times), 3)
+
+                    results.append(([avg_acc, avg_time], [k, distance_metric, voting_scheme, weighting_scheme]))
+                    print(f'Average accuracy: {avg_acc}%, Average time: {avg_time}s')
 
     print(results)
     with open(f'results_{dataset_name}.txt', 'w') as f:
@@ -53,5 +54,10 @@ def test_performance(data, dataset_name='', verbose=False):
             f.write(f"{res}\n")
 
     results_sorted_by_accuracy = sorted(results, key=lambda item: item[0][0], reverse=True)
+
+    print("\nTop 10 parameter sets by accuracy:")
+    print(f'Accuracy:   Time:     [k, distance_metric, voting_scheme, weighting_scheme]')
+    for result in results_sorted_by_accuracy[0:10]:
+        print(f'{result[0][0]}%      {result[0][1]}s    {result[1]}')
 
     return results_sorted_by_accuracy
