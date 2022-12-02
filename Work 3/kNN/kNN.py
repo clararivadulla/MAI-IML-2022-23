@@ -39,24 +39,8 @@ class kNN:
         self.y_train = y_train
 
     def predict(self, x_test):
-        x_train = self.x_train.copy()
-        y_train = self.y_train.copy()
-        x_test = x_test.copy()
-        x_test *= self.w
 
-        if self.dist_metric == 'minkowski':
-            distance = minkowski(x_train, x_test, self.r)
-        elif self.dist_metric == 'cosine':
-            distance = cosine(x_train, x_test)
-        elif self.dist_metric == 'clark':
-            distance = clark(x_train, x_test)
-        else:
-            raise Exception("Distance matrix is not recognized")
-
-        x_train['label'] = y_train
-        x_train['distance'] = distance
-        x_train.sort_values(by=['distance'], inplace=True)
-        neighbors, distance = x_train.iloc[:self.k,:-1], x_train.iloc[:self.k,-1]
+        neighbors, distance = self.get_neighbors(x_test)
         labels = neighbors['label']
 
         if self.voting == 'majority':
@@ -99,6 +83,27 @@ class kNN:
             raise Exception("Voting scheme is not recognized")
 
 
+    def get_neighbors(self, x_test):
+
+        x_train = self.x_train.copy()
+        y_train = self.y_train.copy()
+        x_test = x_test.copy()
+        x_test *= self.w
+
+        if self.dist_metric == 'minkowski':
+            distance = minkowski(x_train, x_test, self.r)
+        elif self.dist_metric == 'cosine':
+            distance = cosine(x_train, x_test)
+        elif self.dist_metric == 'clark':
+            distance = clark(x_train, x_test)
+        else:
+            raise Exception("Distance matrix is not recognized")
+
+        x_train['label'] = y_train
+        x_train['distance'] = distance
+        x_train.sort_values(by=['distance'], inplace=True)
+        neighbors, distance = x_train.iloc[:self.k, :-1], x_train.iloc[:self.k, -1]
+        return neighbors, distance
 
 
 
