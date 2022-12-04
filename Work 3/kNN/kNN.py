@@ -16,7 +16,8 @@ class kNN:
         self.w = None
 
     def fit(self, x_train, y_train):
-        x_train = pd.DataFrame(x_train)
+        #x_train = pd.DataFrame(x_train)
+        x_train = x_train.copy()
         n_cat = len(set(y_train))
 
         if self.weights == 'relief':
@@ -39,9 +40,16 @@ class kNN:
         self.y_train = y_train
 
     def predict(self, x_test):
+        import timeit
+        start = timeit.default_timer()
 
-        neighbors, distance = self.get_neighbors(x_test)
-        labels = neighbors['label']
+        neighbors, labels, distance = self.get_neighbors(x_test)
+        #labels = neighbors['label']
+
+        stop = timeit.default_timer()
+        time = stop - start
+
+        labels = pd.Series(labels)
 
         if self.voting == 'majority':
             votes_counted = labels.value_counts()
@@ -99,11 +107,15 @@ class kNN:
         else:
             raise Exception("Distance matrix is not recognized")
 
-        x_train['label'] = y_train
-        x_train['distance'] = distance
-        x_train.sort_values(by=['distance'], inplace=True)
-        neighbors, distance = x_train.iloc[:self.k, :-1], x_train.iloc[:self.k, -1]
-        return neighbors, distance
+        #x_train['label'] = y_train
+        #x_train['distance'] = distance
+        #x_train.sort_values(by=['distance'], inplace=True)
+        #neighbors, distance = x_train.iloc[:self.k, :-1], x_train.iloc[:self.k, -1]
+
+        distance_sorted_idx = np.argsort(distance)
+        k_distance_sorted_idx = distance_sorted_idx[:self.k]
+
+        return x_train[k_distance_sorted_idx], y_train[k_distance_sorted_idx], distance[k_distance_sorted_idx]
 
 
 
