@@ -15,8 +15,8 @@ def get_data(dataset_name):
         df_test, meta_test = read_arff_file(f'datasets/{dataset_name}/{dataset_name}.fold.00000{i}.test.arff')
         df_train, meta_train = read_arff_file(f'datasets/{dataset_name}/{dataset_name}.fold.00000{i}.train.arff')
 
-        x_train, y_train = pre_process.pre_process_dataset(df_train, meta_train, dataset_name=dataset_name)
-        x_test, y_test = pre_process.pre_process_dataset(df_test, meta_test, dataset_name=dataset_name)
+        x_train, y_train, numeric_cols, nominal_cols = pre_process.pre_process_dataset(df_train, meta_train, dataset_name=dataset_name)
+        x_test, y_test, numeric_cols, nominal_cols = pre_process.pre_process_dataset(df_test, meta_test, dataset_name=dataset_name)
         data.append((x_train, y_train, x_test, y_test))
 
-    return data
+    return data, numeric_cols, nominal_cols
