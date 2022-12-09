@@ -4,10 +4,6 @@ from pre_processing import pre_processing_functions
 def main(df, meta, norm_type='gaussian'):
 
     (nominal_cols, numeric_cols) = pre_processing_functions.get_columns_by_type(meta)
-
-    pre_processing_functions.drop_rows_with_na_values(df)
-    pre_processing_functions.substitute_missing_values_by_mean(df, numeric_cols)
-
     class_labels = pre_processing_functions.remove_and_return_class_column(df).to_numpy()
 
     if norm_type == 'gaussian':
@@ -19,4 +15,20 @@ def main(df, meta, norm_type='gaussian'):
 
     data = pre_processing_functions.df_to_numeric_array(df)
 
-    return data, class_labels
+    if len(numeric_cols) == 0:
+        num_idx = None
+    else:
+        num_idx = []
+        for i in range(len(numeric_cols)):
+            id = list(df.columns).index(numeric_cols[i])
+            num_idx.append(id)
+
+    if len(nominal_cols) == 0:
+        nom_idx = None
+    else:
+        nom_idx = []
+        for i in range(len(nominal_cols)):
+            id = list(df.columns).index(nominal_cols[i])
+            nom_idx.append(id)
+
+    return data, class_labels, numeric_cols, nominal_cols
