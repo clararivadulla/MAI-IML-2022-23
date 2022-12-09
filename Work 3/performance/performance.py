@@ -2,12 +2,12 @@ import timeit
 from kNN.kNN import kNN
 from metrics.accuracies import accuracy
 
-def test_performance(data, dataset_name='', verbose=False):
+def test_performance(data, numeric_cols, nominal_cols, dataset_name='', verbose=False):
 
     ks = [1, 3, 5, 7]
     voting_schemes = ['majority', 'inverse_distance', 'sheppard']
     distance_metrics = ['minkowski', 'cosine', 'clark']
-    weighting_schemes = ['uniform', 'mutual_info_score']
+    weighting_schemes = ['uniform', 'mutual_info_score', 'lasso']
 
     results = []
     i = 0
@@ -27,7 +27,7 @@ def test_performance(data, dataset_name='', verbose=False):
                         part_predictions = []
                         start = timeit.default_timer()
                         kNN_config = kNN(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme)
-                        kNN_config.fit(x_train, y_train)
+                        kNN_config.fit(x_train, y_train, numeric_cols, nominal_cols)
 
                         for j in range(x_test_len):
                             prediction = kNN_config.predict(x_test[j, :])
