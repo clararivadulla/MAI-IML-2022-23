@@ -1,5 +1,8 @@
 import numpy as np
 import pandas as pd
+import sklearn_relief
+import ReliefF
+
 from metrics.distance_metrics import minkowski, cosine, clark
 from sklearn.feature_selection import mutual_info_classif, SelectFromModel
 from sklearn.linear_model import LogisticRegression
@@ -23,11 +26,16 @@ class kNN:
         self.numerical = numeric_cols
         self.nominal = nominal_cols
 
+        if self.weights == 'relief':
+            r = ReliefF.ReliefF(n_neighbors = self.k, n_features_to_keep = x_train.shape[1])
+            r.fit(x_train, y_train)
+            x_train = r.transform(x_train)
+
         if self.weights == 'lasso':
             lasso = SelectFromModel(LogisticRegression(penalty="l2", max_iter=500), max_features=None) # L2: Ridge Regression
             lasso.fit(x_train, y_train)
             self.w = lasso.get_support()
-            # print("lasso w: ", self.w)
+
         elif self.weights == 'mutual_info_score':
             mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k)
             x_train *= mic_w
@@ -39,12 +47,8 @@ class kNN:
         self.y_train = y_train
 
     def predict(self, x_test):
-        import timeit
-        start = timeit.default_timer()
         neighbors, labels, distance = self.get_neighbors(x_test)
         # labels = neighbors['label']
-        stop = timeit.default_timer()
-        time = stop - start
         labels = pd.Series(labels)
 
         if self.voting == 'majority':
@@ -92,7 +96,8 @@ class kNN:
         x_train = self.x_train.copy()
         y_train = self.y_train.copy()
         x_test = x_test.copy()
-        x_test *= self.w
+        if self.weights != "relief":
+            x_test *= self.w
 
         if self.dist_metric == 'minkowski':
             distance = minkowski(x_train, x_test, self.r, self.nominal, self.numerical)
@@ -102,6 +107,7 @@ class kNN:
             distance = clark(x_train, x_test, self.nominal, self.numerical)
         else:
             raise Exception("Distance matrix is not recognized")
+
         """
         x_train['label'] = y_train
         x_train['distance'] = distance
