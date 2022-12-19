@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
-import sklearn_relief
 from metrics.distance_metrics import minkowski, cosine, clark
-from sklearn.feature_selection import mutual_info_classif
+from sklearn.feature_selection import mutual_info_classif, SelectFromModel
+from sklearn.linear_model import LogisticRegression
 
 class kNN:
     def __init__(self, k=1, dist_metric='minkowski', r=2, voting='majority', weights="uniform"):
@@ -14,20 +14,19 @@ class kNN:
         self.x_train = None
         self.y_train = None
         self.w = None
+        self.nominal = None
+        self.numerical = None
 
-    def fit(self, x_train, y_train):
+    def fit(self, x_train, y_train, numeric_cols, nominal_cols):
         x_train = pd.DataFrame(x_train)
-        n_cat = len(set(y_train))
+        self.numerical = numeric_cols
+        self.nominal = nominal_cols
 
-        if self.weights == 'relief':
-            if n_cat == 2:
-                r = sklearn_relief.Relief(n_features=x_train.shape[1])
-                x_train = r.fit_transform(x_train, y_train)
-                self.w = r.w_
-            else:
-                r = sklearn_relief.ReliefF(n_features=x_train.shape[1], k=self.k)
-                x_train = r.fit_transform(x_train, y_train)
-                self.w = r.w_
+        if self.weights == 'lasso':
+            lasso = SelectFromModel(LogisticRegression(penalty="l2", max_iter=500), max_features=None) # L2: Ridge Regression
+            lasso.fit(x_train, y_train)
+            self.w = lasso.get_support()
+            # print("lasso w: ", self.w)
         elif self.weights == 'mutual_info_score':
             mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k)
             x_train *= mic_w
@@ -91,11 +90,11 @@ class kNN:
         x_test *= self.w
 
         if self.dist_metric == 'minkowski':
-            distance = minkowski(x_train, x_test, self.r)
+            distance = minkowski(x_train, x_test, self.r, self.nominal, self.numerical)
         elif self.dist_metric == 'cosine':
-            distance = cosine(x_train, x_test)
+            distance = cosine(x_train, x_test, self.nominal, self.numerical)
         elif self.dist_metric == 'clark':
-            distance = clark(x_train, x_test)
+            distance = clark(x_train, x_test, self.nominal, self.numerical)
         else:
             raise Exception("Distance matrix is not recognized")
 
@@ -104,7 +103,4 @@ class kNN:
         x_train.sort_values(by=['distance'], inplace=True)
         neighbors, distance = x_train.iloc[:self.k, :-1], x_train.iloc[:self.k, -1]
         return neighbors, distance
-
-
-
 
