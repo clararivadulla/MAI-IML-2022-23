@@ -104,6 +104,3 @@ class kNN:
         neighbors, distance = x_train.iloc[:self.k, :-1], x_train.iloc[:self.k, -1]
         return neighbors, distance
 
-
-
-
