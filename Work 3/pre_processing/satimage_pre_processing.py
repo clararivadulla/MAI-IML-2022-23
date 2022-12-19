@@ -5,7 +5,6 @@ def main(df, meta, norm_type='gaussian'):
 
     (nominal_cols, numeric_cols) = pre_processing_functions.get_columns_by_type(meta)
     class_labels = pre_processing_functions.remove_and_return_class_column(df).to_numpy()
-    print(nominal_cols, numeric_cols)
 
     if norm_type == 'gaussian':
         pre_processing_functions.standardize_columns(df, numeric_cols)
