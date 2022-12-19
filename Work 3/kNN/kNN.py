@@ -23,7 +23,7 @@ class kNN:
         self.nominal = nominal_cols
 
         if self.weights == 'lasso':
-            lasso = SelectFromModel(LogisticRegression(penalty="l1"), max_features=None)
+            lasso = SelectFromModel(LogisticRegression(penalty="l2"), max_features=None)
             lasso.fit(x_train, y_train)
             self.w = lasso.get_support()
             print("lasso w: ", self.w)

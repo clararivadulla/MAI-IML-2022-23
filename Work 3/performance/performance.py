@@ -7,7 +7,7 @@ def test_performance(data, numeric_cols, nominal_cols, dataset_name='', verbose=
     ks = [1, 3, 5, 7]
     voting_schemes = ['majority', 'inverse_distance', 'sheppard']
     distance_metrics = ['minkowski', 'cosine', 'clark']
-    weighting_schemes = ['uniform', 'mutual_info_score', 'lasso']
+    weighting_schemes = ['uniform', 'mutual_info_score']
 
     results = []
     i = 0

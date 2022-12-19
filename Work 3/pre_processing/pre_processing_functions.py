@@ -36,7 +36,7 @@ def get_columns_by_type(meta):
     nominal_cols = []
     numeric_cols = []
     for i in range(0, len(meta.names())):
-        if (meta.names()[i].lower() == 'class'):
+        if (meta.names()[i].lower() == 'class' or meta.names()[i].lower() == 'clase' or meta.names()[i].lower() == 'a17'):
             continue
 
         if (meta.types()[i] == 'nominal'):

@@ -3,8 +3,9 @@ from pre_processing import pre_processing_functions
 
 def main(df, meta, norm_type='gaussian'):
 
-    (nominal_cols, numeric_cols) = pre_processing_functions.get_columns_by_type(meta)
     class_labels = pre_processing_functions.remove_and_return_class_column(df).to_numpy()
+    (nominal_cols, numeric_cols) = pre_processing_functions.get_columns_by_type(meta)
+
 
     if norm_type == 'gaussian':
         pre_processing_functions.standardize_columns(df, numeric_cols)
@@ -31,4 +32,4 @@ def main(df, meta, norm_type='gaussian'):
             id = list(df.columns).index(nominal_cols[i])
             nom_idx.append(id)
 
-    return data, class_labels, numeric_cols, nominal_cols
+    return data, class_labels, num_idx, nom_idx
