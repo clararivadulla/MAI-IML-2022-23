@@ -23,10 +23,10 @@ class kNN:
         self.nominal = nominal_cols
 
         if self.weights == 'lasso':
-            lasso = SelectFromModel(LogisticRegression(penalty="l2"), max_features=None)
+            lasso = SelectFromModel(LogisticRegression(penalty="l2", max_iter=500), max_features=None) # L2: Ridge Regression
             lasso.fit(x_train, y_train)
             self.w = lasso.get_support()
-            print("lasso w: ", self.w)
+            # print("lasso w: ", self.w)
         elif self.weights == 'mutual_info_score':
             mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k)
             x_train *= mic_w
