@@ -19,6 +19,8 @@ class kNN:
         self.w = None
         self.nominal = None
         self.numerical = None
+        self.top_features = None
+        self.n_features_to_keep = None
 
     def fit(self, x_train, y_train, numeric_cols, nominal_cols):
         # x_train = pd.DataFrame(x_train)
@@ -27,9 +29,10 @@ class kNN:
         self.nominal = nominal_cols
 
         if self.weights == 'relief':
-            r = ReliefF.ReliefF(n_neighbors = self.k, n_features_to_keep = x_train.shape[1])
-            r.fit(x_train, y_train)
-            x_train = r.transform(x_train)
+            relief = ReliefF.ReliefF(n_neighbors = self.k, n_features_to_keep = x_train.shape[1])
+            x_train = relief.fit_transform(x_train, y_train)
+            self.top_features = relief.top_features
+            self.n_features_to_keep = relief.n_features_to_keep
 
         if self.weights == 'lasso':
             lasso = SelectFromModel(LogisticRegression(penalty="l2", max_iter=500), max_features=None) # L2: Ridge Regression
@@ -40,6 +43,7 @@ class kNN:
             mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k)
             x_train *= mic_w
             self.w = mic_w
+
         elif self.weights == 'uniform':
             self.w = np.ones(x_train.shape[1])
 
@@ -98,6 +102,8 @@ class kNN:
         x_test = x_test.copy()
         if self.weights != "relief":
             x_test *= self.w
+        else:
+            x_test = x_test[self.top_features[:self.n_features_to_keep]]
 
         if self.dist_metric == 'minkowski':
             distance = minkowski(x_train, x_test, self.r, self.nominal, self.numerical)
@@ -107,14 +113,6 @@ class kNN:
             distance = clark(x_train, x_test, self.nominal, self.numerical)
         else:
             raise Exception("Distance matrix is not recognized")
-
-        """
-        x_train['label'] = y_train
-        x_train['distance'] = distance
-        x_train.sort_values(by=['distance'], inplace=True)
-        neighbors, distance = x_train.iloc[:self.k, :-1], x_train.iloc[:self.k, -1]
-        return neighbors, distance
-        """
 
         distance_sorted_idx = np.argsort(distance)
         k_distance_sorted_idx = distance_sorted_idx[:self.k]
