@@ -36,10 +36,10 @@ class EENTh:
     def P_i_x(self, x_train, y_train, x, i, kNN):  # Probability Pi(x) that a sample x belongs to a class i
         Pij = 0
         kNN.fit(x_train, y_train)
-        neighbors, distance = kNN.get_neighbors(x)
+        neighbors, labels, distance = kNN.get_neighbors(x)
         for j in range(0, self.k):
-            l = neighbors.iloc[[j]]['label'].values[0]
-            d = distance.iloc[[j]].values[0]
+            l = labels[j]
+            d = distance[j]
             if l == i:
                 p_i_j = 1
             else:
