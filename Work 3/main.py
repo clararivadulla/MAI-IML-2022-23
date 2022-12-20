@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
     print(f'\n··················································\nPERFORMANCE TESTS FOR PEN-BASED DATASET\n··················································')
     dataset_name = 'pen-based'
-    pen_based_data,numeric_cols, nominal_cols = data.get_data(dataset_name=dataset_name)
+    pen_based_data, numeric_cols, nominal_cols = data.get_data(dataset_name=dataset_name)
     pen_based_results_sorted_by_accuracy = test_performance(data=pen_based_data, dataset_name=dataset_name, numeric_cols=numeric_cols, nominal_cols=nominal_cols)
 
     print(f'\n··················································\nPERFORMANCE TESTS FOR SATIMAGE DATASET\n··················································')

@@ -11,7 +11,7 @@ class CNN:
         self.x_train = None
         self.y_train = None
 
-    def reduce_rnn(self, x_train, y_train):
+    def reduce_rnn(self, x_train, y_train, numeric_cols, nominal_cols):
         length = len(x_train)
         idx_rnn = [i for i in range(0, length)]
 
@@ -22,7 +22,7 @@ class CNN:
             for z in idx_rnn:
                 if z != i:
                     trial_idx_rnn.append(z)
-            kNN_config.fit(x_train[trial_idx_rnn], y_train[trial_idx_rnn])
+            kNN_config.fit(x_train[trial_idx_rnn], y_train[trial_idx_rnn], numeric_cols=numeric_cols, nominal_cols=nominal_cols)
 
             error = False
             for j in range(len(x_train)):
@@ -47,7 +47,7 @@ class CNN:
         return x_train[idx_rnn], y_train[idx_rnn]
 
 
-    def reduce_cnn(self, x_train, y_train):
+    def reduce_cnn(self, x_train, y_train, numeric_cols, nominal_cols):
         idx_cnn = [0]
         errors = True
         while errors:

@@ -15,17 +15,20 @@ class EENTh:
         self.w = None
         self.th = th
 
-    def reduce(self, x_train, y_train):
+    def reduce(self, x_train, y_train, numeric_cols, nominal_cols):
         S_x = []
         S_y = []
         kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
         labels = np.unique(y_train)
+        print(len(x_train))
         for i in range(len(x_train)):
+            print(i, end=' ')
             label = y_train[i]
             x_train_new = np.delete(x_train, i, axis=0)
             y_train_new = np.delete(y_train, i, axis=0)
-            probabilities = [self.P_i_x(x_train_new, y_train_new, x_train[i], l, kNN_config) for l in
+            probabilities = [self.P_i_x(x_train_new, y_train_new, x_train[i], l, kNN_config, numeric_cols, nominal_cols) for l in
                              range(len(labels))]
+            print(probabilities)
             pj = np.max(probabilities)
             k_prob = probabilities.index(max(probabilities))
             if k_prob == label and pj > self.th:  # If δk-prob (x) ≠ θ or pj ≤ μ, do S ← S − {x}
@@ -33,9 +36,10 @@ class EENTh:
                 S_y.append(y_train[i])
         return np.array(S_x), np.array(S_y)
 
-    def P_i_x(self, x_train, y_train, x, i, kNN):  # Probability Pi(x) that a sample x belongs to a class i
+    def P_i_x(self, x_train, y_train, x, i, kNN, numeric_cols, nominal_cols):  # Probability Pi(x) that a sample x belongs to a class i
+
         Pij = 0
-        kNN.fit(x_train, y_train)
+        kNN.fit(x_train, y_train, numeric_cols, nominal_cols)
         neighbors, labels, distance = kNN.get_neighbors(x)
         for j in range(0, self.k):
             l = labels[j]
