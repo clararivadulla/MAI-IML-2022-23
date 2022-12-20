@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-import sklearn_relief
-import ReliefF
 
 from metrics.distance_metrics import minkowski, cosine, clark
 from sklearn.feature_selection import mutual_info_classif, SelectFromModel
@@ -19,20 +17,12 @@ class kNN:
         self.w = None
         self.nominal = None
         self.numerical = None
-        self.top_features = None
-        self.n_features_to_keep = None
 
     def fit(self, x_train, y_train, numeric_cols, nominal_cols):
         # x_train = pd.DataFrame(x_train)
         x_train = x_train.copy()
         self.numerical = numeric_cols
         self.nominal = nominal_cols
-
-        if self.weights == 'relief':
-            relief = ReliefF.ReliefF(n_neighbors = self.k, n_features_to_keep = x_train.shape[1])
-            x_train = relief.fit_transform(x_train, y_train)
-            self.top_features = relief.top_features
-            self.n_features_to_keep = relief.n_features_to_keep
 
         if self.weights == 'lasso':
             lasso = SelectFromModel(LogisticRegression(penalty="l2", max_iter=500), max_features=None) # L2: Ridge Regression
@@ -100,10 +90,7 @@ class kNN:
         x_train = self.x_train.copy()
         y_train = self.y_train.copy()
         x_test = x_test.copy()
-        if self.weights != "relief":
-            x_test *= self.w
-        else:
-            x_test = x_test[self.top_features[:self.n_features_to_keep]]
+        x_test *= self.w
 
         if self.dist_metric == 'minkowski':
             distance = minkowski(x_train, x_test, self.r, self.nominal, self.numerical)
