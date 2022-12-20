@@ -30,8 +30,6 @@ def minkowski(a, b, r=2, nom_cols=None, num_cols=None):
 
 
 def clark(a,b, nom_cols=None, num_cols=None):
-    '''c=a+b
-    c[c==0] += 1e-5'''
     nom_dist = 0
     c = a[:, num_cols] + b[num_cols]
     c[np.where(c == 0)] = 1e-5

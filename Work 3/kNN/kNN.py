@@ -19,7 +19,6 @@ class kNN:
         self.numerical = None
 
     def fit(self, x_train, y_train, numeric_cols, nominal_cols):
-        # x_train = pd.DataFrame(x_train)
         x_train = x_train.copy()
         self.numerical = numeric_cols
         self.nominal = nominal_cols
@@ -28,6 +27,7 @@ class kNN:
             lasso = SelectFromModel(LogisticRegression(penalty="l2", max_iter=500), max_features=None) # L2: Ridge Regression
             lasso.fit(x_train, y_train)
             self.w = lasso.get_support()
+            x_train *= self.w
 
         elif self.weights == 'mutual_info_score':
             mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k)
