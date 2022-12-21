@@ -141,11 +141,11 @@ class DROP3:
                 # iterating through neighbors of instance P
             for j in P_neighbors:
 
-                Pneighbors_classes.append(P_neighbors.iloc[[j]]['label'].values[0])
+                Pneighbors_classes.append(P_labels[j])
                 # kNN_neighbor = kNN_config.fit(P_neighbors, Pneighbors_classes, numeric_cols, nominal_cols)
-                neighbors, _ = kNN_config.get_neighbors(P_neighbors[j])
+                neighbors, labels, _ = kNN_config.get_neighbors(P_neighbors[j])
                 Pneighbor_neighbors[P_neighbors[j]] = neighbors     # creating item in dict for this neighbor's own list of neighbors
-                Pneighbor_nClasses[P_neighbors[j]] = neighbors.iloc[[j]]['label'].values[0]
+                Pneighbor_nClasses[P_neighbors[j]] = P_labels[j]
 
                     # add P to each of its neighbors' lists of associates
                 Pneighbor_associates[P_neighbors[j]] = S_points[i]
@@ -198,9 +198,9 @@ class DROP3:
 
                             # since the associate must maintain k+1 nearest neighbors, find new neighbors so P is replaced
                         neighbors_new, labels_new, distance_new = kNN_test.get_neighbors(P_neighbors[j])
-                            # and update dict item with its new neighbors
+                        # and update dict item with its new neighbors and their classes
                         Pneighbor_neighbors[P_neighbors[j]] = neighbors_new
-                        Pneighbor_nClasses[P_neighbors[j]] = neighbors_new.iloc[[j]]['label'].values[0]
+                        Pneighbor_nClasses[P_neighbors[j]] = labels_new
 
                             # finally, add this point to its new neighbor's list of associates
                         index = [z for z in range(len(neighbors_new)) if neighbors_new[z] not in neighbors]
