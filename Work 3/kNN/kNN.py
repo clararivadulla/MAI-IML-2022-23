@@ -58,13 +58,17 @@ class kNN:
                 cat = list(set(labels))
                 votes_list = []
                 for i in range(len(cat)):
-                    vote = sum(labels[labels==cat[i]]*distance[labels==cat[i]])
+                    # vote = sum(labels[labels==cat[i]]*distance[labels==cat[i]])
+                    vote = sum(1 / distance[labels == cat[i]])
                     votes_list.append(vote)
                 votes_sorted = pd.DataFrame(data={'category': cat, 'votes': votes_list})
                 votes_sorted.sort_values(by=['votes'], inplace=True)
                 if votes_sorted.shape[0] > 1:
                     if votes_sorted['category'][0] != votes_sorted['category'][1]:
                         return int(votes_sorted['category'][0])
+                    else:
+                        labels = labels.iloc[:-1]
+                        distance = distance.iloc[:-1]
                 else:
                     return int(votes_sorted['category'][0])
         elif self.voting == 'sheppard':
@@ -72,13 +76,17 @@ class kNN:
                 cat = list(set(labels))
                 votes_list = []
                 for i in range(len(cat)):
-                    vote = sum(labels[labels==cat[i]]*np.exp(-distance[labels==cat[i]]))
+                    # vote = sum(labels[labels==cat[i]]*np.exp(-distance[labels==cat[i]]))
+                    vote = sum(np.exp(-distance[labels == cat[i]]))
                     votes_list.append(vote)
                 votes_sorted = pd.DataFrame(data={'category': cat, 'votes': votes_list})
                 votes_sorted.sort_values(by=['votes'], inplace=True)
                 if votes_sorted.shape[0] > 1:
                     if votes_sorted['category'][0] != votes_sorted['category'][1]:
                         return int(votes_sorted['category'][0])
+                    else:
+                        labels = labels.iloc[:-1]
+                        distance = distance.iloc[:-1]
                 else:
                     return int(votes_sorted['category'][0])
         else:
