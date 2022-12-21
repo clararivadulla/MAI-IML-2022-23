@@ -14,7 +14,7 @@ class DROP3:
         self.y_train = None
 
 
-    def noise_filter(self, x_train, y_train):   # ENN method
+    def noise_filter(self, x_train, y_train, numeric_cols, nominal_cols):   # ENN method
 
         '''
         1. Find kNN of each x
@@ -23,7 +23,7 @@ class DROP3:
         '''
 
         kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
-        kNN_config.fit(x_train, y_train)
+        kNN_config.fit(x_train, y_train, numeric_cols, nominal_cols)
 
         subset_x = []
         subset_y = []
@@ -31,11 +31,11 @@ class DROP3:
         for i in range(len(x_train)):
             label = y_train[i]
 
-            neighbors, _ = kNN_config.get_neighbors(x_train[i])
+            neighbors, labels, distance = kNN_config.get_neighbors(x_train[i])
 
             classes = []
             for j in range(0, self.k):
-                neighbor_class = neighbors.iloc[[j]]['label'].values[0]
+                neighbor_class = labels[j]
                 classes.append(neighbor_class)
 
             # frequencies = []
@@ -53,7 +53,7 @@ class DROP3:
 
         return np.array(subset_x), np.array(subset_y)
 
-    def get_enemies(self, x_train, y_train):
+    def get_enemies(self, x_train, y_train, numeric_cols, nominal_cols):
 
         '''
         Sorting instances in S by distance to their nearest remaining "enemy",
@@ -62,20 +62,20 @@ class DROP3:
         '''
 
         kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
-        kNN_config.fit(x_train, y_train)
+        kNN_config.fit(x_train, y_train, numeric_cols, nominal_cols)
 
         subset_enemies = {}
         subset_labels = {}
         for i in range(len(x_train)):
             label = y_train[i]
 
-            neighbors, distances = kNN_config.get_neighbors(x_train[i])
+            neighbors, labels, distance = kNN_config.get_neighbors(x_train[i])
 
             enemies = {}
             enemy_labels = {}
             for j in range(0, self.k):
-                neighbor_class = neighbors.iloc[[j]]['label'].values[0]
-                neighbor_dist = distances.iloc[[j]].values[0]
+                neighbor_class = labels[j]
+                neighbor_dist = distance[j]
 
                 if neighbor_class != label:
                     enemies[neighbors[j]] = neighbor_dist       # adding enemy (neighbor) and its distance
@@ -92,7 +92,7 @@ class DROP3:
 
         return np.array(subset_x), np.array(subset_y)
 
-    def drop2(self, x_train, y_train):
+    def drop2(self, x_train, y_train, numeric_cols, nominal_cols):
 
         '''
         1. S = T    (subset = original)
@@ -130,8 +130,8 @@ class DROP3:
 
                 # k+1 nearest neighbors/associates of P
             kNN_config = kNN(k=self.k+1, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
-            kNN_config.fit(S_points, S_labels)
-            P_neighbors, P_distances = kNN_config.get_neighbors(S_points[i])
+            kNN_config.fit(S_points, S_labels, numeric_cols, nominal_cols)
+            P_neighbors, P_labels, P_distances = kNN_config.get_neighbors(S_points[i])
 
             Pneighbors_classes = []
             P_associates = {}
@@ -142,7 +142,7 @@ class DROP3:
             for j in P_neighbors:
 
                 Pneighbors_classes.append(P_neighbors.iloc[[j]]['label'].values[0])
-                # kNN_neighbor = kNN_config.fit(P_neighbors, Pneighbors_classes)
+                # kNN_neighbor = kNN_config.fit(P_neighbors, Pneighbors_classes, numeric_cols, nominal_cols)
                 neighbors, _ = kNN_config.get_neighbors(P_neighbors[j])
                 Pneighbor_neighbors[P_neighbors[j]] = neighbors     # creating item in dict for this neighbor's own list of neighbors
                 Pneighbor_nClasses[P_neighbors[j]] = neighbors.iloc[[j]]['label'].values[0]
@@ -152,7 +152,7 @@ class DROP3:
                 Pneighbor_aClasses[P_neighbors[j]] = S_labels[i]
 
                 for neighbor, nClass in zip(neighbors, range(len(Pneighbors_classes))):
-                    neighbors_temp, _ = kNN_config.get_neighbors(neighbor)
+                    neighbors_temp, labels_temp, distance_temp  = kNN_config.get_neighbors(neighbor)
                         # checking for association of this instance with its neighbors
                     index = [z for z in range(len(neighbors_temp)) if neighbors_temp[z] == P_neighbors[j]]
                     if P_neighbors[j] in neighbors_temp:
@@ -179,7 +179,7 @@ class DROP3:
                     Ptest_points.remove(S_points[i])
                     Ptest_labels = T_labels.copy()
                     Ptest_labels.remove(S_labels[i])
-                    kNN_test = kNN_config.fit(Ptest_points, Ptest_labels)
+                    kNN_test = kNN_config.fit(Ptest_points, Ptest_labels, numeric_cols, nominal_cols)
                     without_test = kNN_test.predict(P_neighbors[j])
                     if without_test == Pneighbors_classes[j]:      # if correctly classified without P as a neighbor
                         withoutP.append(without_test)
@@ -197,7 +197,7 @@ class DROP3:
                         del Pneighbor_nClasses[P_neighbors[j]]
 
                             # since the associate must maintain k+1 nearest neighbors, find new neighbors so P is replaced
-                        neighbors_new, _ = kNN_test.get_neighbors(P_neighbors[j])
+                        neighbors_new, labels_new, distance_new = kNN_test.get_neighbors(P_neighbors[j])
                             # and update dict item with its new neighbors
                         Pneighbor_neighbors[P_neighbors[j]] = neighbors_new
                         Pneighbor_nClasses[P_neighbors[j]] = neighbors_new.iloc[[j]]['label'].values[0]
@@ -209,13 +209,13 @@ class DROP3:
 
         return np.array(S_points), np.array(S_labels)
 
-    def reduce_drop3(self, x_train, y_train):
+    def reduce_drop3(self, x_train, y_train, numeric_cols, nominal_cols):
 
-        filtered_x, filtered_y = self.noise_filter(x_train, y_train)
+        filtered_x, filtered_y = self.noise_filter(x_train, y_train, numeric_cols, nominal_cols)
 
-        sorted_x, sorted_y = self.get_enemies(filtered_x, filtered_y)
+        sorted_x, sorted_y = self.get_enemies(filtered_x, filtered_y, numeric_cols, nominal_cols)
 
-        reduced_x, reduced_y = self.drop2(sorted_x, sorted_y)
+        reduced_x, reduced_y = self.drop2(sorted_x, sorted_y, numeric_cols, nominal_cols)
 
         return np.array(reduced_x), np.array(reduced_y)
 

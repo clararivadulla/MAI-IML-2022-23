@@ -55,7 +55,7 @@ class CNN:
             errors = False
 
             kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
-            kNN_config.fit(x_train[idx_cnn], y_train[idx_cnn])
+            kNN_config.fit(x_train[idx_cnn], y_train[idx_cnn], numeric_cols, nominal_cols)
 
             for i in range(len(x_train)):
                 #y_hat = kNN_config.get_neighbors(x_train[[i]])[0]['label'].values[0]
