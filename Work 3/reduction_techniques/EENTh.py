@@ -20,7 +20,6 @@ class EENTh:
         S_y = []
         kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
         labels = np.unique(y_train)
-        print(len(x_train))
         for i in range(len(x_train)):
             print(i, end=' ')
             label = y_train[i]
