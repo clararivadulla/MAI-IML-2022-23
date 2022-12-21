@@ -9,7 +9,7 @@ if __name__ == '__main__':
         f'\n··················································\nVOWEL DATASET KNN WITH REDUCTION TECHNIQUES\n··················································')
     dataset_name = 'vowel'
     vowel_data, numeric_cols, nominal_cols = data.get_data(dataset_name=dataset_name)
-    vowel_results_sorted_by_accuracy = reduction_techniques(data=vowel_data, dataset_name=dataset_name, k=1, distance_metric='cosine', voting_scheme='sheppard', weighting_scheme='mutual_info_score', numeric_cols=numeric_cols, nominal_cols=nominal_cols)
+    vowel_results_sorted_by_accuracy = reduction_techniques(data=vowel_data, dataset_name=dataset_name, k=1, distance_metric='minkowski', voting_scheme='majority', weighting_scheme='lasso', numeric_cols=numeric_cols, nominal_cols=nominal_cols)
 
     print(
         f'\n··················································\nPEN-BASED DATASET KNN WITH REDUCTION TECHNIQUES\n··················································')

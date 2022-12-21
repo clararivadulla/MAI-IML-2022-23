@@ -1,7 +1,7 @@
 import timeit
 from kNN.kNN import kNN
 from metrics.accuracies import accuracy
-from reduction_techniques.CNN import CNN
+from reduction_techniques.RNN import RNN
 from reduction_techniques.DROP3 import DROP3
 from reduction_techniques.EENTh import EENTh
 
@@ -21,12 +21,9 @@ def reduce(data, reduction_technique, dataset_name, k, distance_metric, voting_s
         x_test_len = len(x_test)
         part_predictions = []
         start = timeit.default_timer()
-        if reduction_technique == 'CNN':
-            CNN_config = CNN(k=k, dist_metric=distance_metric, weights=weighting_scheme)
-            reduced_x, reduced_y = CNN_config.reduce_cnn(x_train, y_train, numeric_cols, nominal_cols)
-        elif reduction_technique == 'RNN':
-            RNN_config = CNN(k=k, dist_metric=distance_metric, weights=weighting_scheme)
-            reduced_x, reduced_y = RNN_config.reduce_rnn(x_train, y_train, numeric_cols, nominal_cols)
+        if reduction_technique == 'RNN':
+            RNN_config = RNN(k=k, dist_metric=distance_metric, weights=weighting_scheme)
+            reduced_x, reduced_y = RNN_config.reduce(x_train, y_train, numeric_cols, nominal_cols)
         elif reduction_technique == 'DROP3':
             DROP3_config = DROP3(k=k, dist_metric=distance_metric, weights=weighting_scheme)
             reduced_x, reduced_y = DROP3_config.reduce_drop3(x_train, y_train, numeric_cols, nominal_cols)
@@ -59,12 +56,11 @@ def reduction_techniques(data, dataset_name, k, distance_metric, voting_scheme, 
 
     results = []
 
-    # cnn_results = reduce(data, 'CNN', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
-    # rnn_results = reduce(data, 'RNN', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
-    # eenth_results = reduce(data, 'EENTh', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
+    rnn_results = reduce(data, 'RNN', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
+    #eenth_results = reduce(data, 'EENTh', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
     drop3_results = reduce(data, 'DROP3', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
 
-    # results.append(cnn_results)
+    # results.append(rnn_results)
     # results.append(eenth_results)
     results.append(drop3_results)
 
