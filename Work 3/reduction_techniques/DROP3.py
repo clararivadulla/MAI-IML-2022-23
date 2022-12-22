@@ -38,13 +38,6 @@ class DROP3:
                 neighbor_class = labels[j]
                 classes.append(neighbor_class)
 
-            # frequencies = []
-            # for z in classes:
-            #     frequencies.append(classes.count(z))
-            # frequency_check = all(ele == frequencies[0] for ele in frequencies)
-            # if frequency_check:
-            #     majority_class = None
-            # else:
             majority_class = mode(classes)
 
             if label == majority_class:
@@ -66,29 +59,55 @@ class DROP3:
 
         subset_enemies = {}
         subset_labels = {}
+
+        print('len of x train =', len(x_train))
+        print('shape of x train =', np.shape(x_train))
         for i in range(len(x_train)):
+            # print('entered first loop, with i =', i)
             label = y_train[i]
 
             neighbors, labels, distance = kNN_config.get_neighbors(x_train[i])
 
             enemies = {}
             enemy_labels = {}
+
             for j in range(0, self.k):
                 neighbor_class = labels[j]
                 neighbor_dist = distance[j]
 
                 if neighbor_class != label:
-                    enemies[neighbors[j]] = neighbor_dist       # adding enemy (neighbor) and its distance
-                    enemy_labels[neighbor_class] = neighbor_dist        # and its label
+                    guilty_party = f'neighbors[{j}]'
+                    enemies[guilty_party] = neighbor_dist, x_train[i]  # adding enemy (neighbor) and its distance
+                    enemy_labels[neighbor_class] = neighbor_dist, y_train[i]  # and its label
 
-                # finding enemy at largest distance
-            subset_enemies[x_train[i]] = sorted(enemies.items(), key=lambda x: x[1], reverse=True)[0]
-            subset_labels[y_train[i]] = sorted(subset_enemies.items(), key=lambda x: x[1], reverse=True)[0]
+            if len(enemies) == 0:
+                increase = 1
+                while len(enemies) == 0:
+                    new_k = self.k + increase
+                    kNN_config = kNN(k=new_k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
+                    kNN_config.fit(x_train, y_train, numeric_cols, nominal_cols)
+                    neighbors, labels, distance = kNN_config.get_neighbors(x_train[i])
 
-        subset_enemies = sorted(subset_enemies.items(), key=lambda x: x[1], reverse=True)
-        subset_labels = sorted(subset_labels.items(), key=lambda x: x[1], reverse=True)
-        subset_x = sorted([key[1][1] for key in subset_enemies])
-        subset_y = sorted([key[1][1] for key in subset_labels])
+                    for j in range(0, new_k):
+                        neighbor_class = labels[j]
+                        neighbor_dist = distance[j]
+
+                        if neighbor_class != label:
+                            guilty_party = f'neighbors[{j}]'
+                            enemies[guilty_party] = neighbor_dist, x_train[i]  # adding enemy (neighbor) and its distance
+                            enemy_labels[neighbor_class] = neighbor_dist, y_train[i]  # and its label
+
+                    increase += 1
+
+                # selecting enemy at farthest distance
+            subset_enemies[f'x_train[{i}]'] = sorted(enemies.values(), key=lambda x: x[1], reverse=True)[0]
+            subset_labels[f'y_train[{i}]'] = sorted(enemy_labels.values(), key=lambda x: x[1], reverse=True)[0]
+
+        ## subset_enemies = sorted(subset_enemies.values(), key=lambda x: x[1], reverse=True)
+        ## subset_labels = sorted(subset_labels.values(), key=lambda x: x[1], reverse=True)
+        subset_x = [value[1] for value in subset_enemies.values()]
+        subset_y = [value[1] for value in subset_labels.values()]
+#        print(f'final check, subset_x and subset_y, sorted =\n{subset_x}\n{subset_y}')
 
         return np.array(subset_x), np.array(subset_y)
 
@@ -139,36 +158,37 @@ class DROP3:
             withoutP = []
 
                 # iterating through neighbors of instance P
-            for j in P_neighbors:
+            for j in range(len(P_neighbors)):
+                Passociate = False
 
                 Pneighbors_classes.append(P_labels[j])
                 # kNN_neighbor = kNN_config.fit(P_neighbors, Pneighbors_classes, numeric_cols, nominal_cols)
                 neighbors, labels, _ = kNN_config.get_neighbors(P_neighbors[j])
-                Pneighbor_neighbors[P_neighbors[j]] = neighbors     # creating item in dict for this neighbor's own list of neighbors
-                Pneighbor_nClasses[P_neighbors[j]] = P_labels[j]
+                Pneighbor_neighbors[f'P_neighbors[{j}] of S_points[{i}]'] = neighbors     # creating item in dict for this neighbor's own list of neighbors
+                Pneighbor_nClasses[f'P_neighbors[{j}] of S_points[{i}]'] = P_labels[j]
 
                     # add P to each of its neighbors' lists of associates
-                Pneighbor_associates[P_neighbors[j]] = S_points[i]
-                Pneighbor_aClasses[P_neighbors[j]] = S_labels[i]
+                Pneighbor_associates[f'P_neighbors[{j}] of S_points[{i}]'] = S_points[i]
+                Pneighbor_aClasses[f'P_neighbors[{j}] of S_points[{i}]'] = S_labels[i]
 
                 for neighbor, nClass in zip(neighbors, range(len(Pneighbors_classes))):
                     neighbors_temp, labels_temp, distance_temp  = kNN_config.get_neighbors(neighbor)
                         # checking for association of this instance with its neighbors
-                    index = [z for z in range(len(neighbors_temp)) if neighbors_temp[z] == P_neighbors[j]]
+                    index = [z for z in range(len(neighbors_temp)) if np.array_equal(neighbors_temp[z], P_neighbors[j])]
+                    
                     if P_neighbors[j] in neighbors_temp:
-                        new_val = list(Pneighbor_associates[P_neighbors[j]])
-                        new_val.append(neighbors_temp[index])
+                        new_val = list(Pneighbor_associates[f'P_neighbors[{j}] of S_points[{i}]'])
+                        for i in index:
+                            new_val.append(neighbors_temp[index])
                             # replace dict value with new list including neighbor
-                        Pneighbor_associates[P_neighbors[j]] = new_val
-
+                        Pneighbor_associates[f'P_neighbors[{j}] of S_points[{i}]'] = new_val
 
                         # if the instance has P as one of its nearest neighbors, then it is also an associate of P
-                    if neighbor == S_points[i]:
-                        P_associates[P_neighbors[j]] = P_neighbors[j], Pneighbors_classes[nClass]
+                    if np.array_equal(neighbor, S_points[i]):
+                        P_associates[f'P_neighbors[{j}] of S_points[{i}]'] = P_neighbors[j], Pneighbors_classes[nClass]
                         Passociate = True
 
                 if Passociate:
-
                         # testing for with
                     with_test = kNN_config.predict(P_neighbors[j])
                     if with_test == Pneighbors_classes[j]:      # if correctly classified with P as a neighbor
@@ -184,25 +204,23 @@ class DROP3:
                     if without_test == Pneighbors_classes[j]:      # if correctly classified without P as a neighbor
                         withoutP.append(without_test)
 
-
                     if len(without_test) >= len(with_test):
-
                             # remove P from S
                         S_points.remove(S_points[i])
                         S_labels.remove(S_labels[i])
 
                             # remove P from its associate's list of nearest neighbors
-                                # but NOT their list of associates
-                        del Pneighbor_neighbors[P_neighbors[j]]
-                        del Pneighbor_nClasses[P_neighbors[j]]
+                                # but NOT from their own list of associates
+                        del Pneighbor_neighbors[f'P_neighbors[{j}] of S_points[{i}]']
+                        del Pneighbor_nClasses[f'P_neighbors[{j}] of S_points[{i}]']
 
                             # since the associate must maintain k+1 nearest neighbors, find new neighbors so P is replaced
                         neighbors_new, labels_new, distance_new = kNN_test.get_neighbors(P_neighbors[j])
-                        # and update dict item with its new neighbors and their classes
-                        Pneighbor_neighbors[P_neighbors[j]] = neighbors_new
-                        Pneighbor_nClasses[P_neighbors[j]] = labels_new
+                            # and update dict item with its new neighbors and their classes
+                        Pneighbor_neighbors[f'P_neighbors[{j}] of S_points[{i}]'] = neighbors_new
+                        Pneighbor_nClasses[f'P_neighbors[{j}] of S_points[{i}]'] = labels_new
 
-                            # finally, add this point to its new neighbor's list of associates
+                            # finally, add this point to the associate's new neighbor's list of associates
                         index = [z for z in range(len(neighbors_new)) if neighbors_new[z] not in neighbors]
                         other_associates[neighbors_new[index]] = P_neighbors[j]
                         other_aClasses[neighbors_new[index]] = Pneighbors_classes[j]
