@@ -6,7 +6,7 @@ from sklearn.feature_selection import mutual_info_classif, SelectFromModel
 from sklearn.linear_model import LogisticRegression
 
 class kNN:
-    def __init__(self, k=1, dist_metric='minkowski', r=2, voting='majority', weights="uniform"):
+    def __init__(self, k=1, dist_metric='minkowski', r=2, voting='majority', weights="uniform", random_seed=0):
         self.k = k
         self.dist_metric = dist_metric
         self.r = r
@@ -17,6 +17,7 @@ class kNN:
         self.w = None
         self.nominal = None
         self.numerical = None
+        self.random_seed = random_seed
 
     def fit(self, x_train, y_train, numeric_cols, nominal_cols):
         x_train = x_train.copy()
@@ -24,13 +25,13 @@ class kNN:
         self.nominal = nominal_cols
 
         if self.weights == 'lasso':
-            lasso = SelectFromModel(LogisticRegression(solver="liblinear", penalty="l1", max_iter=500), max_features=None) # L2: Ridge Regression
+            lasso = SelectFromModel(LogisticRegression(solver="liblinear", penalty="l1", max_iter=500, random_state=self.random_seed), max_features=None) # L2: Ridge Regression
             lasso.fit(x_train, y_train)
             self.w = lasso.get_support()
             x_train *= self.w
 
         elif self.weights == 'mutual_info_score':
-            mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k)
+            mic_w = mutual_info_classif(x_train, y_train, n_neighbors=self.k, random_state=self.random_seed)
             x_train *= mic_w
             self.w = mic_w
 
