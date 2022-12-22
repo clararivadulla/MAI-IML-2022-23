@@ -23,7 +23,7 @@ def reduce(data, reduction_technique, dataset_name, k, distance_metric, voting_s
         start = timeit.default_timer()
         print(f'Original x_train length: {len(x_train)} ---', end=' ')
         if reduction_technique == 'RNN':
-            RNN_config = RNN(k=k, dist_metric=distance_metric, weights=weighting_scheme)
+            RNN_config = RNN(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme, use_threshold=True)
             reduced_x, reduced_y = RNN_config.reduce(x_train, y_train, numeric_cols, nominal_cols)
         elif reduction_technique == 'DROP3':
             DROP3_config = DROP3(k=k, dist_metric=distance_metric, weights=weighting_scheme)
