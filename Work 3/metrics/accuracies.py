@@ -20,7 +20,6 @@ def t_tests(acc1, acc2, acc3):
             matrix[i,j] = p
             if p<0.05:
                 results.append([i,j,set1, set2,p])
-    print(results)
     return matrix, results
 
 
