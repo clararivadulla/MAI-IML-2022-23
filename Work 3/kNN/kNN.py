@@ -60,7 +60,9 @@ class kNN:
                 votes_list = []
                 for i in range(len(cat)):
                     # vote = sum(labels[labels==cat[i]]*distance[labels==cat[i]])
-                    vote = sum(1 / distance[labels == cat[i]])
+                    d = distance[labels == cat[i]]
+                    d[np.where(d == 0)] = 1e-5
+                    vote = sum(1 / d)
                     votes_list.append(vote)
                 votes_sorted = pd.DataFrame(data={'category': cat, 'votes': votes_list})
                 votes_sorted.sort_values(by=['votes'], inplace=True)
