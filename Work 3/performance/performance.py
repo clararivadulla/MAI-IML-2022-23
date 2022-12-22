@@ -1,6 +1,7 @@
 import timeit
 from kNN.kNN import kNN
 from metrics.accuracies import accuracy
+import csv
 
 def test_performance(data, numeric_cols, nominal_cols, dataset_name='', verbose=False):
 
@@ -52,6 +53,14 @@ def test_performance(data, numeric_cols, nominal_cols, dataset_name='', verbose=
     with open(f'results_{dataset_name}.txt', 'w') as f:
         for res in results:
             f.write(f"{res}\n")
+
+    acc = []
+    for res in results:
+        acc.append(res[0][0])
+
+    with open(f'accuracy_{dataset_name}.csv', 'w') as file:
+        writer = csv.writer(file)
+        writer.writerow(acc)
 
     results_sorted_by_accuracy = sorted(results, key=lambda item: item[0][0], reverse=True)
 
