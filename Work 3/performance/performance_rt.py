@@ -26,10 +26,10 @@ def reduce(data, reduction_technique, dataset_name, k, distance_metric, voting_s
             RNN_config = RNN(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme, use_threshold=True)
             reduced_x, reduced_y = RNN_config.reduce(x_train, y_train, numeric_cols, nominal_cols)
         elif reduction_technique == 'DROP3':
-            DROP3_config = DROP3(k=k, dist_metric=distance_metric, weights=weighting_scheme)
+            DROP3_config = DROP3(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme)
             reduced_x, reduced_y = DROP3_config.reduce_drop3(x_train, y_train, numeric_cols, nominal_cols)
         elif reduction_technique == 'EENTh':
-            EENTh_config = EENTh(k=k, dist_metric=distance_metric, weights=weighting_scheme)
+            EENTh_config = EENTh(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme)
             reduced_x, reduced_y = EENTh_config.reduce(x_train, y_train, numeric_cols, nominal_cols)
         print(f'Reduced x_train length: {len(reduced_x)} --- Storage: {len(reduced_x)/len(x_train)}')
         kNN_config = kNN(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme)
