@@ -1,6 +1,6 @@
 import timeit
 from kNN.kNN import kNN
-from metrics.accuracies import accuracy
+from metrics.accuracies import accuracy, t_tests
 import csv
 
 def test_performance(data, numeric_cols, nominal_cols, dataset_name='', verbose=False):
@@ -70,3 +70,35 @@ def test_performance(data, numeric_cols, nominal_cols, dataset_name='', verbose=
         print(f'{result[0][0]}%      {result[0][1]}s    {result[1]}')
 
     return results_sorted_by_accuracy
+
+def run_tests():
+    # Read accuracy files
+    acc = []
+    with open('accuracy_vowel.csv', newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        for row in spamreader:
+            acc.append(row)
+    acc_v = []
+    for i in range(len(acc[0])):
+        acc_v.append(float(acc[0][i]))
+
+    acc_p = []
+    acc = []
+    with open('accuracy_pen-based.csv', newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        for row in spamreader:
+            acc.append(row)
+    for i in range(len(acc[0])):
+        acc_p.append(float(acc[0][i]))
+
+    acc_s = []
+    acc = []
+    with open('accuracy_satimage.csv', newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        for row in spamreader:
+            acc.append(row)
+    for i in range(len(acc[0])):
+        acc_s.append(float(acc[0][i]))
+
+    results = t_tests(acc_v, acc_p, acc_s)
+    return results
