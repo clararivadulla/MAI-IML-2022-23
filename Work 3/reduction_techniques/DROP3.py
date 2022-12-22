@@ -60,8 +60,8 @@ class DROP3:
         subset_enemies = {}
         subset_labels = {}
 
-        print('len of x train =', len(x_train))
-        print('shape of x train =', np.shape(x_train))
+        # print('Length of x_train: ', len(x_train))
+        # print('Shape of x_train: ', np.shape(x_train))
         for i in range(len(x_train)):
             # print('entered first loop, with i =', i)
             label = y_train[i]

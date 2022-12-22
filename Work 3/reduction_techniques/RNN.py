@@ -42,6 +42,6 @@ class RNN:
             prediction = kNN_config.predict(x_train[j])
             part_predictions.append(prediction)
 
-        print(sum(part_predictions==y_train))
+        # print(sum(part_predictions==y_train))
 
         return x_train[idx_rnn], y_train[idx_rnn]

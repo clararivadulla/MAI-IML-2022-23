@@ -21,13 +21,13 @@ class EENTh:
         kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
         labels = np.unique(y_train)
         for i in range(len(x_train)):
-            print(i, end=' ')
+            # print(i, end=' ')
             label = y_train[i]
             x_train_new = np.delete(x_train, i, axis=0)
             y_train_new = np.delete(y_train, i, axis=0)
             probabilities = [self.P_i_x(x_train_new, y_train_new, x_train[i], l, kNN_config, numeric_cols, nominal_cols) for l in
                              range(len(labels))]
-            print(probabilities)
+            # print(probabilities)
             pj = np.max(probabilities)
             k_prob = probabilities.index(max(probabilities))
             if k_prob == label and pj > self.th:  # If δk-prob (x) ≠ θ or pj ≤ μ, do S ← S − {x}
