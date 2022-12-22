@@ -20,6 +20,7 @@ def cosine(a, b, nom_cols=None, num_cols=None):
 
 def minkowski(a, b, r=2, nom_cols=None, num_cols=None):
     nom_dist = 0
+    b = b.ravel()
     num_dist = np.sum(np.abs(a[:, num_cols] - b[num_cols]) ** r, axis=1) ** (1 / r)
     if nom_cols != None:
         # Calculate share of nominal variables where 2 entries are the same, on scale from 0 to 1
