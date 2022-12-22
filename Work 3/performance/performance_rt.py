@@ -56,11 +56,11 @@ def reduction_techniques(data, dataset_name, k, distance_metric, voting_scheme, 
 
     results = []
 
-    #rnn_results = reduce(data, 'RNN', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
+    rnn_results = reduce(data, 'RNN', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
     eenth_results = reduce(data, 'EENTh', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
     drop3_results = reduce(data, 'DROP3', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=False)
 
-    #results.append(rnn_results)
+    results.append(rnn_results)
     results.append(eenth_results)
     results.append(drop3_results)
 
