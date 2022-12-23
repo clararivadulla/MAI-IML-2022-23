@@ -28,6 +28,8 @@ def reduce(data, reduction_technique, dataset_name, k, distance_metric, voting_s
             RNN_config = RNN(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme, use_threshold=True)
             reduced_x, reduced_y = RNN_config.reduce(x_train, y_train, numeric_cols, nominal_cols)
         elif reduction_technique == 'DROP3':
+            if dataset_name == 'vowel':
+                weighting_scheme = 'lasso'
             print(
                 f'\n{reduction_technique} with {dataset_name} k={k}, dist_metric={distance_metric}, voting={voting_scheme}, weights={weighting_scheme}')
             print(f'Original x_train length: {len(x_train)} ---', end=' ')
