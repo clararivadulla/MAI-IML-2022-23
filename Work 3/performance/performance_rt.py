@@ -8,8 +8,7 @@ from reduction_techniques.EENTh import EENTh
 
 def reduce(data, reduction_technique, dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols,
         verbose=False):
-    print(
-        f'\n{reduction_technique} with {dataset_name} k={k}, dist_metric={distance_metric}, voting={voting_scheme}, weights={weighting_scheme}')
+    #print(f'\n{reduction_technique} with {dataset_name} k={k}, dist_metric={distance_metric}, voting={voting_scheme}, weights={weighting_scheme}')
 
     times = []
     accuracies = []
@@ -21,14 +20,25 @@ def reduce(data, reduction_technique, dataset_name, k, distance_metric, voting_s
         x_test_len = len(x_test)
         part_predictions = []
         start = timeit.default_timer()
-        print(f'Original x_train length: {len(x_train)} ---', end=' ')
+
         if reduction_technique == 'RNN':
+            print(
+                f'\n{reduction_technique} with {dataset_name} k={k}, dist_metric={distance_metric}, voting={voting_scheme}, weights={weighting_scheme}')
+            print(f'Original x_train length: {len(x_train)} ---', end=' ')
             RNN_config = RNN(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme, use_threshold=True)
             reduced_x, reduced_y = RNN_config.reduce(x_train, y_train, numeric_cols, nominal_cols)
         elif reduction_technique == 'DROP3':
+            print(
+                f'\n{reduction_technique} with {dataset_name} k={k}, dist_metric={distance_metric}, voting={voting_scheme}, weights={weighting_scheme}')
+            print(f'Original x_train length: {len(x_train)} ---', end=' ')
             DROP3_config = DROP3(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme)
             reduced_x, reduced_y = DROP3_config.reduce_drop3(x_train, y_train, numeric_cols, nominal_cols)
         elif reduction_technique == 'EENTh':
+            if dataset_name == 'vowel':
+                weighting_scheme = 'lasso'
+            print(
+                f'\n{reduction_technique} with {dataset_name} k={k}, dist_metric={distance_metric}, voting={voting_scheme}, weights={weighting_scheme}')
+            print(f'Original x_train length: {len(x_train)} ---', end=' ')
             EENTh_config = EENTh(k=k, dist_metric=distance_metric, voting=voting_scheme, weights=weighting_scheme)
             reduced_x, reduced_y = EENTh_config.reduce(x_train, y_train, numeric_cols, nominal_cols)
         print(f'Reduced x_train length: {len(reduced_x)} --- Storage: {len(reduced_x)/len(x_train)}')
@@ -59,12 +69,13 @@ def reduction_techniques(data, dataset_name, k, distance_metric, voting_scheme, 
     results = []
 
     rnn_results = reduce(data, 'RNN', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=True)
-    eenth_results = reduce(data, 'EENTh', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=True)
     drop3_results = reduce(data, 'DROP3', dataset_name, k, distance_metric, voting_scheme, weighting_scheme, numeric_cols, nominal_cols, verbose=True)
+    eenth_results = reduce(data, 'EENTh', dataset_name, k, distance_metric, voting_scheme, weighting_scheme,
+                           numeric_cols, nominal_cols, verbose=True)
 
     results.append(rnn_results)
-    results.append(eenth_results)
     results.append(drop3_results)
+    results.append(eenth_results)
 
     print(results)
 

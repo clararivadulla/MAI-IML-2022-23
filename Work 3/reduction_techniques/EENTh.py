@@ -5,10 +5,11 @@ from kNN.kNN import kNN
 
 
 class EENTh:
-    def __init__(self, th=0.5, k=1, dist_metric='minkowski', r=2, weights="uniform"):
+    def __init__(self, th=0.5, k=1, voting='majority', dist_metric='minkowski', r=2, weights="uniform"):
         self.k = k
         self.dist_metric = dist_metric
         self.r = r
+        self.voting = voting
         self.weights = weights
         self.x_train = None
         self.y_train = None
@@ -18,7 +19,7 @@ class EENTh:
     def reduce(self, x_train, y_train, numeric_cols, nominal_cols):
         S_x = []
         S_y = []
-        kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
+        kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, voting=self.voting, r=self.r, weights=self.weights)
         labels = np.unique(y_train)
         for i in range(len(x_train)):
             # print(i, end=' ')
