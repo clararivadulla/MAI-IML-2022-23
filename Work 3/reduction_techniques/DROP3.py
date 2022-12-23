@@ -48,11 +48,11 @@ class DROP3:
                 subset_x.append(x_train[i])
                 subset_y.append(y_train[i])
 
-#        print('end of noise filter, subset_x size is:', len(subset_x), np.shape(subset_x))
+        print('end of noise filter, subset_x size is:', len(subset_x), np.shape(subset_x))
 
         return np.array(subset_x), np.array(subset_y)
 
-    def get_enemies(self, x_train, y_train, numeric_cols, nominal_cols):
+    def get_enemies(self, subset_x, subset_y, numeric_cols, nominal_cols):
 
         '''
         Sorting instances in S by distance to their nearest remaining "enemy",
@@ -61,15 +61,15 @@ class DROP3:
         '''
 
         kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights, voting=self.voting)
-        kNN_config.fit(x_train, y_train, numeric_cols, nominal_cols)
+        kNN_config.fit(subset_x, subset_y, numeric_cols, nominal_cols)
 
         subset_enemies = {}
         subset_labels = {}
 
-        for i in range(len(x_train)):
-            label = y_train[i]
+        for i in range(len(subset_x)):
+            label = subset_y[i]
 
-            neighbors, labels, distance = kNN_config.get_neighbors(x_train[i])
+            neighbors, labels, distance = kNN_config.get_neighbors(subset_x[i])
 
             enemies = {}
             enemy_labels = {}
@@ -80,16 +80,16 @@ class DROP3:
 
                 if neighbor_class != label:
                     guilty_party = f'neighbors[{j}]'
-                    enemies[guilty_party] = neighbor_dist, x_train[i]  # adding enemy (neighbor) and its distance
-                    enemy_labels[neighbor_class] = neighbor_dist, y_train[i]  # and its label
+                    enemies[guilty_party] = neighbor_dist, subset_x[i]  # adding enemy (neighbor) and its distance
+                    enemy_labels[neighbor_class] = neighbor_dist, subset_y[i]  # and its label
 
             if len(enemies) == 0:
                 increase = 1
                 while len(enemies) == 0:
                     new_k = self.k + increase
                     kNN_config = kNN(k=new_k, dist_metric=self.dist_metric, r=self.r, weights=self.weights, voting=self.voting)
-                    kNN_config.fit(x_train, y_train, numeric_cols, nominal_cols)
-                    neighbors, labels, distance = kNN_config.get_neighbors(x_train[i])
+                    kNN_config.fit(subset_x, subset_y, numeric_cols, nominal_cols)
+                    neighbors, labels, distance = kNN_config.get_neighbors(subset_x[i])
 
                     for j in range(0, new_k):
                         neighbor_class = labels[j]
@@ -97,25 +97,25 @@ class DROP3:
 
                         if neighbor_class != label:
                             guilty_party = f'neighbors[{j}]'
-                            enemies[guilty_party] = neighbor_dist, x_train[i]  # adding enemy (neighbor) and its distance
-                            enemy_labels[neighbor_class] = neighbor_dist, y_train[i]  # and its label
+                            enemies[guilty_party] = neighbor_dist, subset_x[i]  # adding enemy (neighbor) and its distance
+                            enemy_labels[neighbor_class] = neighbor_dist, subset_y[i]  # and its label
 
                     increase += 1
 
                 # selecting enemy at farthest distance
-            subset_enemies[f'x_train[{i}]'] = sorted(enemies.values(), key=lambda x: x[0], reverse=True)[0]
-            subset_labels[f'y_train[{i}]'] = sorted(enemy_labels.values(), key=lambda x: x[0], reverse=True)[0]
+            subset_enemies[f'subset_x[{i}]'] = sorted(enemies.values(), key=lambda x: x[0], reverse=True)[0]
+            subset_labels[f'subset_y[{i}]'] = sorted(enemy_labels.values(), key=lambda x: x[0], reverse=True)[0]
 
         subset_enemies = sorted(subset_enemies.values(), key=lambda x: x[0], reverse=True)
         subset_labels = sorted(subset_labels.values(), key=lambda x: x[0], reverse=True)
-        subset_x = [value[1] for value in subset_enemies]
-        subset_y = [value[1] for value in subset_labels]
+        subset_x_sorted = [value[1] for value in subset_enemies]
+        subset_y_sorted = [value[1] for value in subset_labels]
         
         # print(f'final check, subset_x and subset_y, sorted =\n{subset_x}\n{subset_y}')
 
-        return np.array(subset_x), np.array(subset_y)
+        return np.array(subset_x_sorted), np.array(subset_y_sorted)
 
-    def drop2(self, x_train, y_train, numeric_cols, nominal_cols):
+    def drop2(self, subset_x, subset_y, numeric_cols, nominal_cols, x_train, y_train):
 
         '''
         1. S = T    (subset = original)
@@ -137,8 +137,8 @@ class DROP3:
         T_points = x_train
         T_labels = y_train
 
-        S_points = T_points.copy()
-        S_labels = T_labels.copy()
+        S_points = subset_x
+        S_labels = subset_y
 
         Pneighbor_associates = {}
         Pneighbor_aClasses = {}
@@ -149,12 +149,13 @@ class DROP3:
         other_associates = {}   # for the associate-ception later (associates of neighbors of neighbors)
         other_aClasses = {}
 
+        Spoints_init = len(S_points)
 
             # iterating through instances P of S, where the instance in question, "P", is S_points[i]
         for i in range(len(S_points)):
 
                 # as values are deleted in S_points, need to ensure the loop still iterates through all of its points
-            corr_trans = len(T_points) - len(S_points)
+            corr_trans = Spoints_init - len(S_points)
             Spoints_index = i - corr_trans
             Slabels_index = i - corr_trans
 
@@ -194,6 +195,7 @@ class DROP3:
                         # replace dict value with new list including neighbor
                         Pneighbor_associates[f'P_neighbors[{j}] of run[{i}]'] = new_val
                         # Pneighbor_aClasses[f'P_labels[{j}] of run[{i}]'] = new_lab
+
                     # checking if the neighbor of P's neighbor is also an associate of P
                     indices = [z for z in range(len(neighbors_temp)) if np.array_equal(neighbors_temp[z], S_points[Spoints_index])]
                     if S_points[Spoints_index] in neighbors_temp:
@@ -272,7 +274,7 @@ class DROP3:
                         other_associates[f'Passociate_neighbors[{aitem}] of run[{i}]'] = Passociate_neighbors[aitem]
                         other_aClasses[f'Passociate_nClasses[{aclass}] of run[{i}]'] = Passociate_nClasses[aclass]
 
-                # print('currently, S_points size is:', len(S_points), np.shape(S_points))
+                print('currently, S_points size is:', len(S_points), np.shape(S_points))
 
         return np.array(S_points), np.array(S_labels)
 
@@ -282,7 +284,7 @@ class DROP3:
 
         sorted_x, sorted_y = self.get_enemies(filtered_x, filtered_y, numeric_cols, nominal_cols)
 
-        reduced_x, reduced_y = self.drop2(sorted_x, sorted_y, numeric_cols, nominal_cols)
+        reduced_x, reduced_y = self.drop2(sorted_x, sorted_y, numeric_cols, nominal_cols, x_train, y_train)
 
         return np.array(reduced_x), np.array(reduced_y)
 
