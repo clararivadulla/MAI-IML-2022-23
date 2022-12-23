@@ -1,5 +1,6 @@
 import pandas as pd
 from scipy.stats import ttest_rel
+import numpy as np
 
 def accuracy(labels, predictions):
     df = {'true labels':labels, 'predictions':predictions}

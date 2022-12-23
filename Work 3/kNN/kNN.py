@@ -25,7 +25,13 @@ class kNN:
         self.nominal = nominal_cols
 
         if self.weights == 'ridge':
-            lasso = SelectFromModel(LogisticRegression(penalty="l2", max_iter=500, random_state=self.random_seed), max_features=None) # L2: Ridge Regression
+            ridge = SelectFromModel(LogisticRegression(penalty="l2", max_iter=500, random_state=self.random_seed), max_features=None) # L2: Ridge Regression
+            ridge.fit(x_train, y_train)
+            self.w = ridge.get_support()
+            x_train *= self.w
+
+        if self.weights == 'lasso':
+            lasso = SelectFromModel(LogisticRegression(solver='liblinear', penalty="l1", max_iter=500, random_state=self.random_seed), max_features=None) # L1: Lasso
             lasso.fit(x_train, y_train)
             self.w = lasso.get_support()
             x_train *= self.w

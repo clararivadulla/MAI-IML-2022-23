@@ -1,4 +1,4 @@
-from performance.performance import test_performance
+from performance.performance import test_performance, run_tests
 from pre_processing import data
 
 
