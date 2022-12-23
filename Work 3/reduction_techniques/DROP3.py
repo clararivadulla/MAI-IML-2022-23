@@ -5,13 +5,14 @@ from kNN.kNN import kNN
 
 class DROP3:
 
-    def __init__(self, k=1, dist_metric='minkowski', r=2, weights="uniform"):
+    def __init__(self, k=1, dist_metric='minkowski', r=2, weights="uniform", voting="uniform"):
         self.k = k
         self.dist_metric = dist_metric
         self.r = r
         self.weights = weights
         self.x_train = None
         self.y_train = None
+        self.voting = voting
 
 
     def noise_filter(self, x_train, y_train, numeric_cols, nominal_cols):   # ENN method
@@ -38,7 +39,10 @@ class DROP3:
                 neighbor_class = labels[j]
                 classes.append(neighbor_class)
 
-            majority_class = mode(classes)
+            try:
+                majority_class = mode(classes)
+            except:
+                majority_class = classes[0]
 
             if label == majority_class:
                 subset_x.append(x_train[i])
@@ -56,7 +60,7 @@ class DROP3:
         from the longest distance to the shortest.
         '''
 
-        kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
+        kNN_config = kNN(k=self.k, dist_metric=self.dist_metric, r=self.r, weights=self.weights, voting=self.voting)
         kNN_config.fit(x_train, y_train, numeric_cols, nominal_cols)
 
         subset_enemies = {}
@@ -83,7 +87,7 @@ class DROP3:
                 increase = 1
                 while len(enemies) == 0:
                     new_k = self.k + increase
-                    kNN_config = kNN(k=new_k, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
+                    kNN_config = kNN(k=new_k, dist_metric=self.dist_metric, r=self.r, weights=self.weights, voting=self.voting)
                     kNN_config.fit(x_train, y_train, numeric_cols, nominal_cols)
                     neighbors, labels, distance = kNN_config.get_neighbors(x_train[i])
 
@@ -155,7 +159,7 @@ class DROP3:
             Slabels_index = i - corr_trans
 
                 # k+1 nearest neighbors of P
-            kNN_config = kNN(k=self.k+1, dist_metric=self.dist_metric, r=self.r, weights=self.weights)
+            kNN_config = kNN(k=self.k+1, dist_metric=self.dist_metric, r=self.r, weights=self.weights, voting=self.voting)
             kNN_config.fit(S_points, S_labels, numeric_cols, nominal_cols)
             P_neighbors, P_labels, P_distances = kNN_config.get_neighbors(S_points[Spoints_index])
 
