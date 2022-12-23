@@ -25,6 +25,13 @@ pip install -r requirements.txt
 ```
 
 5. Run the main file 
+
+To run kNN on all 3 datasets and all the possible parameters for identifying the best parameters:
 ```bash
 python main.py
+```
+
+To run all reduction techniques on all 3 datasets:
+```bash
+python main_rt.py
 ```
