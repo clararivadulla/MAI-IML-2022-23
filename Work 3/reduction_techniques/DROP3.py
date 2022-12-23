@@ -62,11 +62,6 @@ class DROP3:
         subset_enemies = {}
         subset_labels = {}
 
-<<<<<<< Updated upstream
-        print('len of x train =', len(x_train))
-        print('shape of x train =', np.shape(x_train))
-=======
->>>>>>> Stashed changes
         for i in range(len(x_train)):
             label = y_train[i]
 
@@ -111,6 +106,8 @@ class DROP3:
         subset_labels = sorted(subset_labels.values(), key=lambda x: x[0], reverse=True)
         subset_x = [value[1] for value in subset_enemies]
         subset_y = [value[1] for value in subset_labels]
+        
+        # print(f'final check, subset_x and subset_y, sorted =\n{subset_x}\n{subset_y}')
 
         return np.array(subset_x), np.array(subset_y)
 
